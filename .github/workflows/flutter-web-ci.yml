@@ -1,0 +1,93 @@
+name: Flutter web CI 
+
+on:
+  pull_request:
+    branches: [ main , sprint]
+
+jobs:
+  send_start_notifications:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Send PR notification to Telegram
+      if: github.event.action == 'opened'
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        format: markdown
+        message: |
+          *${{ github.actor }}* PR-${{ github.event.number }} en *${{ github.event.repository.name }}*
+          
+          Se ha creado un nuevo PR.
+          Pueden revisarlo en [Url del repo]${{ github.event.number }}
+          Realizando build...
+    - name: Send PR notification to Telegram
+      if: github.event.action == 'synchronize'
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        format: markdown
+        message: |
+          *${{ github.actor }}* PR-${{ github.event.number }} en *${{ github.event.repository.name }}*
+          
+          Nuevos commits agregados al PR
+          Pueden revisarlo en [Url del repo]${{ github.event.number }}
+          Realizando re-build...
+    - name: Send PR notification to Telegram
+      if: github.event.action == 'reopened'
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        format: markdown
+        message: |
+          *${{ github.actor }}* PR-${{ github.event.number }} en *${{ github.event.repository.name }}*
+          
+          El PR ha sido re-abierto
+          Pueden revisarlo en [Url del repo]${{ github.event.number }}
+          Realizando re-build...
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '11.x'
+    - uses: subosito/flutter-action@v1
+      with:
+          flutter-version: '2.5.2'
+    - name: Build
+      run: |
+        flutter pub get
+        flutter test
+        flutter build web
+    #- name: Deploy to Firebase
+    #  uses: w9jds/firebase-action@master
+    #  with:
+    #    args: deploy --only hosting
+    #  env:
+    #    FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}    
+    - name: Send artifacts to Telegram
+      if: success()
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        format: markdown
+        message: |
+          *${{ github.actor }}* PR-${{ github.event.number }} en *${{ github.event.repository.name }}*
+          
+          Build terminado con éxito.
+    - name: Send error to Telegram
+      if: failure()
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.CHAT_ID }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        format: markdown
+        message: |
+          *${{ github.actor }}* PR-${{ github.event.number }} en *${{ github.event.repository.name }}*
+          
+          Ha ocurrido un error durante el build
+    
