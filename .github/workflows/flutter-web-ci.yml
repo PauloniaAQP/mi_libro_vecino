@@ -19,7 +19,7 @@ jobs:
           *${{ github.actor }}* PR-${{ github.event.number }} en *${{ github.event.repository.name }}*
           
           Se ha creado un nuevo PR.
-          Pueden revisarlo en [Url del repo]${{ github.event.number }}
+          Pueden revisarlo en https://github.com/PauloniaAQP/mi_libro_vecino/pull/${{ github.event.number }}
           Realizando build...
     - name: Send PR notification to Telegram
       if: github.event.action == 'synchronize'
@@ -32,7 +32,7 @@ jobs:
           *${{ github.actor }}* PR-${{ github.event.number }} en *${{ github.event.repository.name }}*
           
           Nuevos commits agregados al PR
-          Pueden revisarlo en [Url del repo]${{ github.event.number }}
+          Pueden revisarlo en https://github.com/PauloniaAQP/mi_libro_vecino/pull/${{ github.event.number }}
           Realizando re-build...
     - name: Send PR notification to Telegram
       if: github.event.action == 'reopened'
@@ -45,7 +45,7 @@ jobs:
           *${{ github.actor }}* PR-${{ github.event.number }} en *${{ github.event.repository.name }}*
           
           El PR ha sido re-abierto
-          Pueden revisarlo en [Url del repo]${{ github.event.number }}
+          Pueden revisarlo en https://github.com/PauloniaAQP/mi_libro_vecino/pull/${{ github.event.number }}
           Realizando re-build...
   build:
     runs-on: ubuntu-latest
