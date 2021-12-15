@@ -24,8 +24,8 @@ job:
     - name: Build
       run: flutter build web --target lib/main_development.dart
     - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
-          projectId: mi-libro-vecino-dev
-          expires: 10 minutes
+      with:
+        repoToken: '${{ secrets.GITHUB_TOKEN }}'
+        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+        projectId: mi-libro-vecino-dev
+        expires: 10 minutes
