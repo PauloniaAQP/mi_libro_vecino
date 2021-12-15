@@ -59,6 +59,10 @@ $ open coverage/index.html
 
 ## How to contribute
 
+If you want to take the time to make this project better, please read [the contributing guides](https://github.com/PauloniaAQP/mi_libro_vecino/blob/dev/CONTRIBUTING.md) first. Then, you can open an new issue, of a pull request.
+
+
+
 [coverage_badge]: coverage_badge.svg
 [flutter_localizations_link]: https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html
 [internationalization_link]: https://flutter.dev/docs/development/accessibility-and-localization/internationalization
