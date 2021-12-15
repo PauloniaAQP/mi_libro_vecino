@@ -93,7 +93,8 @@ jobs:
           *${{ github.actor }}* PR-${{ github.event.number }} en *${{ github.event.repository.name }}*
           
           Ha ocurrido un error durante el test
-  runs-on: ubuntu-latest
+  deploy_dev_instance:        
+    runs-on: ubuntu-latest
     needs: test_and_coverage
     environment: 
       name: pr-dev
@@ -115,5 +116,4 @@ jobs:
         repoToken: '${{ secrets.GITHUB_TOKEN }}'
         firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
         projectId: mi-libro-vecino-dev
-        expires: 1h        
-    
+        expires: 1h
