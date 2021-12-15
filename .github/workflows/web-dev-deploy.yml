@@ -27,4 +27,4 @@ jobs:
         repoToken: '${{ secrets.GITHUB_TOKEN }}'
         firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
         projectId: mi-libro-vecino-dev
-        expires: 10 minutes
+        expires: 1h
