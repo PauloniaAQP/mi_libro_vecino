@@ -65,7 +65,7 @@ jobs:
     - name: Test
       run: flutter test --coverage  
     - name: Build
-      run: flutter build web
+      run: flutter build web --target lib/main_development.dart
     - uses: codecov/codecov-action@v2
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
