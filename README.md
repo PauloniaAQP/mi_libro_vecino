@@ -1,6 +1,6 @@
 # Mi Libro Vecino
 
-![coverage][coverage_badge]
+[![codecov](https://codecov.io/gh/PauloniaAQP/mi_libro_vecino/branch/main/graph/badge.svg?token=RPQQG4BEGO)](https://codecov.io/gh/PauloniaAQP/mi_libro_vecino)
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 [![License: MIT][license_badge]][license_link]
 
