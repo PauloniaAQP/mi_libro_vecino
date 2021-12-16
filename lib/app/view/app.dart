@@ -7,9 +7,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:mi_libro_vecino/counter/counter.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
-import 'package:mi_libro_vecino/utils_ui/theme.dart';
+import 'package:mi_libro_vecino/search/view/search_page.dart';
+import 'package:mi_libro_vecino/ui_utils/theme.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class App extends StatelessWidget {
         GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const CounterPage(),
+      home: const SearchPage(),
     );
   }
 }
