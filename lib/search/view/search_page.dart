@@ -53,8 +53,12 @@ class SearchPage extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+        child: Container(
+          padding: const EdgeInsets.fromLTRB(20,0,20,80),
+          width: 800,
+          constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width * 0.5,
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -77,7 +81,7 @@ class SearchPage extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               Text(
-                'Amet minim mollit non deserunt est sit aliqua.',
+                'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
                 style: Theme.of(context).textTheme.subtitle1!.apply(
                       color: PColors.white,
                       fontWeightDelta: 1,
