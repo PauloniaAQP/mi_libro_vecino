@@ -75,7 +75,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                     child: FloatingActionButton(
                       onPressed: () {
                         widget.textEditControler.clear();
-          
+
                         if (state.isSearching) {
                           BlocProvider.of<SearchCubit>(context)
                               .onSearchQueryChanged('');

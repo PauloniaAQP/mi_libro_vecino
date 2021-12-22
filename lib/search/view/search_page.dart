@@ -54,7 +54,7 @@ class SearchPage extends StatelessWidget {
       ),
       body: Center(
         child: Container(
-          padding: const EdgeInsets.fromLTRB(20,0,20,80),
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 80),
           width: 800,
           constraints: BoxConstraints(
             minWidth: MediaQuery.of(context).size.width * 0.5,
