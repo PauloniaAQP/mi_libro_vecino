@@ -59,38 +59,41 @@ class SearchPage extends StatelessWidget {
           constraints: BoxConstraints(
             minWidth: MediaQuery.of(context).size.width * 0.5,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Amet minim mollit non deserunt est sit aliqua.',
-                style: Theme.of(context).textTheme.button!.apply(
-                      color: PColors.white,
-                      fontSizeDelta: 4,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                '¿Donde quieres buscar librerías?',
-                style: Theme.of(context).textTheme.headline1!.apply(
-                      color: PColors.white,
-                      fontSizeDelta: 2,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 40),
-              Text(
-                'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
-                style: Theme.of(context).textTheme.subtitle1!.apply(
-                      color: PColors.white,
-                      fontWeightDelta: 1,
-                    ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 40),
-              SearchWidget()
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Amet minim mollit non deserunt est sit aliqua.',
+                  style: Theme.of(context).textTheme.button!.apply(
+                        color: PColors.white,
+                        fontSizeDelta: 4,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  '¿Donde quieres buscar librerías?',
+                  style: Theme.of(context).textTheme.headline1!.apply(
+                        color: PColors.white,
+                        fontSizeDelta: 2,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 40),
+                Text(
+                  'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+                  style: Theme.of(context).textTheme.subtitle1!.apply(
+                        color: PColors.white,
+                        fontWeightDelta: 1,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 40),
+                SearchWidget()
+              ],
+            ),
           ),
         ),
       ),

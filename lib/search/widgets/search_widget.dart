@@ -33,6 +33,7 @@ class _SearchWidgetState extends State<SearchWidget> {
           duration: const Duration(milliseconds: 1000),
           curve: Curves.fastOutSlowIn,
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Row(
                 mainAxisSize: MainAxisSize.min,
@@ -41,28 +42,30 @@ class _SearchWidgetState extends State<SearchWidget> {
                     fit: FlexFit.tight,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(35, 15, 0, 15),
-                      child: TextField(
-                        controller: widget.textEditControler,
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText:
-                              'Buscar por distrito, provincia o departamento',
-                          hintStyle:
-                              Theme.of(context).textTheme.bodyText2!.apply(
-                                    color: PColors.gray2,
-                                    fontSizeDelta: 2,
-                                  ),
+                      child: Material(
+                        child: TextField(
+                          controller: widget.textEditControler,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText:
+                                'Buscar por distrito, provincia o departamento',
+                            hintStyle:
+                                Theme.of(context).textTheme.bodyText2!.apply(
+                                      color: PColors.gray2,
+                                      fontSizeDelta: 2,
+                                    ),
+                          ),
+                          style: Theme.of(context).textTheme.bodyText2!.apply(
+                                color: PColors.black,
+                                fontSizeDelta: 2,
+                              ),
+                          onChanged: (value) {
+                            setState(() {
+                              BlocProvider.of<SearchCubit>(context)
+                                  .onSearchQueryChanged(value);
+                            });
+                          },
                         ),
-                        style: Theme.of(context).textTheme.bodyText2!.apply(
-                              color: PColors.black,
-                              fontSizeDelta: 2,
-                            ),
-                        onChanged: (value) {
-                          setState(() {
-                            BlocProvider.of<SearchCubit>(context)
-                                .onSearchQueryChanged(value);
-                          });
-                        },
                       ),
                     ),
                   ),
@@ -72,7 +75,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                     child: FloatingActionButton(
                       onPressed: () {
                         widget.textEditControler.clear();
-
+          
                         if (state.isSearching) {
                           BlocProvider.of<SearchCubit>(context)
                               .onSearchQueryChanged('');
