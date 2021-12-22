@@ -1,6 +1,6 @@
 # Mi Libro Vecino
 
-![coverage][coverage_badge]
+[![codecov](https://codecov.io/gh/PauloniaAQP/mi_libro_vecino/branch/main/graph/badge.svg?token=RPQQG4BEGO)](https://codecov.io/gh/PauloniaAQP/mi_libro_vecino)
 [![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
 [![License: MIT][license_badge]][license_link]
 
@@ -58,6 +58,10 @@ $ open coverage/index.html
 ---
 
 ## How to contribute
+
+If you want to take the time to make this project better, please read [the contributing guides](https://github.com/PauloniaAQP/mi_libro_vecino/blob/dev/CONTRIBUTING.md) first. Then, you can open an new issue, of a pull request.
+
+
 
 [coverage_badge]: coverage_badge.svg
 [flutter_localizations_link]: https://api.flutter.dev/flutter/flutter_localizations/flutter_localizations-library.html
