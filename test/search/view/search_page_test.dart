@@ -21,7 +21,6 @@ void main() {
 
     testWidgets('renders Search Page', (tester) async {
       const state = SearchState(
-        suggestions: [],
         isSearching: false,
       );
       when(() => searchCubit.state).thenReturn(state);
@@ -49,7 +48,6 @@ void main() {
 
     testWidgets('renders Search widget', (tester) async {
       const state = SearchState(
-        suggestions: [],
         isSearching: false,
       );
       when(() => searchCubit.state).thenReturn(state);

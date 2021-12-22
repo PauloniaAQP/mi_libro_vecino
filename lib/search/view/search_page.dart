@@ -83,6 +83,7 @@ class SearchPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 Text(
+                  // ignore: lines_longer_than_80_chars
                   'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
                   style: Theme.of(context).textTheme.subtitle1!.apply(
                         color: PColors.white,
@@ -108,6 +109,7 @@ class SearchPage extends StatelessWidget {
                   maxWidth: MediaQuery.of(context).size.width - 180,
                 ),
                 child: Text(
+                  // ignore: lines_longer_than_80_chars
                   'Copyright 2021 Mi Libro Vecino. Todos los derechos reservados',
                   style: Theme.of(context).textTheme.subtitle1!.apply(
                         color: PColors.white,

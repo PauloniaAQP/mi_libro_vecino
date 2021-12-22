@@ -4,17 +4,10 @@ import 'package:mi_libro_vecino/search/cubit/search_cubit.dart';
 
 void main() {
   group('Search cubit test', () {
-    SearchCubit searchCubit;
-    var query = 'are';
+    late String query;
 
     setUp(() {
-      searchCubit = SearchCubit();
       query = 'are';
-    });
-
-    tearDown(() {
-      // searchCubit.close();
-      // searchCubit.onSearchQueryChanged(query);
     });
 
     test('Initial state isSearching is false and suggestions list is empty',
