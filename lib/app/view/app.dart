@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
+import 'package:mi_libro_vecino/router/router.dart';
 import 'package:mi_libro_vecino/search/cubit/search_cubit.dart';
-import 'package:mi_libro_vecino/search/view/search_page.dart';
 import 'package:mi_libro_vecino/ui_utils/theme.dart';
 
 class App extends StatelessWidget {
@@ -20,14 +20,16 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => SearchCubit(),
-      child: MaterialApp(
+      child: MaterialApp.router(
         theme: PTheme.standard,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
         ],
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const SearchPage(),
+        // home: const SearchPage(),
+        routeInformationParser: AppRouter.router.routeInformationParser,
+        routerDelegate: AppRouter.router.routerDelegate,
       ),
     );
   }
