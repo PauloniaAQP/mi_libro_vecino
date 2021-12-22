@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/search/cubit/search_cubit.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 
@@ -13,15 +14,21 @@ class SearchWidget extends StatefulWidget {
 }
 
 class SearchWidgetState extends State<SearchWidget> {
+  final double _searchHeight = 80;
+  final double _suggestionHeight = 50.5;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
+        final _heightWithSuggestions =
+            _searchHeight + _suggestionHeight * state.suggestions.length;
+
         return AnimatedContainer(
           width: 800,
           height: state is SearchQueryChanged
-              ? 85 + 50.5 * state.suggestions.length - 1
-              : 80,
+              ? _heightWithSuggestions
+              : _searchHeight,
           constraints: BoxConstraints(
             minWidth: MediaQuery.of(context).size.width * 0.5,
             maxHeight: MediaQuery.of(context).size.height * 0.4,
@@ -48,7 +55,7 @@ class SearchWidgetState extends State<SearchWidget> {
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText:
-                                'Buscar por distrito, provincia o departamento',
+                                context.l10n.searchPageSearchBy,
                             hintStyle:
                                 Theme.of(context).textTheme.bodyText2!.apply(
                                       color: PColors.gray2,
