@@ -62,5 +62,22 @@ void main() {
         findsOneWidget,
       );
     });
+
+    testWidgets('enter text into Search widget', (tester) async {
+      const term = 'are';
+      const state = SearchState(
+        isSearching: false,
+      );
+      when(() => searchCubit.state).thenReturn(state);
+      await tester.pumpApp(
+        BlocProvider.value(
+          value: searchCubit,
+          child: SearchWidget(),
+        ),
+      );
+      await tester.enterText(find.byType(TextField), term);
+      expect(find.text(term), findsOneWidget);
+      verify(() => searchCubit.onSearchQueryChanged(term)).called(1);
+    });
   });
 }

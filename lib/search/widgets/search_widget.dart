@@ -111,47 +111,45 @@ class SearchWidgetState extends State<SearchWidget> {
                   fit: FlexFit.tight,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 17),
-                    child: Expanded(
-                      child: ListView.builder(
-                        itemCount: state.suggestions.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            onTap: () {},
-                            title: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: state.suggestions[index].substring(
-                                      0,
-                                      widget.textEditControler.text.length,
-                                    ),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2!
-                                        .apply(
-                                          color: PColors.black,
-                                          fontSizeDelta: 2,
-                                          fontWeightDelta: 3,
-                                        ),
+                    child: ListView.builder(
+                      itemCount: state.suggestions.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          onTap: () {},
+                          title: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: state.suggestions[index].substring(
+                                    0,
+                                    widget.textEditControler.text.length,
                                   ),
-                                  TextSpan(
-                                    text: state.suggestions[index].substring(
-                                      widget.textEditControler.text.length,
-                                    ),
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2!
-                                        .apply(
-                                          color: PColors.gray2,
-                                          fontSizeDelta: 2,
-                                        ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .apply(
+                                        color: PColors.black,
+                                        fontSizeDelta: 2,
+                                        fontWeightDelta: 3,
+                                      ),
+                                ),
+                                TextSpan(
+                                  text: state.suggestions[index].substring(
+                                    widget.textEditControler.text.length,
                                   ),
-                                ],
-                              ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .apply(
+                                        color: PColors.gray2,
+                                        fontSizeDelta: 2,
+                                      ),
+                                ),
+                              ],
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
