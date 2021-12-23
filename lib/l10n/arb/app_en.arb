@@ -3,5 +3,13 @@
     "counterAppBarTitle": "Counter",
     "@counterAppBarTitle": {
         "description": "Text shown in the AppBar of the Counter Page"
-    }
+    },
+    "searchPageImLibraryButton": "Soy biblioteca",
+    "searchPageFollowButton": "Siguenos",
+    "searchPageBeforeTitle": "Amet minim mollit non deserunt est sit aliqua.",
+    "searchPageTitle": "¿Donde quieres buscar librerías?",
+    "searchPageAfterTitle": "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
+    "searchPageFootpage": "Copyright 2021 Mi Libro Vecino. Todos los derechos reservados",
+    "searchPageAdminButton": "Admin",
+    "searchPageSearchBy": "Buscar por distrito, provincia o departamento"
 }

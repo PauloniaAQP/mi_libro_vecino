@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/search/widgets/search_widget.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
@@ -8,6 +9,8 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
       backgroundColor: PColors.purple,
       appBar: AppBar(
@@ -22,7 +25,7 @@ class SearchPage extends StatelessWidget {
           TextButton(
             onPressed: () {},
             child: Text(
-              'Soy biblioteca',
+              l10n.searchPageImLibraryButton,
               style: Theme.of(context).textTheme.subtitle1!.apply(
                     color: PColors.white,
                     fontWeightDelta: 1,
@@ -41,7 +44,7 @@ class SearchPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 child: Text(
-                  'Siguenos',
+                  l10n.searchPageFollowButton,
                   style: Theme.of(context).textTheme.subtitle1!.apply(
                         color: PColors.white,
                         fontWeightDelta: 1,
@@ -65,7 +68,7 @@ class SearchPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  'Amet minim mollit non deserunt est sit aliqua.',
+                  l10n.searchPageBeforeTitle,
                   style: Theme.of(context).textTheme.button!.apply(
                         color: PColors.white,
                         fontSizeDelta: 4,
@@ -74,7 +77,7 @@ class SearchPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  '¿Donde quieres buscar librerías?',
+                  l10n.searchPageTitle,
                   style: Theme.of(context).textTheme.headline1!.apply(
                         color: PColors.white,
                         fontSizeDelta: 2,
@@ -83,8 +86,7 @@ class SearchPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
                 Text(
-                  // ignore: lines_longer_than_80_chars
-                  'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+                  context.l10n.searchPageAfterTitle,
                   style: Theme.of(context).textTheme.subtitle1!.apply(
                         color: PColors.white,
                         fontWeightDelta: 1,
@@ -109,8 +111,7 @@ class SearchPage extends StatelessWidget {
                   maxWidth: MediaQuery.of(context).size.width - 180,
                 ),
                 child: Text(
-                  // ignore: lines_longer_than_80_chars
-                  'Copyright 2021 Mi Libro Vecino. Todos los derechos reservados',
+                  l10n.searchPageFootpage,
                   style: Theme.of(context).textTheme.subtitle1!.apply(
                         color: PColors.white,
                       ),
@@ -125,7 +126,7 @@ class SearchPage extends StatelessWidget {
                 child: TextButton(
                   onPressed: () {},
                   child: Text(
-                    'Admin',
+                    l10n.searchPageAdminButton,
                     style: Theme.of(context).textTheme.subtitle1!.apply(
                           color: PColors.white,
                         ),
