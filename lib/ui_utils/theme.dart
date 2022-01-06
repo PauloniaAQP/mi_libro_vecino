@@ -11,6 +11,7 @@ class PTheme {
       textTheme: _textTheme,
       elevatedButtonTheme: _elevatedButtonTheme,
       appBarTheme: _appBarTheme,
+      inputDecorationTheme: _inputDecorationTheme,
     );
   }
 
@@ -60,6 +61,11 @@ class PTheme {
             return PColors.blue;
           },
         ),
+        shape: MaterialStateProperty.all(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
       ),
     );
   }
@@ -68,6 +74,47 @@ class PTheme {
     return const AppBarTheme(
       toolbarHeight: 80,
       elevation: 0,
+    );
+  }
+
+  static InputDecorationTheme get _inputDecorationTheme {
+    return const InputDecorationTheme(
+      border: InputBorder.none,
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: PColors.red,
+          width: 2,
+        ),
+      ),
+      enabledBorder: InputBorder.none,
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: PColors.blueVariant,
+          width: 2,
+        ),
+      ),
+      disabledBorder: InputBorder.none,
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: PColors.red,
+          width: 2,
+        ),
+      ),
+      alignLabelWithHint: true,
+      floatingLabelBehavior: FloatingLabelBehavior.always,
+      labelStyle: TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+      ),
+      floatingLabelStyle: TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
+        height: 1,
+      ),
+      errorStyle: TextStyle(
+        fontSize: 12,
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 }
