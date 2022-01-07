@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mi_libro_vecino/libraries/view/libraries_page.dart';
 import 'package:mi_libro_vecino/register/view/pages/email_register_page.dart';
 import 'package:mi_libro_vecino/register/view/pages/personal_name_page.dart';
 import 'package:mi_libro_vecino/register/view/register_page.dart';
@@ -14,6 +15,12 @@ abstract class AppRouter {
             path: Routes.search,
             pageBuilder: (context, state) => const MaterialPage(
               child: SearchPage(),
+            ),
+          ),
+          GoRoute(
+            path: Routes.libraries,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: LibrariesPage(),
             ),
           ),
           GoRoute(
