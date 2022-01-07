@@ -53,19 +53,20 @@ class PTextField extends StatelessWidget {
           mouseCursor: mouseCursor,
           decoration: InputDecoration(
             hintText: hintText,
+            filled: true,
+            fillColor: const Color(0xffF9F9F9),
             hintStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-                color: PColors.gray4 ,
-              ),
-              suffixIcon: suffixIcon,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: PColors.gray4,
+                ),
+            suffixIcon: suffixIcon,
           ),
           style: Theme.of(context).textTheme.bodyText2!.copyWith(
                 fontWeight: FontWeight.w500,
                 fontSize: 16,
                 color: PColors.black,
               ),
-            
         ),
       ],
     );

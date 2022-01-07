@@ -7,7 +7,8 @@ class PTheme {
     return ThemeData(
       colorScheme: _colorScheme,
       backgroundColor: PColors.whiteBackground,
-      scaffoldBackgroundColor: PColors.whiteBackground,
+      // ! Check if this is correct
+      scaffoldBackgroundColor: PColors.white,
       textTheme: _textTheme,
       elevatedButtonTheme: _elevatedButtonTheme,
       appBarTheme: _appBarTheme,
@@ -86,14 +87,24 @@ class PTheme {
           width: 2,
         ),
       ),
-      enabledBorder: InputBorder.none,
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: PColors.transparent,
+          width: 2,
+        ),
+      ),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: PColors.blueVariant,
           width: 2,
         ),
       ),
-      disabledBorder: InputBorder.none,
+      disabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: PColors.transparent,
+          width: 2,
+        ),
+      ),
       focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: PColors.red,

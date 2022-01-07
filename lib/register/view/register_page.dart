@@ -136,7 +136,7 @@ class RegisterPageState extends State<RegisterPage>
                               visible: state.index > 0 && state.index < 6,
                               child: DotNavigation(
                                 /// Index and length are -2 because the first
-                                /// page and last are not shown in the dot 
+                                /// page and last are not shown in the dot
                                 /// navigation
                                 index: state.index - 1,
                                 length: RegisterPage.pages.length - 3,
