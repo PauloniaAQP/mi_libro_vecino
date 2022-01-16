@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
-import 'package:mi_libro_vecino/register/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dropdown_button.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';

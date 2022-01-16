@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mi_libro_vecino/authentication/components/pick_image.dart';
+import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
-import 'package:mi_libro_vecino/register/components/pick_image.dart';
-import 'package:mi_libro_vecino/register/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 
 class PersonalPhoto extends StatelessWidget {

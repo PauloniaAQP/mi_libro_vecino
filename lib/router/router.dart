@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mi_libro_vecino/authentication/view/pages/email_register_page.dart';
+import 'package:mi_libro_vecino/authentication/view/pages/personal_name_page.dart';
+import 'package:mi_libro_vecino/authentication/view/pages/register_error_page.dart';
+import 'package:mi_libro_vecino/authentication/view/pages/waiting_page.dart';
+import 'package:mi_libro_vecino/authentication/view/register_page.dart';
 import 'package:mi_libro_vecino/libraries/view/libraries_page.dart';
-import 'package:mi_libro_vecino/register/view/pages/email_register_page.dart';
-import 'package:mi_libro_vecino/register/view/pages/personal_name_page.dart';
-import 'package:mi_libro_vecino/register/view/pages/register_error_page.dart';
-import 'package:mi_libro_vecino/register/view/pages/waiting_page.dart';
-import 'package:mi_libro_vecino/register/view/register_page.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/search.dart';
 

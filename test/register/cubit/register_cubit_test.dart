@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mi_libro_vecino/register/cubit/register_cubit.dart';
+import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 
 void main() {
   group('Register cubit test', () {

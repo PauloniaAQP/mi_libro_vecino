@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mi_libro_vecino/register/components/dot_counter.dart';
+import 'package:mi_libro_vecino/authentication/components/dot_counter.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 
 class DotNavigation extends StatelessWidget {
