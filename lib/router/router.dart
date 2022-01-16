@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/libraries/view/libraries_page.dart';
 import 'package:mi_libro_vecino/register/view/pages/email_register_page.dart';
 import 'package:mi_libro_vecino/register/view/pages/personal_name_page.dart';
+import 'package:mi_libro_vecino/register/view/pages/register_error_page.dart';
+import 'package:mi_libro_vecino/register/view/pages/waiting_page.dart';
 import 'package:mi_libro_vecino/register/view/register_page.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/search.dart';
@@ -19,9 +21,16 @@ abstract class AppRouter {
           ),
           GoRoute(
             path: Routes.libraries,
-            pageBuilder: (context, state) => const MaterialPage(
-              child: LibrariesPage(),
-            ),
+            pageBuilder: (context, state) {
+              final libraryIdQuery = state.queryParams['id'];
+              final searchQuery = state.queryParams['search'];
+              return MaterialPage(
+                child: LibrariesPage(
+                  libraryIdQuery: libraryIdQuery,
+                  searchQuery: searchQuery,
+                ),
+              );
+            },
           ),
           GoRoute(
             path: Routes.register,
@@ -48,6 +57,18 @@ abstract class AppRouter {
                 ),
               ),
             ],
+          ),
+          GoRoute(
+            path: Routes.waiting,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: WaitingPage(),
+            ),
+          ),
+          GoRoute(
+            path: Routes.errorRegister,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: RegisterErrorPage(),
+            ),
           ),
         ],
       );
