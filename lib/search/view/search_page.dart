@@ -12,13 +12,13 @@ class SearchPage extends StatelessWidget {
     final l10n = context.l10n;
 
     return Scaffold(
-      backgroundColor: PColors.purple,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
-        leadingWidth: 120,
+        leadingWidth: 180,
         leading: const Padding(
-          padding: EdgeInsets.symmetric(vertical: 22),
+          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 11),
           child: Image(
-            image: AssetImage(Assets.logo),
+            image: AssetImage(Assets.logoWithName),
           ),
         ),
         actions: [
@@ -42,11 +42,14 @@ class SearchPage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(PColors.white),
+                ),
                 onPressed: () {},
                 child: Text(
                   l10n.searchPageFollowButton,
                   style: Theme.of(context).textTheme.subtitle1!.apply(
-                        color: PColors.white,
+                        color: Theme.of(context).colorScheme.primary,
                         fontWeightDelta: 1,
                       ),
                 ),
@@ -67,22 +70,54 @@ class SearchPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  l10n.searchPageBeforeTitle,
-                  style: Theme.of(context).textTheme.button!.apply(
-                        color: PColors.white,
-                        fontSizeDelta: 4,
+                SizedBox(
+                  height: 180,
+                  child: Stack(
+                    alignment: AlignmentDirectional.bottomCenter,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            flex: 9,
+                            child: Text(
+                              l10n.searchPageTitle.substring(0, 14),
+                              style:
+                                  Theme.of(context).textTheme.headline1!.apply(
+                                        color: PColors.white,
+                                        fontSizeDelta: 2,
+                                      ),
+                              textAlign: TextAlign.end,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          const SizedBox(width: 80),
+                          Expanded(
+                            flex: 8,
+                            child: Text(
+                              l10n.searchPageTitle.substring(14),
+                              style:
+                                  Theme.of(context).textTheme.headline1!.apply(
+                                        color: PColors.white,
+                                        fontSizeDelta: 2,
+                                      ),
+                              textAlign: TextAlign.start,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  l10n.searchPageTitle,
-                  style: Theme.of(context).textTheme.headline1!.apply(
-                        color: PColors.white,
-                        fontSizeDelta: 2,
-                      ),
-                  textAlign: TextAlign.center,
+                      Center(
+                        child: Image.asset(
+                          Assets.searchImg,
+                          fit: BoxFit.contain,
+                          width: 160,
+                          height: 160,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 40),
                 Text(
@@ -102,7 +137,7 @@ class SearchPage extends StatelessWidget {
       ),
       bottomSheet: Container(
         height: 55,
-        color: const Color(0xFF1D1A3F),
+        color: Theme.of(context).colorScheme.primary,
         child: Stack(
           children: [
             Center(
