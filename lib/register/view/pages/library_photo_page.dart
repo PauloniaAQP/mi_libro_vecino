@@ -11,28 +11,29 @@ class LibraryPhotoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          l10n.registerPageLibraryInformationTitle,
-          style: Theme.of(context).textTheme.headline3!.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-        ),
-        const SizedBox(height: 35),
-        Text(
-          l10n.registerPageLibraryPhotoLabel,
-          style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                fontWeight: FontWeight.w600,
-                fontSize: 13,
-              ),
-        ),
-        const SizedBox(height: 8),
-        Flexible(
-          child: BlocBuilder<RegisterCubit, RegisterState>(
-            builder: (context, state) {
-              return Center(
+    return BlocBuilder<RegisterCubit, RegisterState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.registerPageLibraryInformationTitle +
+                  state.libraryRolController.text,
+              style: Theme.of(context).textTheme.headline3!.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+            const SizedBox(height: 35),
+            Text(
+              l10n.registerPageLibraryPhotoLabel,
+              style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                  ),
+            ),
+            const SizedBox(height: 8),
+            Flexible(
+              child: Center(
                 child: Container(
                   margin: const EdgeInsets.all(15),
                   height: MediaQuery.of(context).size.width * 0.3,
@@ -94,11 +95,11 @@ class LibraryPhotoPage extends StatelessWidget {
                     },
                   ),
                 ),
-              );
-            },
-          ),
-        ),
-      ],
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

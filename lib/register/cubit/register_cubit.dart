@@ -19,6 +19,19 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(state.copyWith(index: state.index - 1));
   }
 
+  /// For this function we need to make a deep copy of 
+  /// the services map in order to bloc can differentiate
+  /// both states and rebuild the view
+  void updateServices({required String key}) {
+    final map = Map<String, bool>.from(state.services)
+      ..update(key, (value) => !value);
+    emit(
+      state.copyWith(
+        services: map,
+      ),
+    );
+  }
+
   Future<void> onTapUploadLibraryPhoto() async {
     emit(
       RegisterPhotoLoading(
@@ -26,6 +39,10 @@ class RegisterCubit extends Cubit<RegisterState> {
         personInfoForm: state.personInfoForm,
         registerForm: state.registerForm,
         index: state.index,
+        services: state.services,
+        closingController: state.closingController,
+        libraryRolController: state.libraryRolController,
+        openingController: state.openingController,
       ),
     );
     final image = await uiPickImage();
@@ -40,8 +57,12 @@ class RegisterCubit extends Cubit<RegisterState> {
         personInfoForm: state.personInfoForm,
         registerForm: state.registerForm,
         index: state.index,
+        services: state.services,
+        closingController: state.closingController,
+        libraryRolController: state.libraryRolController,
+        openingController: state.openingController,
       ),
-    );  
+    );
     final image = await uiPickImage();
     // TODO(oscarnar): Solve this error, read Files on web
     emit(state.copyWith(personPhoto: File(image!.path)));

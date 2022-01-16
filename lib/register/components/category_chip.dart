@@ -9,7 +9,7 @@ class CategoryChip extends StatelessWidget {
     required this.isSelected,
   }) : super(key: key);
 
-  final Function() onTap;
+  final VoidCallback onTap;
   final String label;
   final bool isSelected;
 
@@ -24,7 +24,7 @@ class CategoryChip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15),
         onPressed: onTap,
         fillColor:
-            isSelected ? const Color(0xFF2183DF) : PColors.gray4,
+            isSelected ? const Color(0xFF2183DF) : PColors.gray3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),

@@ -11,6 +11,10 @@ class RegisterState extends Equatable {
     required this.libraryInfoForm,
     required this.personInfoForm,
     required this.registerForm,
+    required this.services,
+    required this.openingController,
+    required this.closingController,
+    required this.libraryRolController,
   });
 
   final int index;
@@ -22,6 +26,7 @@ class RegisterState extends Equatable {
   final String? address;
 
   static const String addressController = 'address';
+  static const String mapAddressController = 'mapAddress';
   static const String descriptionController = 'description';
   static const String websiteController = 'website';
   static const String libraryNameController = 'name';
@@ -35,12 +40,18 @@ class RegisterState extends Equatable {
   static const String ageRangeController = 'ageRange';
   static const String libraryLabelsController = 'libraryLabels';
 
+  final TextEditingController openingController;
+  final TextEditingController closingController;
+  final TextEditingController libraryRolController;
+
+  final Map<String, bool> services;
+
   final FormGroup registerForm;
   final FormGroup personInfoForm;
   final FormGroup libraryInfoForm;
 
   @override
-  List<Object> get props => [index];
+  List<Object> get props => [services, index];
 
   RegisterState copyWith({
     File? personPhoto,
@@ -51,6 +62,7 @@ class RegisterState extends Equatable {
     File? libraryPhoto,
     String? address,
     int? index,
+    Map<String, bool>? services,
   }) {
     return RegisterState(
       personPhoto: personPhoto ?? this.personPhoto,
@@ -62,17 +74,30 @@ class RegisterState extends Equatable {
       libraryInfoForm: libraryInfoForm,
       personInfoForm: personInfoForm,
       registerForm: registerForm,
+      closingController: closingController,
+      openingController: openingController,
+      libraryRolController: libraryRolController,
+      services: services ?? this.services,
     );
   }
 }
 
 /// Initial state is [RegisterInitial]
 /// Here we are initializing the form groups
-/// after that all states will copy this form 
+/// after that all states will copy this form
 /// groups and update index
 class RegisterInitial extends RegisterState {
   RegisterInitial()
       : super(
+          services: {
+            'Presto libros': false,
+            'Vendo libros': false,
+            'Edito libros': false,
+            'Recomiendo libros': false,
+          },
+          openingController: TextEditingController(),
+          closingController: TextEditingController(),
+          libraryRolController: TextEditingController(),
           index: 0,
           personInfoForm: FormGroup({
             RegisterState.fullnameController: FormControl<String>(
@@ -85,6 +110,11 @@ class RegisterInitial extends RegisterState {
                 Validators.required,
                 Validators.minLength(9),
                 Validators.number,
+              ],
+            ),
+            RegisterState.ageRangeController: FormControl<String>(
+              validators: [
+                Validators.required,
               ],
             ),
           }),
@@ -132,13 +162,13 @@ class RegisterInitial extends RegisterState {
                 // TODO(oscarnar): Add validation for time pattern
               ],
             ),
-            RegisterState.ageRangeController: FormControl<String>(
+            RegisterState.libraryLabelsController: FormControl<String>(),
+            RegisterState.addressController: FormControl<String>(
               validators: [
                 Validators.required,
               ],
             ),
-            RegisterState.libraryLabelsController: FormControl<String>(),
-            RegisterState.addressController: FormControl<String>(
+            RegisterState.mapAddressController: FormControl<String>(
               validators: [
                 Validators.required,
               ],
@@ -153,10 +183,18 @@ class RegisterPhotoLoading extends RegisterState {
     required FormGroup personInfoForm,
     required FormGroup registerForm,
     required int index,
+    required Map<String, bool> services,
+    required TextEditingController openingController,
+    required TextEditingController closingController,
+    required TextEditingController libraryRolController,
   }) : super(
           index: index,
           libraryInfoForm: libraryInfoForm,
           personInfoForm: personInfoForm,
           registerForm: registerForm,
+          services: services,
+          openingController: openingController,
+          closingController: closingController,
+          libraryRolController: libraryRolController,
         );
 }
