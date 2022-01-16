@@ -117,7 +117,7 @@ class InfomationLibrary extends StatelessWidget {
                   ),
                   const SizedBox(height: 18),
                   Text(
-                    'Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.',
+                    'Amet minim mollit non deserunt ullamco est sit aliqua.',
                     overflow: TextOverflow.ellipsis,
                     maxLines: 8,
                     style: Theme.of(context).textTheme.caption!.copyWith(
@@ -240,7 +240,7 @@ class InfomationLibrary extends StatelessWidget {
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
-                          'Presto libros - Vendo libros - Edito libros - Recomiendo libros',
+                          'Presto libros - Vendo libros - Edito libros',
                           style: Theme.of(context).textTheme.caption!.copyWith(
                                 color: PColors.gray1,
                                 fontSize: 16,
