@@ -7,19 +7,21 @@ class PTheme {
     return ThemeData(
       colorScheme: _colorScheme,
       backgroundColor: PColors.whiteBackground,
-      // ! Check if this is correct
       scaffoldBackgroundColor: PColors.white,
       textTheme: _textTheme,
       elevatedButtonTheme: _elevatedButtonTheme,
       appBarTheme: _appBarTheme,
       inputDecorationTheme: _inputDecorationTheme,
+      chipTheme: _chipTheme,
+      scrollbarTheme: _scrollBarTheme,
+      buttonTheme: _buttonTheme,
     );
   }
 
   static ColorScheme get _colorScheme {
     return const ColorScheme(
-      primary: PColors.purple,
-      primaryVariant: PColors.purple,
+      primary: PColors.blue,
+      primaryVariant: PColors.blue,
       secondary: PColors.blue,
       secondaryVariant: PColors.blueVariant,
       surface: PColors.whiteBackground,
@@ -126,6 +128,39 @@ class PTheme {
         fontSize: 12,
         fontWeight: FontWeight.w500,
       ),
+    );
+  }
+
+  static ChipThemeData get _chipTheme {
+    return const ChipThemeData(
+      backgroundColor: Color(0xFFEDFAFF),
+      selectedColor: PColors.blue,
+      disabledColor: PColors.gray3,
+      labelStyle: TextStyle(
+        fontSize: 14,
+        color: PColors.blue,
+        fontWeight: FontWeight.w500,
+      ),
+      brightness: Brightness.light,
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      secondaryLabelStyle: TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w500,
+      ),
+      secondarySelectedColor: PColors.blue,
+    );
+  }
+
+  static ScrollbarThemeData get _scrollBarTheme {
+    return ScrollbarThemeData(
+      thumbColor: MaterialStateProperty.all(PColors.gray3),
+      isAlwaysShown: true,
+    );
+  }
+
+  static ButtonThemeData get _buttonTheme {
+    return const ButtonThemeData(
+      alignedDropdown: true,
     );
   }
 }
