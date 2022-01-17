@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mi_libro_vecino/authentication/view/login_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/email_register_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/personal_name_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/register_error_page.dart';
@@ -57,6 +58,12 @@ abstract class AppRouter {
                 ),
               ),
             ],
+          ),
+          GoRoute(
+            path: Routes.login,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: LoginPage(),
+            ),
           ),
           GoRoute(
             path: Routes.waiting,
