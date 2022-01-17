@@ -86,5 +86,12 @@
     "registerPageRolMediator": "Mediador (sede personal)",
     "registerPageRolLibrary": "Biblioteca",
     "registerPageRolBookshop": "Librería",
-    "registerPageRolEditorial": "Editorial"
+    "registerPageRolEditorial": "Editorial",
+    "loginPageNewRegisterBotton": "NUEVO REGISTRO",
+    "loginPageLoginTitle": "Iniciar sesión",
+    "loginPageUserLabel": "Usuario",
+    "loginPageUserHintText": "Ingrese su email",
+    "loginPagePasswordLabel": "Contraseña",
+    "loginPagePasswordHintText": "Ingrese su contraseña",
+    "loginPageLoginButton": "INGRESAR"
 }
