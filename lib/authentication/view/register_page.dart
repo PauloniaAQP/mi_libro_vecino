@@ -52,7 +52,6 @@ class RegisterPageState extends State<RegisterPage>
                 return CustomScrollView(
                   slivers: [
                     SliverFillRemaining(
-                      // hasScrollBody: false,
                       fillOverscroll: true,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
