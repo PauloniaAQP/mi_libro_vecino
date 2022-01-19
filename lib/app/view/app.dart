@@ -10,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mi_libro_vecino/authentication/cubit/login_cubit.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
+import 'package:mi_libro_vecino/collaborators/cubit/collaborator_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/libraries/cubit/libraries_cubit.dart';
 import 'package:mi_libro_vecino/router/router.dart';
@@ -34,6 +35,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => LoginCubit(),
+        ),
+        BlocProvider(
+          create: (context) => CollaboratorCubit(),
         ),
       ],
       child: MaterialApp.router(
