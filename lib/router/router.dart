@@ -6,6 +6,7 @@ import 'package:mi_libro_vecino/authentication/view/pages/personal_name_page.dar
 import 'package:mi_libro_vecino/authentication/view/pages/register_error_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/waiting_page.dart';
 import 'package:mi_libro_vecino/authentication/view/register_page.dart';
+import 'package:mi_libro_vecino/collaborators/view/collaborators_page.dart';
 import 'package:mi_libro_vecino/libraries/view/libraries_page.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/search.dart';
@@ -76,6 +77,28 @@ abstract class AppRouter {
             pageBuilder: (context, state) => const MaterialPage(
               child: RegisterErrorPage(),
             ),
+          ),
+          GoRoute(
+            path: Routes.collaborators,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: CollaboratorsPage(),
+            ),
+            redirect: (_) =>
+                '${Routes.collaborators}/${Routes.collaboratorsPersonal}',
+            routes: [
+              GoRoute(
+                path: Routes.collaboratorsPersonal,
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: CollaboratorsPage(),
+                ),
+              ),
+              GoRoute(
+                path: Routes.collaboratorsLibrary,
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: CollaboratorsPage(index: 1),
+                ),
+              ),
+            ],
           ),
         ],
       );
