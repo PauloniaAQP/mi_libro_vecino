@@ -48,7 +48,7 @@ class CollaboratorsPage extends StatelessWidget {
                           '${Routes.collaborators}/${Routes.collaboratorsPersonal}';
                       GoRouter.of(context).go(route);
                     },
-                    title: 'Información personal',
+                    title: l10n.collaboratorsPagePersonalInfo,
                   ),
                   SelectorButton(
                     isSelected: 1 == index,
@@ -57,7 +57,7 @@ class CollaboratorsPage extends StatelessWidget {
                           '${Routes.collaborators}/${Routes.collaboratorsLibrary}';
                       GoRouter.of(context).go(route);
                     },
-                    title: 'Información de biblioteca',
+                    title: '${l10n.collaboratorsPageRoleInfo}biblioteca',
                   ),
                 ],
               ),

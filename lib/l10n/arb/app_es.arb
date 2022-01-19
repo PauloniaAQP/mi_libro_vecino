@@ -95,5 +95,7 @@
     "loginPagePasswordHintText": "Ingrese su contraseña",
     "loginPageLoginButton": "INGRESAR",
     "collaboratorsPageTitle": "Información",
-    "collaboratorsPageSaveButton": "GUARDAR"
+    "collaboratorsPageSaveButton": "GUARDAR",
+    "collaboratorsPagePersonalInfo": "Información personal",
+    "collaboratorsPageRoleInfo": "Información de "
 }

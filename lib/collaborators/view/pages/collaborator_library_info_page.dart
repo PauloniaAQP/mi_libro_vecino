@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mi_libro_vecino/collaborators/components/collaborators_library_form.dart';
-import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 
 class CollaboratorLibraryInfoPage extends StatelessWidget {
