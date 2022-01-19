@@ -93,5 +93,7 @@
     "loginPageUserHintText": "Ingrese su email",
     "loginPagePasswordLabel": "Contraseña",
     "loginPagePasswordHintText": "Ingrese su contraseña",
-    "loginPageLoginButton": "INGRESAR"
+    "loginPageLoginButton": "INGRESAR",
+    "collaboratorsPageTitle": "Información",
+    "collaboratorsPageSaveButton": "GUARDAR"
 }
