@@ -97,5 +97,22 @@
     "collaboratorsPageTitle": "Información",
     "collaboratorsPageSaveButton": "GUARDAR",
     "collaboratorsPagePersonalInfo": "Información personal",
-    "collaboratorsPageRoleInfo": "Información de "
+    "collaboratorsPageRoleInfo": "Información de ",
+    "collaboratorsPageDialogLeaveTitle": "Abandonar sitio",
+    "collaboratorsPageDialogLeaveConfirm": "SALIR",
+    "collaboratorsPageDialogLeaveBody": "Si abandonas sin guardar los datos que has editado se perderán",
+    "adminPageContactButton": "CONTACTAR",
+    "adminPageNewRequests": "Nuevas solicitudes",
+    "adminPageRegistered": "Registrados",
+    "adminPageCollaborators": "Colaboradores",
+    "accept": "ACEPTAR",
+    "reject": "RECHAZAR",
+    "cancel": "Cancelar",
+    "adminPageDialogRejectRequestTitle": "Rechazar solicitud",
+    "adminPageDialogRejectRequestBody": "¿Estás seguro que quieres rechazara la solicitud de este colaborador?, recuerda que esta acción es irreversible.",
+    "adminPageDialogRejectRequestConfirm": "SI, RECHAZAR",
+    "adminPageRemoveLibrary": "ELIMINAR BIBLIOTECA",
+    "adminPageDialogRemoveLibraryTitle": "Eliminar colaborador",
+    "adminPageDialogRemoveLibraryTitle": "¿Estás seguro que quieres eliminar a este colaborador?, recuerda que esta acción es irreversible.",
+    "adminPageDialogRemoveLibraryConfirm": "SI, ELIMINAR"
 }
