@@ -1,35 +1,53 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
-import 'package:mi_libro_vecino/authentication/view/register_page.dart';
+import 'package:mi_libro_vecino/collaborators/cubit/collaborator_cubit.dart';
+import 'package:mi_libro_vecino/collaborators/view/collaborators_page.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../helpers/pump_app.dart';
 
-class MockSearchCubit extends MockCubit<RegisterState>
-    implements RegisterCubit {}
+class MockCollaboratorCubit extends MockCubit<CollaboratorState>
+    implements CollaboratorCubit {}
 
 void main() {
-  group('Register page', () {
-    late RegisterCubit registerCubit;
+  group('Collaborators personal info page', () {
+    late CollaboratorCubit collaboratorCubit;
 
     setUp(() {
-      registerCubit = MockSearchCubit();
+      collaboratorCubit = MockCollaboratorCubit();
     });
 
-    testWidgets('renders Register Page', (tester) async {
-      final state = RegisterInitial();
-      when(() => registerCubit.state).thenReturn(state);
+    testWidgets('renders Collaborators info Page', (tester) async {
+      final state = CollaboratorInitial();
+      when(() => collaboratorCubit.state).thenReturn(state);
       await tester.pumpApp(
         BlocProvider.value(
-          value: registerCubit,
-          child: const RegisterPage(),
+          value: collaboratorCubit,
+          child: const CollaboratorsPage(),
         ),
       );
       expect(
         find.text(
-          '@BibliotecaDeLaConfianza',
+          'Información personal',
+        ),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('renders Collaborators lirbary Page', (tester) async {
+      final state = CollaboratorInitial();
+      when(() => collaboratorCubit.state).thenReturn(state);
+      await tester.pumpApp(
+        BlocProvider.value(
+          value: collaboratorCubit,
+          child: const CollaboratorsPage(index: 1),
+        ),
+      );
+      expect(
+        find.byKey(
+          const Key('collaborators_library_form'),
         ),
         findsOneWidget,
       );

@@ -28,6 +28,7 @@ class CollaboratorsLibraryForm extends StatelessWidget {
       child: BlocBuilder<CollaboratorCubit, CollaboratorState>(
         builder: (context, state) {
           return ReactiveForm(
+            key: const Key('collaborators_library_form'),
             formGroup: state.libraryInfoForm,
             child: Column(
               mainAxisSize: MainAxisSize.min,
