@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/collaborators/components/collaborators_appbar.dart';
-import 'package:mi_libro_vecino/collaborators/components/selector_button.dart';
 import 'package:mi_libro_vecino/collaborators/view/pages/collaborator_library_info_page.dart';
 import 'package:mi_libro_vecino/collaborators/view/pages/collaborator_personal_info_page.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
+import 'package:mi_libro_vecino/ui_utils/general_widgets/selector_button.dart';
 
 class CollaboratorsPage extends StatelessWidget {
   const CollaboratorsPage({
