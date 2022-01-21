@@ -111,8 +111,12 @@
     "adminPageDialogRejectRequestTitle": "Rechazar solicitud",
     "adminPageDialogRejectRequestBody": "¿Estás seguro que quieres rechazara la solicitud de este colaborador?, recuerda que esta acción es irreversible.",
     "adminPageDialogRejectRequestConfirm": "SI, RECHAZAR",
-    "adminPageRemoveLibrary": "ELIMINAR BIBLIOTECA",
+    "adminPageRemoveLibrary": "ELIMINAR COLABORADOR",
     "adminPageDialogRemoveLibraryTitle": "Eliminar colaborador",
-    "adminPageDialogRemoveLibraryTitle": "¿Estás seguro que quieres eliminar a este colaborador?, recuerda que esta acción es irreversible.",
-    "adminPageDialogRemoveLibraryConfirm": "SI, ELIMINAR"
+    "adminPageDialogRemoveLibraryBody": "¿Estás seguro que quieres eliminar a este colaborador?, recuerda que esta acción es irreversible.",
+    "adminPageDialogRemoveLibraryConfirm": "SI, ELIMINAR",
+    "adminPagePhysicalAddress": "Dirección física",
+    "adminPageMapLocation": "Ubicación en mapa",
+    "adminPagePersonalLabels": "Etiquetas personalizadas",
+    "adminPageLogoutButton": "Cerrar sesión"
 }
