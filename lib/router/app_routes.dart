@@ -11,4 +11,7 @@ abstract class Routes {
   static const collaborators = '/collaborators';
   static const collaboratorsPersonal = 'personal_info';
   static const collaboratorsLibrary = 'library_info';
+  static const admin = '/admin';
+  static const adminNewRequests = 'new_requests';
+  static const adminLibraries = 'libraries';
 }

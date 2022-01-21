@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mi_libro_vecino/admin/view/admin_page.dart';
 import 'package:mi_libro_vecino/authentication/view/login_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/email_register_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/personal_name_page.dart';
@@ -96,6 +97,28 @@ abstract class AppRouter {
                 path: Routes.collaboratorsLibrary,
                 pageBuilder: (context, state) => const MaterialPage(
                   child: CollaboratorsPage(index: 1),
+                ),
+              ),
+            ],
+          ),
+          GoRoute(
+            path: Routes.admin,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: AdminPage(),
+            ),
+            redirect: (_) =>
+                '${Routes.admin}/${Routes.adminNewRequests}',
+            routes: [
+              GoRoute(
+                path: Routes.adminNewRequests,
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: AdminPage(),
+                ),
+              ),
+              GoRoute(
+                path: Routes.adminLibraries,
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: AdminPage(index: 1),
                 ),
               ),
             ],
