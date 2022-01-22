@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mi_libro_vecino/authentication/cubit/login_cubit.dart';
+import 'package:mi_libro_vecino/authentication/components/login_form.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/quotes_page.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
-import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -61,48 +58,10 @@ class LoginPageState extends State<LoginPage>
                         ),
                   ),
                   const SizedBox(height: 10),
-                  Expanded(
+                  const Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(vertical: 25),
-                      child: BlocBuilder<LoginCubit, LoginState>(
-                        builder: (context, state) {
-                          return ReactiveForm(
-                            formGroup: state.loginForm,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                PTextField(
-                                  label: l10n.loginPageUserLabel,
-                                  hintText: l10n.loginPageUserHintText,
-                                  formControlName: LoginState.emailController,
-                                  keyboardType: TextInputType.emailAddress,
-                                  validationMessages: {
-                                    ValidationMessage.required: l10n
-                                        .registerPageEnterEmailErrorTextRequired,
-                                    ValidationMessage.email: l10n
-                                        .registerPageEnterEmailErrorTextEmail,
-                                  },
-                                ),
-                                const SizedBox(height: 15),
-                                PTextField(
-                                  formControlName:
-                                      LoginState.passwordController,
-                                  hintText: l10n.loginPagePasswordHintText,
-                                  label: l10n.loginPagePasswordLabel,
-                                  validationMessages: {
-                                    ValidationMessage.required: l10n
-                                        .registerPagePasswordErrorTextRequired,
-                                    ValidationMessage.minLength: l10n
-                                        .registerPagePasswordErrorTextMinLength,
-                                  },
-                                  obscureText: true,
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                      padding: EdgeInsets.symmetric(vertical: 25),
+                      child: LoginForm(),
                     ),
                   ),
                   const SizedBox(height: 10),

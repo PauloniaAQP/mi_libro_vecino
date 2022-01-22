@@ -236,11 +236,12 @@ class AdminLibraryInformationPage extends StatelessWidget {
                                 Center(
                                   child: TextButton(
                                     onPressed: () {
+                                      final confirmLabel = l10n
+                                          .adminPageDialogRejectRequestConfirm;
                                       pDialog(
                                         body: l10n
                                             .adminPageDialogRejectRequestBody,
-                                        confirmLabel: l10n
-                                            .adminPageDialogRejectRequestConfirm,
+                                        confirmLabel: confirmLabel,
                                         context: context,
                                         onConfirm: () {},
                                         title: l10n
