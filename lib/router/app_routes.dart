@@ -14,4 +14,5 @@ abstract class Routes {
   static const admin = '/admin';
   static const adminNewRequests = 'new_requests';
   static const adminLibraries = 'libraries';
+  static const adminInfoLibrary = ':id';
 }

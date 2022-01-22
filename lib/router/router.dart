@@ -106,20 +106,25 @@ abstract class AppRouter {
             pageBuilder: (context, state) => const MaterialPage(
               child: AdminPage(),
             ),
-            redirect: (_) =>
-                '${Routes.admin}/${Routes.adminNewRequests}',
+            redirect: (_) => '${Routes.admin}/${Routes.adminNewRequests}',
             routes: [
               GoRoute(
                 path: Routes.adminNewRequests,
-                pageBuilder: (context, state) => const MaterialPage(
-                  child: AdminPage(),
-                ),
+                pageBuilder: (context, state) {
+                  final libraryIdQuery = state.queryParams['id'];
+                  return MaterialPage(
+                    child: AdminPage(id: libraryIdQuery),
+                  );
+                },
               ),
               GoRoute(
                 path: Routes.adminLibraries,
-                pageBuilder: (context, state) => const MaterialPage(
-                  child: AdminPage(index: 1),
-                ),
+                pageBuilder: (context, state) {
+                  final libraryIdQuery = state.queryParams['id'];
+                  return MaterialPage(
+                    child: AdminPage(index: 1, id: libraryIdQuery),
+                  );
+                },
               ),
             ],
           ),
