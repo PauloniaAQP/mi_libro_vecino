@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mi_libro_vecino/authentication/components/category_chip.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
+import 'package:mi_libro_vecino/ui_utils/general_widgets/category_chip.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -55,9 +55,6 @@ class LibraryCategoriesPage extends StatelessWidget {
                           children: List.generate(
                             state.services.length,
                             (index) {
-                              // print(state.services.values.elementAt(index));
-                              // TODO(oscarnar): Fix error to rebuild this 
-                              // widget when is tapped
                               return CategoryChip(
                                 onTap: () {
                                   BlocProvider.of<RegisterCubit>(context)
