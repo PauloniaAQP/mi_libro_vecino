@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
+import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dialog.dart';
 
 class CollaboratorsAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -36,7 +37,15 @@ class CollaboratorsAppBar extends StatelessWidget
         Padding(
           padding: const EdgeInsets.only(right: 20),
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              pDialog(
+                body: l10n.collaboratorsPageDialogLeaveBody,
+                confirmLabel: l10n.collaboratorsPageDialogLeaveConfirm,
+                context: context,
+                onConfirm: () {},
+                title: l10n.collaboratorsPageDialogLeaveTitle,
+              );
+            },
             child: Row(
               children: [
                 const CircleAvatar(
