@@ -14,7 +14,7 @@ class SearchWidget extends StatefulWidget {
 }
 
 class SearchWidgetState extends State<SearchWidget> {
-  final double _searchHeight = 80;
+  final double _searchHeight = 86;
   final double _suggestionHeight = 50.5;
 
   @override
@@ -53,9 +53,8 @@ class SearchWidgetState extends State<SearchWidget> {
                         child: TextField(
                           controller: widget.textEditControler,
                           decoration: InputDecoration(
-                            border: InputBorder.none,
-                            hintText:
-                                context.l10n.searchPageSearchBy,
+                            focusedBorder: InputBorder.none,
+                            hintText: context.l10n.searchPageSearchBy,
                             hintStyle:
                                 Theme.of(context).textTheme.bodyText2!.apply(
                                       color: PColors.gray2,
@@ -82,7 +81,7 @@ class SearchWidgetState extends State<SearchWidget> {
                     child: FloatingActionButton(
                       onPressed: () {
                         widget.textEditControler.clear();
-
+          
                         if (state.isSearching) {
                           BlocProvider.of<SearchCubit>(context)
                               .onSearchQueryChanged('');

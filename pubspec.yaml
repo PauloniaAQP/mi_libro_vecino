@@ -14,7 +14,11 @@ dependencies:
   flutter_bloc: ^8.0.0
   flutter_localizations:
     sdk: flutter
+  flutter_map: ^0.14.0
+  go_router: ^2.5.5
+  image_picker: ^0.8.4+4
   intl: ^0.17.0
+  reactive_forms: ^10.6.8
 
 dev_dependencies:
   bloc_test: ^9.0.1
@@ -28,6 +32,7 @@ flutter:
   generate: true
   assets:
     - assets/images/
+    - assets/icons/
   fonts:
     - family: NotoSans
       fonts:
