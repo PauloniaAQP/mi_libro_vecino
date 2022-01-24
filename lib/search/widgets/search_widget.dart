@@ -14,7 +14,7 @@ class SearchWidget extends StatefulWidget {
 }
 
 class SearchWidgetState extends State<SearchWidget> {
-  final double _searchHeight = 86;
+  final double _searchHeight = 81;
   final double _suggestionHeight = 50.5;
 
   @override
@@ -48,12 +48,15 @@ class SearchWidgetState extends State<SearchWidget> {
                   Flexible(
                     fit: FlexFit.tight,
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(35, 15, 0, 15),
+                      padding: const EdgeInsets.fromLTRB(30, 15, 0, 15),
                       child: Material(
                         child: TextField(
                           controller: widget.textEditControler,
                           decoration: InputDecoration(
                             focusedBorder: InputBorder.none,
+                            disabledBorder: InputBorder.none,
+                            border: InputBorder.none,
+                            enabledBorder: InputBorder.none,
                             hintText: context.l10n.searchPageSearchBy,
                             hintStyle:
                                 Theme.of(context).textTheme.bodyText2!.apply(

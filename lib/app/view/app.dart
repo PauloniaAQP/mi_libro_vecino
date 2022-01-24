@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
+import 'package:mi_libro_vecino/libraries/cubit/libraries_cubit.dart';
 import 'package:mi_libro_vecino/register/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/router/router.dart';
 import 'package:mi_libro_vecino/search/cubit/search_cubit.dart';
@@ -26,6 +27,9 @@ class App extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => RegisterCubit(),
+        ),
+        BlocProvider(
+          create: (context) => LibrariesCubit(),
         ),
       ],
       child: MaterialApp.router(

@@ -29,16 +29,17 @@ class EmailRegisterPage extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 40),
+        const SizedBox(height: 30),
         Text(
           context.l10n.registerPageNewRegisterTitle,
           style: Theme.of(context).textTheme.headline2!.apply(
                 fontWeightDelta: 100,
               ),
         ),
-        const SizedBox(height: 40),
+        const SizedBox(height: 10),
         Expanded(
           child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 25),
             child: BlocBuilder<RegisterCubit, RegisterState>(
               builder: (context, state) {
                 return ReactiveForm(

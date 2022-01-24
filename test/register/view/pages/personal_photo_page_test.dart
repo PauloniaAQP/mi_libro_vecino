@@ -5,22 +5,22 @@ import 'package:mi_libro_vecino/register/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/register/view/register_page.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../../helpers/pump_app.dart';
+import '../../../helpers/pump_app.dart';
 
 class MockSearchCubit extends MockCubit<RegisterState>
     implements RegisterCubit {}
 
 void main() {
-  group('Register page', () {
+  group('Register personal photo page', () {
     late RegisterCubit registerCubit;
 
     setUp(() {
       registerCubit = MockSearchCubit();
     });
 
-    testWidgets('renders Register Page', (tester) async {
+    testWidgets('renders Register personal photo Page', (tester) async {
       final state = RegisterInitial();
-      when(() => registerCubit.state).thenReturn(state);
+      when(() => registerCubit.state).thenReturn(state.copyWith(index: 2));
       await tester.pumpApp(
         BlocProvider.value(
           value: registerCubit,
@@ -29,7 +29,7 @@ void main() {
       );
       expect(
         find.text(
-          '@BibliotecaDeLaConfianza',
+          'SUBIR UNA FOTO',
         ),
         findsOneWidget,
       );
