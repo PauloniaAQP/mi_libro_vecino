@@ -38,6 +38,7 @@ class PersonalPhoto extends StatelessWidget {
                   builder: (context, state) {
                     return Center(
                       child: PickImage(
+                        image: state.personPhotoBytes,
                         isLoading: state is RegisterPhotoLoading,
                         pickLabel: l10n.registerPagePersonalPhotoButtonLabel,
                         modifyLabel:
