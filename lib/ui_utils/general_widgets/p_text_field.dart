@@ -6,7 +6,7 @@ class PTextField extends StatelessWidget {
   const PTextField({
     Key? key,
     required this.formControlName,
-    required this.hintText,
+    this.hintText = '',
     required this.label,
     this.validationMessages,
     this.keyboardType,
@@ -17,7 +17,7 @@ class PTextField extends StatelessWidget {
   }) : super(key: key);
 
   final String label;
-  final String hintText;
+  final String? hintText;
   final Map<String, String>? validationMessages;
   final TextInputType? keyboardType;
   final String formControlName;

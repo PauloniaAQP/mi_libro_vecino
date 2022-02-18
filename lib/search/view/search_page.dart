@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
+import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/widgets/search_widget.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
@@ -159,7 +161,9 @@ class SearchPage extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(right: 20),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    GoRouter.of(context).go(Routes.admin);
+                  },
                   child: Text(
                     l10n.searchPageAdminButton,
                     style: Theme.of(context).textTheme.subtitle1!.apply(
