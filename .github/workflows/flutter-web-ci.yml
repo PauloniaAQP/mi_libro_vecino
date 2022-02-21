@@ -50,7 +50,10 @@ jobs:
   test_and_coverage:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive        
     - uses: actions/setup-java@v1
       with:
         java-version: '11.x'
