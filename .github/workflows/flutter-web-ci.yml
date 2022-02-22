@@ -59,9 +59,10 @@ jobs:
         java-version: '11.x'
     - uses: subosito/flutter-action@v1
       with:
-          flutter-version: '2.8.0'
+          flutter-version: '2.10.0'
     - name: Getting dependencies
       run: |
+        flutter pub get mi_libro_vecino_api/
         flutter pub get
     - name: Analyze
       run: flutter analyze lib    
@@ -112,6 +113,7 @@ jobs:
     - name: Getting dependencies
       run: |
         flutter pub get mi_libro_vecino_api/
+        flutter pub get
     - name: Build
       run: flutter build web --target lib/main_development.dart
     - uses: FirebaseExtended/action-hosting-deploy@v0
