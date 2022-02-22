@@ -21,9 +21,9 @@ class PTheme {
   static ColorScheme get _colorScheme {
     return const ColorScheme(
       primary: PColors.blue,
-      primaryContainer: PColors.blue,
+      primaryVariant: PColors.blue,
       secondary: PColors.blue,
-      secondaryContainer: PColors.blueVariant,
+      secondaryVariant: PColors.blueVariant,
       surface: PColors.whiteBackground,
       background: PColors.whiteBackground,
       error: PColors.red,
