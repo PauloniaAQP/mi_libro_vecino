@@ -111,6 +111,7 @@ jobs:
           flutter-version: '2.8.0'
     - name: Getting dependencies
       run: |
+        flutter pub get mi_libro_vecino_api/
         flutter pub get
     - name: Build
       run: flutter build web --target lib/main_development.dart
