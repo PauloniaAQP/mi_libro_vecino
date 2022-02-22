@@ -38,7 +38,10 @@
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script type="text/javascript" src="firebase_conf.js"></script>
   <script>
+    initFirebase();
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
     function loadMainDartJs() {
