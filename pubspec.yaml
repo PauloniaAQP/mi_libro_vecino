@@ -22,11 +22,6 @@ dependencies:
   mi_libro_vecino_api:
     path: ./mi_libro_vecino_api
   reactive_forms: ^10.6.8
-  # For api (temporal solution)
-  cloud_firestore: 1.0.7
-  paulonia_document_service: ^0.2.0
-  paulonia_repository: 0.3.1
-  firebase_auth: 1.0.3
 
 dev_dependencies:
   bloc_test: ^9.0.2
@@ -42,6 +37,7 @@ flutter:
     - assets/images/
     - assets/images/test_images/
     - assets/icons/
+    - assets/ubigeo/
   fonts:
     - family: NotoSans
       fonts:
