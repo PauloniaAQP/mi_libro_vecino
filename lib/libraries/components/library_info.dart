@@ -37,8 +37,8 @@ class InfomationLibrary extends StatelessWidget {
                       ),
                     ),
 
-                    /// TODO(oscarnar): For future, now pop() behavior is
-                    /// different from the default
+                    // TODO(oscarnar): For future, now pop() behavior is
+                    // different from the default
                     // child: Align(
                     //   alignment: Alignment.topLeft,
                     //   child: Padding(

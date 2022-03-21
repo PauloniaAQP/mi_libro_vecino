@@ -28,7 +28,8 @@ class AdminLibraryInformationPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
-          /// TODO(oscarnar): For future, now pop() behavior is different from the default
+          // TODO(oscarnar): For future, now pop() behavior is different
+          // from the default
           // leading: IconButton(
           //   splashRadius: 28,
           //   onPressed: () {
