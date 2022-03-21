@@ -61,7 +61,7 @@ class LibraryMapPage extends StatelessWidget {
                             ),
                       ),
                       ReactiveTextField<String>(
-                        formControlName: RegisterState.addressController,
+                        formControlName: RegisterState.mapAddressController,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           suffixIcon: (state.libraryInfoForm.value[

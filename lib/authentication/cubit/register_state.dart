@@ -45,7 +45,6 @@ class RegisterState extends Equatable {
   static const String confirmPasswordController = 'confirmPassword';
   static const String openTimeController = 'openTime';
   static const String closeTimeController = 'closeTime';
-  static const String ageRangeController = 'ageRange';
   static const String libraryLabelsController = 'libraryLabels';
 
   final TextEditingController openingController;
@@ -129,11 +128,6 @@ class RegisterInitial extends RegisterState {
                 Validators.number,
               ],
             ),
-            RegisterState.ageRangeController: FormControl<String>(
-              validators: [
-                Validators.required,
-              ],
-            ),
           }),
           registerForm: FormGroup({
             RegisterState.emailController: FormControl<String>(
@@ -161,7 +155,11 @@ class RegisterInitial extends RegisterState {
                 Validators.required,
               ],
             ),
-            RegisterState.websiteController: FormControl<String>(),
+            RegisterState.websiteController: FormControl<String>(
+              validators: [
+                // TODO(oscarnar):  Add regex to websites
+              ],
+            ),
             RegisterState.descriptionController: FormControl<String>(
               validators: [
                 Validators.required,
@@ -187,7 +185,8 @@ class RegisterInitial extends RegisterState {
             ),
             RegisterState.mapAddressController: FormControl<String>(
               validators: [
-                Validators.required,
+                // TODO(oscarnar): Check this, always will have an address(?)
+                // Validators.required,
               ],
             ),
           }),

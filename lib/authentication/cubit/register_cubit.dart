@@ -85,6 +85,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     if (state.registerForm.valid &&
         state.personInfoForm.valid &&
         state.libraryInfoForm.valid) {
+      print('forms have been validated');
       final userName = state.personInfoForm
           .control(RegisterState.fullnameController)
           .value
@@ -97,15 +98,18 @@ class RegisterCubit extends Cubit<RegisterState> {
           .control(RegisterState.passwordController)
           .value
           .toString();
+      print('enter to auth service');
       final user = await AuthService.emailPasswordSignUp(
         userEmail,
         userPassword,
         userName,
       );
       if (user == null) {
+        print('user is null');
         emit(state.copyWith(status: RegisterStatus.error));
         return;
       }
+      print('User has been created');
       final userModel = await _userRepository.createUser(
         userId: user.uid,
         name: userName,
@@ -119,6 +123,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         emit(state.copyWith(status: RegisterStatus.error));
         return;
       }
+      print('User has been created into repository');
       final libraryValuesMap = state.personInfoForm.value;
 
       final libraryModel = await _libraryRepository.createLibrary(
