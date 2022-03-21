@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
+import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dropdown_button.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
+import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class PersonalNamePage extends StatelessWidget {
@@ -80,7 +82,11 @@ class PersonalNamePage extends StatelessWidget {
                         ),
                       ),
                       PDropdownButton(
-                        valuesList: rolesList,
+                        valuesList: List.generate(
+                          LibraryType.values.length,
+                          (index) => getStringRolByType(
+                              LibraryType.values[index], l10n),
+                        ),
                         controller: state.libraryRolController,
                         isExpanded: true,
                       ),

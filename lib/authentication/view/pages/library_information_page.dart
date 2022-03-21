@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
+import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dropdown_button.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
+import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class LibraryInformationPage extends StatelessWidget {
@@ -12,15 +14,20 @@ class LibraryInformationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return BlocBuilder<RegisterCubit, RegisterState>(
       builder: (context, state) {
+        final libraryRol = getStringRolByType(
+          LibraryType.values[int.parse(state.libraryRolController.text)],
+          l10n,
+        );
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              context.l10n.registerPageLibraryInformationTitle +
-                  state.libraryRolController.text,
+              l10n.registerPageLibraryInformationTitle + libraryRol,
               style: Theme.of(context).textTheme.headline3!.copyWith(
                     fontWeight: FontWeight.w700,
                   ),

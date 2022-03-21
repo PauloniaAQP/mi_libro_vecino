@@ -109,8 +109,11 @@ class RegisterPageState extends State<RegisterPage>
                                         width: 200,
                                         child: ElevatedButton(
                                           onPressed: () {
-                                            GoRouter.of(context)
-                                                .go(Routes.waiting);
+                                            // GoRouter.of(context)
+                                            //     .go(Routes.waiting);
+                                            context
+                                                .read<RegisterCubit>()
+                                                .onTapRegisterAndContinue();
                                           },
                                           child: Text(
                                             l10n.registerPageRegisterButton,

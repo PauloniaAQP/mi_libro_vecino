@@ -19,6 +19,8 @@ class PDropdownButton extends StatefulWidget {
   final List<String> valuesList;
   final int defaultValueIndex;
   final VoidCallback? onTap;
+
+  /// The controller stores the selected value
   final TextEditingController controller;
   final bool isExpanded;
 
@@ -27,20 +29,20 @@ class PDropdownButton extends StatefulWidget {
 }
 
 class _PDropdownButtonState extends State<PDropdownButton> {
-  String? currentValue;
+  int? currentValue;
 
   String getValue() {
     if (currentValue == null) {
       if (widget.valuesList.isEmpty) {
-        widget.controller.text = '';
+        widget.controller.text = '-1';
         return '';
       }
-      widget.controller.text = widget.valuesList[widget.defaultValueIndex];
+      widget.controller.text = widget.defaultValueIndex.toString();
       return widget.valuesList[widget.defaultValueIndex];
     }
 
-    widget.controller.text = currentValue ?? '';
-    return currentValue ?? '';
+    widget.controller.text = currentValue.toString();
+    return widget.valuesList[currentValue ?? widget.defaultValueIndex];
   }
 
   @override
@@ -58,7 +60,9 @@ class _PDropdownButtonState extends State<PDropdownButton> {
         }).toList(),
         onChanged: (value) {
           setState(() {
-            currentValue = value;
+            currentValue = widget.valuesList.indexOf(value!);
+            widget.controller.text =
+                widget.valuesList.indexOf(value).toString();
           });
           widget.onTap?.call();
         },
