@@ -54,6 +54,7 @@ class AdminLibraryInformationPage extends StatelessWidget {
                       child: AspectRatio(
                         aspectRatio: 1 / 1,
                         child: Container(
+                          key: const Key('admin_info_page_image_container'),
                           height: 232,
                           width: 232,
                           decoration: BoxDecoration(
@@ -264,6 +265,9 @@ class AdminLibraryInformationPage extends StatelessWidget {
                             visible: index == 1,
                             child: Center(
                               child: TextButton(
+                                key: const Key(
+                                  'admin_info_remove_library_button',
+                                ),
                                 onPressed: () {
                                   pDialog(
                                     body: l10n.adminPageDialogRemoveLibraryBody,
