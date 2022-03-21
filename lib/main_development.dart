@@ -5,9 +5,17 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mi_libro_vecino/app/app.dart';
 import 'package:mi_libro_vecino/bootstrap.dart';
 
-void main() {
-  bootstrap(() => const App());
+
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  unawaited(bootstrap(() => const App()));
 }

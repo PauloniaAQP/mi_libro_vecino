@@ -9,6 +9,7 @@ environment:
 dependencies:
   bloc: ^8.0.2
   equatable: ^2.0.3
+  firebase_core: 1.7.0
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
@@ -18,6 +19,8 @@ dependencies:
   go_router: ^3.0.1
   image_picker: ^0.8.4+4
   intl: ^0.17.0
+  mi_libro_vecino_api:
+    path: ./mi_libro_vecino_api
   reactive_forms: ^10.6.8
 
 dev_dependencies:
