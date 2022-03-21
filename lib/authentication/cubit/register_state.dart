@@ -1,5 +1,12 @@
 part of 'register_cubit.dart';
 
+enum RegisterStatus {
+  initial,
+  loading,
+  success,
+  error,
+}
+
 class RegisterState extends Equatable {
   const RegisterState({
     this.personPhoto,
@@ -15,6 +22,7 @@ class RegisterState extends Equatable {
     required this.openingController,
     required this.closingController,
     required this.libraryRolController,
+    this.status = RegisterStatus.initial,
   });
 
   final int index;
@@ -42,6 +50,11 @@ class RegisterState extends Equatable {
 
   final TextEditingController openingController;
   final TextEditingController closingController;
+
+  /// This controller has only int values
+  /// and is used to select the library type index
+  /// from LibraryType -> [mediator,library,editorial,bookshop]
+  /// This controller is used to select the library type in the PBottomDrown
   final TextEditingController libraryRolController;
 
   final Map<String, bool> services;
@@ -49,6 +62,8 @@ class RegisterState extends Equatable {
   final FormGroup registerForm;
   final FormGroup personInfoForm;
   final FormGroup libraryInfoForm;
+
+  final RegisterStatus status;
 
   @override
   List<Object> get props => [services, index];
@@ -63,6 +78,7 @@ class RegisterState extends Equatable {
     String? address,
     int? index,
     Map<String, bool>? services,
+    RegisterStatus? status,
   }) {
     return RegisterState(
       personPhoto: personPhoto ?? this.personPhoto,
@@ -78,6 +94,7 @@ class RegisterState extends Equatable {
       openingController: openingController,
       libraryRolController: libraryRolController,
       services: services ?? this.services,
+      status: status ?? this.status,
     );
   }
 }
