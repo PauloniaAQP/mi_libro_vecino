@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mi_libro_vecino/authentication/components/pick_image.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
-import 'package:mi_libro_vecino/authentication/view/register_page.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../helpers/pump_app.dart';
