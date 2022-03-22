@@ -82,6 +82,9 @@ class RegisterCubit extends Cubit<RegisterState> {
     state.registerForm.markAllAsTouched();
     state.personInfoForm.markAllAsTouched();
     state.libraryInfoForm.markAllAsTouched();
+    print(state.registerForm.valid);
+    print(state.personInfoForm.valid);
+    print(state.libraryInfoForm.valid);
     if (state.registerForm.valid &&
         state.personInfoForm.valid &&
         state.libraryInfoForm.valid) {
@@ -109,6 +112,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         emit(state.copyWith(status: RegisterStatus.error));
         return;
       }
+      //// YOU NEED TO PUT USER REPOSITORY (INTIALIZED)1
       print('User has been created');
       final userModel = await _userRepository.createUser(
         userId: user.uid,
@@ -121,6 +125,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       );
       if (userModel == null) {
         emit(state.copyWith(status: RegisterStatus.error));
+        print('Error with user model creation');
         return;
       }
       print('User has been created into repository');
