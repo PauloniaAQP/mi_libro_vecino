@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mi_libro_vecino/admin/components/info_field.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
@@ -28,16 +27,19 @@ class AdminLibraryInformationPage extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          leading: IconButton(
-            splashRadius: 28,
-            onPressed: () {
-              GoRouter.of(context).pop();
-            },
-            icon: const Image(
-              image: AssetImage(Assets.backIcon),
-              color: PColors.black,
-            ),
-          ),
+
+          // TODO(oscarnar): For future, now pop() behavior is different
+          // from the default
+          // leading: IconButton(
+          //   splashRadius: 28,
+          //   onPressed: () {
+          //     GoRouter.of(context).pop();
+          //   },
+          //   icon: const Image(
+          //     image: AssetImage(Assets.backIcon),
+          //     color: PColors.black,
+          //   ),
+          // ),
         ),
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: _width),
@@ -52,6 +54,7 @@ class AdminLibraryInformationPage extends StatelessWidget {
                       child: AspectRatio(
                         aspectRatio: 1 / 1,
                         child: Container(
+                          key: const Key('admin_info_page_image_container'),
                           height: 232,
                           width: 232,
                           decoration: BoxDecoration(
@@ -262,6 +265,9 @@ class AdminLibraryInformationPage extends StatelessWidget {
                             visible: index == 1,
                             child: Center(
                               child: TextButton(
+                                key: const Key(
+                                  'admin_info_remove_library_button',
+                                ),
                                 onPressed: () {
                                   pDialog(
                                     body: l10n.adminPageDialogRemoveLibraryBody,

@@ -36,20 +36,23 @@ class InfomationLibrary extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: IconButton(
-                          icon: Image.asset(
-                            Assets.backIcon,
-                            color: Colors.white,
-                          ),
-                          iconSize: 45,
-                          onPressed: () {},
-                        ),
-                      ),
-                    ),
+
+                    // TODO(oscarnar): For future, now pop() behavior is
+                    // different from the default
+                    // child: Align(
+                    //   alignment: Alignment.topLeft,
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.all(10),
+                    //     child: IconButton(
+                    //       icon: Image.asset(
+                    //         Assets.backIcon,
+                    //         color: Colors.white,
+                    //       ),
+                    //       iconSize: 45,
+                    //       onPressed: () {},
+                    //     ),
+                    //   ),
+                    // ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),

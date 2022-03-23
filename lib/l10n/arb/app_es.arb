@@ -118,5 +118,6 @@
     "adminPagePhysicalAddress": "Dirección física",
     "adminPageMapLocation": "Ubicación en mapa",
     "adminPagePersonalLabels": "Etiquetas personalizadas",
-    "adminPageLogoutButton": "Cerrar sesión"
+    "adminPageLogoutButton": "Cerrar sesión",
+    "messageValidationHours": "El formato debe ser 12:00"
 }
