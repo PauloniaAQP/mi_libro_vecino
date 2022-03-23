@@ -1,9 +1,10 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:mi_libro_vecino/ui_utils/constans/globals.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
@@ -52,8 +53,16 @@ class RegisterCubit extends Cubit<RegisterState> {
       ),
     );
     final image = await uiPickImage();
-    // TODO(oscarnar): Solve this error, convert XFile to File
-    emit(state.copyWith(libraryPhoto: File(image!.path)));
+    Uint8List? imageBytes;
+    if (image != null) {
+      imageBytes = await image.readAsBytes();
+    }
+    emit(
+      state.copyWith(
+        libraryPhoto: image,
+        libraryPhotoBytes: imageBytes,
+      ),
+    );
   }
 
   Future<void> onTapUploadPersonalPhoto() async {
@@ -70,8 +79,16 @@ class RegisterCubit extends Cubit<RegisterState> {
       ),
     );
     final image = await uiPickImage();
-    // TODO(oscarnar): Solve this error, read Files on web
-    emit(state.copyWith(personPhoto: File(image!.path)));
+    Uint8List? imageBytes;
+    if (image != null) {
+      imageBytes = await image.readAsBytes();
+    }
+    emit(
+      state.copyWith(
+        personPhoto: image,
+        personPhotoBytes: imageBytes,
+      ),
+    );
   }
 
   Future<void> onTapRegisterAndContinue() async {

@@ -1,26 +1,22 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 
-Future<File?> uiPickImage({
-  ImageSource? imageSource,
-}) async {
-  File? image;
+Future<XFile?> uiPickImage({ImageSource? imageSource}) async {
+  XFile? image;
   if (imageSource != null) {
     final _imagePicker = ImagePicker();
     final pickedfile = await _imagePicker.pickImage(source: imageSource);
     if (pickedfile != null) {
-      image = File(pickedfile.path);
+      image = pickedfile;
     }
   } else {
     final _imagePicker = ImagePicker();
     final pickedfile =
         await _imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedfile != null) {
-      image = File(pickedfile.path);
+      image = pickedfile;
     }
   }
   return image;

@@ -13,6 +13,8 @@ class RegisterState extends Equatable {
     this.ageRange,
     this.libraryCategories = const <String>[],
     this.libraryPhoto,
+    this.personPhotoBytes,
+    this.libraryPhotoBytes,
     this.address,
     required this.index,
     required this.libraryInfoForm,
@@ -27,10 +29,12 @@ class RegisterState extends Equatable {
 
   final int index;
 
-  final File? personPhoto;
+  final XFile? personPhoto;
+  final Uint8List? personPhotoBytes;
   final String? ageRange;
   final List<String> libraryCategories;
-  final File? libraryPhoto;
+  final XFile? libraryPhoto;
+  final Uint8List? libraryPhotoBytes;
   final String? address;
 
   static const String addressController = 'address';
@@ -68,12 +72,14 @@ class RegisterState extends Equatable {
   List<Object> get props => [services, index];
 
   RegisterState copyWith({
-    File? personPhoto,
+    XFile? personPhoto,
+    Uint8List? personPhotoBytes,
     TimeOfDay? openTime,
     TimeOfDay? closeTime,
     String? ageRange,
     List<String>? libraryCategories,
-    File? libraryPhoto,
+    XFile? libraryPhoto,
+    Uint8List? libraryPhotoBytes,
     String? address,
     int? index,
     Map<String, bool>? services,
@@ -81,9 +87,11 @@ class RegisterState extends Equatable {
   }) {
     return RegisterState(
       personPhoto: personPhoto ?? this.personPhoto,
+      personPhotoBytes: personPhotoBytes ?? this.personPhotoBytes,
       ageRange: ageRange ?? this.ageRange,
       libraryCategories: libraryCategories ?? this.libraryCategories,
       libraryPhoto: libraryPhoto ?? this.libraryPhoto,
+      libraryPhotoBytes: libraryPhotoBytes ?? this.libraryPhotoBytes,
       address: address ?? this.address,
       index: index ?? this.index,
       libraryInfoForm: libraryInfoForm,
@@ -168,13 +176,19 @@ class RegisterInitial extends RegisterState {
             RegisterState.openTimeController: FormControl<String>(
               validators: [
                 Validators.required,
-                // TODO(oscarnar): Add validation for time pattern
+                Validators.pattern(
+                  Globals.pTimeRegex,
+                  validationMessage: 'El formato debe ser 12:00',
+                ),
               ],
             ),
             RegisterState.closeTimeController: FormControl<String>(
               validators: [
                 Validators.required,
-                // TODO(oscarnar): Add validation for time pattern
+                Validators.pattern(
+                  Globals.pTimeRegex,
+                  validationMessage: 'El formato debe ser 12:00',
+                ),
               ],
             ),
             RegisterState.libraryLabelsController: FormControl<String>(),
