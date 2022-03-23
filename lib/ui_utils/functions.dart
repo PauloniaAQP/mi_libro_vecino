@@ -1,5 +1,3 @@
-// import 'dart:html';
-
 import 'package:image_picker/image_picker.dart';
 
 Future<XFile?> uiPickImage({ImageSource? imageSource}) async {

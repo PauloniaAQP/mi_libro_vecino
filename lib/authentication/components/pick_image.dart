@@ -41,32 +41,6 @@ class PickImage extends StatelessWidget {
     }
   }
 
-  Widget _imageIcon(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Image.asset(
-          image != null ? selectedPhotoIconPath : unselectedPhotoIconPath,
-          height: 65,
-          width: 65,
-        ),
-        const SizedBox(height: 20),
-        Flexible(
-          child: Text(
-            image != null ? modifyLabel : pickLabel,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: image == null ? PColors.gray2 : PColors.white,
-                ),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -89,7 +63,13 @@ class PickImage extends StatelessWidget {
                   ),
                   Visibility(
                     visible: !isLoading,
-                    child: _imageIcon(context),
+                    child: ImageIcon(
+                      image: image,
+                      selectedPhotoIconPath: selectedPhotoIconPath,
+                      unselectedPhotoIconPath: unselectedPhotoIconPath,
+                      modifyLabel: modifyLabel,
+                      pickLabel: pickLabel,
+                    ),
                   )
                 ],
               ),
@@ -111,10 +91,60 @@ class PickImage extends StatelessWidget {
                       child: CircularProgressIndicator(),
                     );
                   }
-                  return _imageIcon(context);
+                  return ImageIcon(
+                    image: image,
+                    selectedPhotoIconPath: selectedPhotoIconPath,
+                    unselectedPhotoIconPath: unselectedPhotoIconPath,
+                    modifyLabel: modifyLabel,
+                    pickLabel: pickLabel,
+                  );
                 },
               ),
             ),
+    );
+  }
+}
+
+class ImageIcon extends StatelessWidget {
+  const ImageIcon({
+    Key? key,
+    required this.image,
+    required this.selectedPhotoIconPath,
+    required this.unselectedPhotoIconPath,
+    required this.modifyLabel,
+    required this.pickLabel,
+  }) : super(key: key);
+
+  final Uint8List? image;
+  final String selectedPhotoIconPath;
+  final String unselectedPhotoIconPath;
+  final String modifyLabel;
+  final String pickLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset(
+          image != null ? selectedPhotoIconPath : unselectedPhotoIconPath,
+          height: 65,
+          width: 65,
+        ),
+        const SizedBox(height: 20),
+        Flexible(
+          child: Text(
+            image != null ? modifyLabel : pickLabel,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: image == null ? PColors.gray2 : PColors.white,
+                ),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
     );
   }
 }
