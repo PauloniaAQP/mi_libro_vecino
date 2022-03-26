@@ -6,17 +6,23 @@
 // https://opensource.org/licenses/MIT.
 
 import 'dart:async';
+import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mi_libro_vecino/app/app.dart';
+import 'package:mi_libro_vecino/bloc_observer.dart';
 import 'package:mi_libro_vecino/bootstrap.dart';
-import 'package:mi_libro_vecino/testing.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  await testing();
-
-  unawaited(bootstrap(() => const App()));
+  unawaited(
+    bootstrap(
+      () => BlocOverrides.runZoned(
+        () => const App(),
+        blocObserver: MyLibroVecinoBlocObserver(),
+      ),
+    ),
+  );
 }
