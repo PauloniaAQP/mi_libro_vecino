@@ -8,7 +8,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
 import 'package:mi_libro_vecino/admin/cubit/admin_cubit.dart';
+import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/authentication/cubit/login_cubit.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/collaborators/cubit/collaborator_cubit.dart';
@@ -17,14 +19,23 @@ import 'package:mi_libro_vecino/libraries/cubit/libraries_cubit.dart';
 import 'package:mi_libro_vecino/router/router.dart';
 import 'package:mi_libro_vecino/search/cubit/search_cubit.dart';
 import 'package:mi_libro_vecino/ui_utils/theme.dart';
+import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
+import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // TODO(oscarnar): Change this, we need be more organized
+    Get
+      ..put(UserRepository(), permanent: true)
+      ..put(LibraryRepository(), permanent: true);
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) => AppUserBloc(Get.find()),
+        ),
         BlocProvider(
           create: (context) => SearchCubit(),
         ),
