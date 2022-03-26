@@ -12,9 +12,10 @@
       "args": [
         "--flavor",
         "development",
+        "--web-renderer",
+        "html",
         "--target",
-        "lib/main_development.dart",
-        "--web-renderer html"
+        "lib/main_development.dart"
       ]
     },
     {
@@ -25,6 +26,8 @@
       "args": [
         "--flavor",
         "staging",
+        "--web-renderer",
+        "html",
         "--target",
         "lib/main_staging.dart"
       ]
