@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/globals.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
@@ -92,95 +93,101 @@ class RegisterCubit extends Cubit<RegisterState> {
   }
 
   Future<void> onTapRegisterAndContinue() async {
-    emit(
-      state.copyWith(status: RegisterStatus.loading),
-    );
-    print('entrando a registrar');
+    emit(state.copyWith(status: RegisterStatus.loading));
     state.registerForm.markAllAsTouched();
     state.personInfoForm.markAllAsTouched();
     state.libraryInfoForm.markAllAsTouched();
-    print(state.registerForm.valid);
-    print(state.personInfoForm.valid);
-    print(state.libraryInfoForm.valid);
-    if (state.registerForm.valid &&
-        state.personInfoForm.valid &&
-        state.libraryInfoForm.valid) {
-      print('forms have been validated');
-      final userName = state.personInfoForm
-          .control(RegisterState.fullnameController)
-          .value
-          .toString();
-      final userEmail = state.registerForm
-          .control(RegisterState.emailController)
-          .value
-          .toString();
-      final userPassword = state.registerForm
-          .control(RegisterState.passwordController)
-          .value
-          .toString();
-      print('enter to auth service');
-      final user = await AuthService.emailPasswordSignUp(
-        userEmail,
-        userPassword,
-        userName,
-      );
-      if (user == null) {
-        print('user is null');
-        emit(state.copyWith(status: RegisterStatus.error));
-        return;
-      }
-      //// YOU NEED TO PUT USER REPOSITORY (INTIALIZED)1
-      print('User has been created');
-      final userModel = await _userRepository.createUser(
-        userId: user.uid,
-        name: userName,
-        email: userEmail,
-        phone: state.personInfoForm
-            .control(RegisterState.phoneController)
-            .value
-            .toString(),
-      );
-      if (userModel == null) {
-        emit(state.copyWith(status: RegisterStatus.error));
-        print('Error with user model creation');
-        return;
-      }
-      print('User has been created into repository');
-      final libraryValuesMap = state.personInfoForm.value;
-
-      final libraryModel = await _libraryRepository.createLibrary(
-        userId: userModel.id,
-        name: libraryValuesMap[RegisterState.fullnameController].toString(),
-        type: LibraryType.values[int.parse(state.libraryRolController.text)],
-        openingHour: fromStringToTimeOfDay(
-          libraryValuesMap[RegisterState.openTimeController].toString(),
-        ),
-        closingHour: fromStringToTimeOfDay(
-          libraryValuesMap[RegisterState.closeTimeController].toString(),
-        ),
-        address: libraryValuesMap[RegisterState.addressController].toString(),
-
-        /// TODO: get coodinates from map
-        location: Coordinates(-51, -71),
-        services: state.services.keys
-            .where((key) => state.services[key] == true)
-            .toList(),
-        tags: state.libraryCategories,
-
-        /// TODO: get search keys
-        searchKeys: state.libraryCategories,
-
-        /// TODO: get ubigeo code
-        departmentId: '04',
-        provinceId: '04',
-        districtId: '04',
-        description:
-            libraryValuesMap[RegisterState.descriptionController].toString(),
-        website: libraryValuesMap[RegisterState.websiteController].toString(),
-        // photo: ,
-      );
-      print(libraryModel);
+    if (!state.registerForm.valid &&
+        !state.personInfoForm.valid &&
+        !state.libraryInfoForm.valid) {
+      emit(state.copyWith(status: RegisterStatus.error));
+      return;
     }
+
+    final userName = state.personInfoForm
+        .control(RegisterState.fullnameController)
+        .value
+        .toString();
+    final userEmail = state.registerForm
+        .control(RegisterState.emailController)
+        .value
+        .toString();
+    final userPassword = state.registerForm
+        .control(RegisterState.passwordController)
+        .value
+        .toString();
+    final user = await AuthService.emailPasswordSignUp(
+      userEmail,
+      userPassword,
+      userName,
+    );
+    if (user == null) {
+      emit(state.copyWith(status: RegisterStatus.error));
+      return;
+    }
+    final userModel = await _userRepository.createUser(
+      userId: user.uid,
+      name: userName,
+      email: userEmail,
+      phone: state.personInfoForm
+          .control(RegisterState.phoneController)
+          .value
+          .toString(),
+    );
+    if (userModel == null) {
+      emit(state.copyWith(status: RegisterStatus.error));
+      return;
+    }
+    final libraryValuesMap = state.libraryInfoForm.value;
+
+    final libraryModel = await _libraryRepository.createLibrary(
+      userId: userModel.id,
+      name: libraryValuesMap[RegisterState.libraryNameController].toString(),
+      type: LibraryType.values[int.parse(state.libraryRolController.text)],
+      openingHour: fromStringToTimeOfDay(
+        libraryValuesMap[RegisterState.openTimeController].toString(),
+      ),
+      closingHour: fromStringToTimeOfDay(
+        libraryValuesMap[RegisterState.closeTimeController].toString(),
+      ),
+      address: libraryValuesMap[RegisterState.addressController].toString(),
+
+      // TODO(oscarnar): get coodinates from map
+      location: Coordinates(-51, -71),
+      services: state.services.keys
+          .where((key) => state.services[key] == true)
+          .toList(),
+      tags: state.libraryCategories,
+
+      // TODO(oscarnar): get search keys
+      searchKeys: state.libraryCategories,
+
+      // TODO(oscarnar): get ubigeo code
+      departmentId: '04',
+      provinceId: '04',
+      districtId: '04',
+      description:
+          libraryValuesMap[RegisterState.descriptionController].toString(),
+      website: libraryValuesMap[RegisterState.websiteController].toString(),
+      // TODO(oscarnar): Test photo upload functionality
+      // photo: ,
+    );
+    if (libraryModel == null) {
+      emit(state.copyWith(status: RegisterStatus.error));
+      return;
+    } else {
+      emit(state.copyWith(status: RegisterStatus.success));
+      return;
+    }
+  }
+
+  // TODO: remove this function
+  Future<void> testSuccess() async {
+    await Future.delayed(
+      const Duration(seconds: 2),
+      () => 'HOla',
+    );
+    emit(state.copyWith(status: RegisterStatus.success));
   }
 
   UserRepository get _userRepository => Get.find();

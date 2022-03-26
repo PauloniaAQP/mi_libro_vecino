@@ -165,7 +165,11 @@ class RegisterInitial extends RegisterState {
             ),
             RegisterState.websiteController: FormControl<String>(
               validators: [
-                // TODO(oscarnar):  Add regex to websites
+                Validators.pattern(
+                  Globals.pWebsiteRegex,
+                  validationMessage:
+                      'El formato debe ser http://www.ejemplo.com',
+                ),
               ],
             ),
             RegisterState.descriptionController: FormControl<String>(
