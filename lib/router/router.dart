@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/admin/view/admin_page.dart';
+import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/authentication/view/login_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/email_register_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/personal_name_page.dart';
@@ -63,9 +65,26 @@ abstract class AppRouter {
           ),
           GoRoute(
             path: Routes.login,
-            pageBuilder: (context, state) => const MaterialPage(
-              child: LoginPage(),
-            ),
+            pageBuilder: (context, state) {
+              final isAdmin = state.queryParams['isAdmin'] == 'true';
+              return MaterialPage(
+                // TODO(oscanar): Check if it's correct, when I'm logged in
+                // and then I return to login, the page take some time to
+                // redirect to correct page.
+                child: BlocListener<AppUserBloc, AppUserState>(
+                  listener: (context, state) {
+                    if (state is AppUserAuthenticated) {
+                      if (state.isAdmin) {
+                        GoRouter.of(context).go(Routes.admin);
+                      } else {
+                        GoRouter.of(context).go(Routes.collaborators);
+                      }
+                    }
+                  },
+                  child: LoginPage(isAdmin: isAdmin),
+                ),
+              );
+            },
           ),
           GoRoute(
             path: Routes.waiting,
