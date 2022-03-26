@@ -15,12 +15,6 @@ class PersonalNamePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final rolesList = <String>[
-      l10n.registerPageRolMediator,
-      l10n.registerPageRolLibrary,
-      l10n.registerPageRolEditorial,
-      l10n.registerPageRolBookshop,
-    ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +79,9 @@ class PersonalNamePage extends StatelessWidget {
                         valuesList: List.generate(
                           LibraryType.values.length,
                           (index) => getStringRolByType(
-                              LibraryType.values[index], l10n),
+                            LibraryType.values[index],
+                            l10n,
+                          ),
                         ),
                         controller: state.libraryRolController,
                         isExpanded: true,
