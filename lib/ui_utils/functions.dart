@@ -50,7 +50,6 @@ String getStringRolByType(LibraryType type, AppLocalizations l10n) {
 /// [l10n] could be get from context.l10n
 // TODO(oscarnar): Internationalize
 String getStringLoginStatus(LoginState status, AppLocalizations l10n) {
-  print('getStringLoginStatus: $status');
   switch (status) {
     case LoginState.errorAccountExistsWithDifferentCredential:
       return 'Cuenta con diferentes credenciales';

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mi_libro_vecino/authentication/cubit/login_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
-import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
