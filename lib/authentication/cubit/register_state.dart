@@ -10,7 +10,6 @@ enum RegisterStatus {
 class RegisterState extends Equatable {
   const RegisterState({
     this.personPhoto,
-    this.ageRange,
     this.libraryCategories = const <String>[],
     this.libraryPhoto,
     this.personPhotoBytes,
@@ -25,20 +24,19 @@ class RegisterState extends Equatable {
     required this.closingController,
     required this.libraryRolController,
     this.status = RegisterStatus.initial,
+    this.location,
   });
 
   final int index;
 
   final XFile? personPhoto;
   final Uint8List? personPhotoBytes;
-  final String? ageRange;
   final List<String> libraryCategories;
   final XFile? libraryPhoto;
   final Uint8List? libraryPhotoBytes;
   final String? address;
 
   static const String addressController = 'address';
-  static const String mapAddressController = 'mapAddress';
   static const String descriptionController = 'description';
   static const String websiteController = 'website';
   static const String libraryNameController = 'name';
@@ -68,15 +66,16 @@ class RegisterState extends Equatable {
 
   final RegisterStatus status;
 
+  final Coordinates? location;
+
   @override
-  List<Object> get props => [services, index];
+  List<Object> get props => [services, index, location ?? true, status];
 
   RegisterState copyWith({
     XFile? personPhoto,
     Uint8List? personPhotoBytes,
     TimeOfDay? openTime,
     TimeOfDay? closeTime,
-    String? ageRange,
     List<String>? libraryCategories,
     XFile? libraryPhoto,
     Uint8List? libraryPhotoBytes,
@@ -84,11 +83,11 @@ class RegisterState extends Equatable {
     int? index,
     Map<String, bool>? services,
     RegisterStatus? status,
+    Coordinates? location,
   }) {
     return RegisterState(
       personPhoto: personPhoto ?? this.personPhoto,
       personPhotoBytes: personPhotoBytes ?? this.personPhotoBytes,
-      ageRange: ageRange ?? this.ageRange,
       libraryCategories: libraryCategories ?? this.libraryCategories,
       libraryPhoto: libraryPhoto ?? this.libraryPhoto,
       libraryPhotoBytes: libraryPhotoBytes ?? this.libraryPhotoBytes,
@@ -102,6 +101,7 @@ class RegisterState extends Equatable {
       libraryRolController: libraryRolController,
       services: services ?? this.services,
       status: status ?? this.status,
+      location: location ?? this.location,
     );
   }
 }
@@ -137,26 +137,35 @@ class RegisterInitial extends RegisterState {
               ],
             ),
           }),
-          registerForm: FormGroup({
-            RegisterState.emailController: FormControl<String>(
-              validators: [
-                Validators.required,
-                Validators.email,
-              ],
-            ),
-            RegisterState.passwordController: FormControl<String>(
-              validators: [
-                Validators.required,
-                Validators.minLength(6),
-              ],
-            ),
-            RegisterState.confirmPasswordController: FormControl<String>(
-              validators: [
-                Validators.required,
-                Validators.minLength(6),
-              ],
-            ),
-          }),
+          registerForm: FormGroup(
+            {
+              RegisterState.emailController: FormControl<String>(
+                validators: [
+                  Validators.required,
+                  Validators.email,
+                ],
+                asyncValidators: [_isInUseEmail],
+              ),
+              RegisterState.passwordController: FormControl<String>(
+                validators: [
+                  Validators.required,
+                  Validators.minLength(6),
+                ],
+              ),
+              RegisterState.confirmPasswordController: FormControl<String>(
+                validators: [
+                  Validators.required,
+                  Validators.minLength(6),
+                ],
+              ),
+            },
+            validators: [
+              Validators.mustMatch(
+                RegisterState.passwordController,
+                RegisterState.confirmPasswordController,
+              )
+            ],
+          ),
           libraryInfoForm: FormGroup({
             RegisterState.libraryNameController: FormControl<String>(
               validators: [
@@ -201,34 +210,48 @@ class RegisterInitial extends RegisterState {
                 Validators.required,
               ],
             ),
-            RegisterState.mapAddressController: FormControl<String>(
-              validators: [
-                // TODO(oscarnar): Check this, always will have an address(?)
-                // Validators.required,
-              ],
-            ),
           }),
         );
 }
 
 class RegisterPhotoLoading extends RegisterState {
-  const RegisterPhotoLoading({
-    required FormGroup libraryInfoForm,
-    required FormGroup personInfoForm,
-    required FormGroup registerForm,
-    required int index,
-    required Map<String, bool> services,
-    required TextEditingController openingController,
-    required TextEditingController closingController,
-    required TextEditingController libraryRolController,
-  }) : super(
-          index: index,
-          libraryInfoForm: libraryInfoForm,
-          personInfoForm: personInfoForm,
-          registerForm: registerForm,
-          services: services,
-          openingController: openingController,
-          closingController: closingController,
-          libraryRolController: libraryRolController,
+  RegisterPhotoLoading(RegisterState state)
+      : super(
+          index: state.index,
+          libraryInfoForm: state.libraryInfoForm,
+          personInfoForm: state.personInfoForm,
+          registerForm: state.registerForm,
+          services: state.services,
+          openingController: state.openingController,
+          closingController: state.closingController,
+          libraryRolController: state.libraryRolController,
+          address: state.address,
+          libraryCategories: state.libraryCategories,
+          libraryPhoto: state.libraryPhoto,
+          libraryPhotoBytes: state.libraryPhotoBytes,
+          personPhoto: state.personPhoto,
+          personPhotoBytes: state.personPhotoBytes,
+          status: state.status,
+          location: state.location,
         );
+}
+
+class CustomValidators {
+  static const String alreadyExists = 'areadyExists';
+}
+
+Future<Map<String, dynamic>?> _isInUseEmail(
+  AbstractControl<dynamic> control,
+) async {
+  final error = {CustomValidators.alreadyExists: false};
+
+  final emailAlreadyInUse =
+      await AuthService.isEmailInUse(control.value.toString());
+
+  if (emailAlreadyInUse) {
+    control.markAsTouched();
+    return error;
+  }
+
+  return null;
 }
