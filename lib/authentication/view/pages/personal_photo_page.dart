@@ -44,7 +44,8 @@ class PersonalPhoto extends StatelessWidget {
                         modifyLabel:
                             l10n.registerPageLibraryChangePhotoButtonLabel,
                         onTap: () {
-                          BlocProvider.of<RegisterCubit>(context)
+                          context
+                              .read<RegisterCubit>()
                               .onTapUploadPersonalPhoto();
                         },
                         selectedPhotoIconPath: Assets.profileWhiteIcon,

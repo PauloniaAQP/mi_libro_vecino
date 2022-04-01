@@ -50,7 +50,8 @@ class LibraryPhotoPage extends StatelessWidget {
                         modifyLabel:
                             l10n.registerPageLibraryChangePhotoButtonLabel,
                         onTap: () {
-                          BlocProvider.of<RegisterCubit>(context)
+                          context
+                              .read<RegisterCubit>()
                               .onTapUploadLibraryPhoto();
                         },
                         selectedPhotoIconPath: Assets.imageWhiteIcon,
