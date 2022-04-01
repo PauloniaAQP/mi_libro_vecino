@@ -15,3 +15,12 @@ class AuthenticationStatusChanged extends AppUserEvent {
   @override
   List<Object> get props => [status];
 }
+
+class LocationChanged extends AppUserEvent {
+  const LocationChanged(this.location);
+
+  final Coordinates location;
+
+  @override
+  List<Object> get props => [location];
+}

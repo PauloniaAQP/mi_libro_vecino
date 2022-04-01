@@ -52,6 +52,7 @@ class LoginLoading extends LoginState {
 }
 
 class LoginError extends LoginState {
-  const LoginError({required FormGroup loginForm})
+  const LoginError({required FormGroup loginForm, required this.loginStatus})
       : super(loginForm: loginForm);
+  final status.LoginState loginStatus;
 }

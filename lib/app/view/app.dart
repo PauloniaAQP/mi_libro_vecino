@@ -35,6 +35,7 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => AppUserBloc(Get.find()),
+          lazy: false,
         ),
         BlocProvider(
           create: (context) => SearchCubit(),

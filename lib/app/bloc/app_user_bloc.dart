@@ -5,15 +5,15 @@ import 'package:equatable/equatable.dart';
 import 'package:mi_libro_vecino_api/models/user_model.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
+import 'package:mi_libro_vecino_api/services/geo_service.dart';
+import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:paulonia_error_service/paulonia_error_service.dart';
 
 part 'app_user_event.dart';
 part 'app_user_state.dart';
 
 class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
-  AppUserBloc(
-    this._userRepository,
-  ) : super(const AppUserInitial()) {
+  AppUserBloc(this._userRepository) : super(const AppUserInitial()) {
     on<AppUserEvent>((event, emit) {});
     on<AuthenticationStatusChanged>((event, emit) async {
       try {
@@ -31,13 +31,14 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
             emit(AppUserAuthenticated(user: userModel, isAdmin: isAdmin));
           } else {
             await AuthService.signOut();
-            emit(const AppUserInitial());
           }
         }
       } catch (state, stacktrace) {
         PauloniaErrorService.sendError(state, stacktrace);
-        emit(const AppUserInitial());
       }
+    });
+    on<LocationChanged>((event, emit) {
+      emit(state.copyWith(currentLocation: event.location));
     });
     _authenticationStatusSubscription = AuthService.status.listen(
       (status) {
@@ -56,13 +57,19 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
     return super.close();
   }
 
-  void _initialCheck() {
+  Future<void> _initialCheck() async {
     if (AuthService.isLoggedIn()) {
       add(
         const AuthenticationStatusChanged(AuthenticationStatus.authenticated),
       );
     }
+    await checkLocation();
   }
 
-  UserRepository _userRepository;
+  Future<void> checkLocation() async {
+    final currentCoordinates = await GeoService.determineCoordinates();
+    add(LocationChanged(currentCoordinates));
+  }
+
+  final UserRepository _userRepository;
 }

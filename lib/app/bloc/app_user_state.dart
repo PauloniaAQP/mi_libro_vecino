@@ -3,18 +3,22 @@ part of 'app_user_bloc.dart';
 class AppUserState extends Equatable {
   const AppUserState({
     required this.status,
+    this.currentLocation,
   });
 
   final AuthenticationStatus status;
+  final Coordinates? currentLocation;
 
   @override
   List<Object> get props => [status];
 
   AppUserState copyWith({
     AuthenticationStatus? status,
+    Coordinates? currentLocation,
   }) {
     return AppUserState(
       status: status ?? this.status,
+      currentLocation: currentLocation ?? this.currentLocation,
     );
   }
 }
