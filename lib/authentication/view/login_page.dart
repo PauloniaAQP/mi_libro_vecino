@@ -33,7 +33,7 @@ class LoginPageState extends State<LoginPage>
             showDialog<void>(
               context: context,
               builder: (context) => AlertDialog(
-                title: Text('Error de autenticación'),
+                title: const Text('Error de autenticación'),
                 content: Text(
                   getStringLoginStatus(state.loginStatus, l10n),
                 ),

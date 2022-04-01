@@ -3,7 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/user_enums.dart'
     as status;
-import 'package:mi_libro_vecino_api/utils/constants/enums/user_enums.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 part 'login_state.dart';
@@ -23,7 +22,9 @@ class LoginCubit extends Cubit<LoginState> {
         password,
         isAdmin: isAdmin,
       );
-      emit(LoginSuccess(loginForm: state.loginForm));
+      if (user != null) {
+        emit(LoginSuccess(loginForm: state.loginForm));
+      }
     } catch (e) {
       emit(
         LoginError(
