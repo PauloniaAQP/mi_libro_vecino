@@ -35,65 +35,66 @@ class LibraryCategoriesPage extends StatelessWidget {
         const SizedBox(height: 10),
         Expanded(
           child: BlocBuilder<RegisterCubit, RegisterState>(
-              builder: (context, state) {
-            return SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(vertical: 25),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    context.l10n.registerPageServicesTitle,
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    context.l10n.registerPageChosseServices,
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          color: PColors.gray4,
-                        ),
-                  ),
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 25),
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        runAlignment: WrapAlignment.center,
-                        children: List.generate(
-                          state.services.length,
-                          (index) {
-                            return CategoryChip(
-                              onTap: () {
-                                BlocProvider.of<RegisterCubit>(context)
-                                    .updateServices(
-                                  key: state.services.keys.elementAt(index),
-                                );
-                              },
-                              isSelected:
-                                  state.services.values.elementAt(index),
-                              label: state.services.keys.elementAt(index),
-                            );
-                          },
+            builder: (context, state) {
+              return SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(vertical: 25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      context.l10n.registerPageServicesTitle,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      context.l10n.registerPageChosseServices,
+                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                            fontWeight: FontWeight.w500,
+                            color: PColors.gray4,
+                          ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 25),
+                        child: Wrap(
+                          alignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          runAlignment: WrapAlignment.center,
+                          children: List.generate(
+                            state.services.length,
+                            (index) {
+                              return CategoryChip(
+                                onTap: () {
+                                  BlocProvider.of<RegisterCubit>(context)
+                                      .updateServices(
+                                    key: state.services.keys.elementAt(index),
+                                  );
+                                },
+                                isSelected:
+                                    state.services.values.elementAt(index),
+                                label: state.services.keys.elementAt(index),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  ReactiveForm(
-                    formGroup: state.libraryInfoForm,
-                    child: PTextField(
-                      formControlName: RegisterState.libraryLabelsController,
-                      hintText:
-                          context.l10n.registerPageCategoriesLabelsHintText,
-                      label: context.l10n.registerPageCategoriesLabels,
+                    ReactiveForm(
+                      formGroup: state.libraryInfoForm,
+                      child: PTextField(
+                        formControlName: RegisterState.libraryLabelsController,
+                        hintText:
+                            context.l10n.registerPageCategoriesLabelsHintText,
+                        label: context.l10n.registerPageCategoriesLabels,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          }),
+                  ],
+                ),
+              );
+            },
+          ),
         ),
       ],
     );

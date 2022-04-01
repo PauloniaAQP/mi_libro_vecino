@@ -56,7 +56,7 @@ class App extends StatelessWidget {
           create: (context) => AdminCubit(),
         ),
       ],
-      child: AppView(),
+      child: const AppView(),
     );
   }
 }
