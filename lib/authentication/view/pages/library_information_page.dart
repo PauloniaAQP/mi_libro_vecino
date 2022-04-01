@@ -19,7 +19,11 @@ class LibraryInformationPage extends StatelessWidget {
     return BlocBuilder<RegisterCubit, RegisterState>(
       builder: (context, state) {
         final libraryRol = getStringRolByType(
-          LibraryType.values[int.parse(state.libraryRolController.text)],
+          LibraryType.values[int.parse(
+            state.libraryRolController.text == ''
+                ? '0'
+                : state.libraryRolController.text,
+          )],
           l10n,
         );
         return Column(

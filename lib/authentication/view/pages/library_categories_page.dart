@@ -15,84 +15,87 @@ class LibraryCategoriesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return BlocBuilder<RegisterCubit, RegisterState>(
-      builder: (context, state) {
-        final libraryRol = getStringRolByType(
-          LibraryType.values[int.parse(state.libraryRolController.text)],
-          l10n,
-        );
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              l10n.registerPageLibraryInformationTitle + libraryRol,
-              style: Theme.of(context).textTheme.headline3!.copyWith(
-                    fontWeight: FontWeight.w700,
+    final libraryRol = getStringRolByType(
+      LibraryType.values[int.parse(
+        context.read<RegisterCubit>().state.libraryRolController.text == ''
+            ? '0'
+            : context.read<RegisterCubit>().state.libraryRolController.text,
+      )],
+      l10n,
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          l10n.registerPageLibraryInformationTitle + libraryRol,
+          style: Theme.of(context).textTheme.headline3!.copyWith(
+                fontWeight: FontWeight.w700,
+              ),
+        ),
+        const SizedBox(height: 10),
+        Expanded(
+          child: BlocBuilder<RegisterCubit, RegisterState>(
+              builder: (context, state) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(vertical: 25),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    context.l10n.registerPageServicesTitle,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
                   ),
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: 25),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      context.l10n.registerPageServicesTitle,
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      context.l10n.registerPageChosseServices,
-                      style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            color: PColors.gray4,
-                          ),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 25),
-                        child: Wrap(
-                          alignment: WrapAlignment.center,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          runAlignment: WrapAlignment.center,
-                          children: List.generate(
-                            state.services.length,
-                            (index) {
-                              return CategoryChip(
-                                onTap: () {
-                                  BlocProvider.of<RegisterCubit>(context)
-                                      .updateServices(
-                                    key: state.services.keys.elementAt(index),
-                                  );
-                                },
-                                isSelected:
-                                    state.services.values.elementAt(index),
-                                label: state.services.keys.elementAt(index),
-                              );
-                            },
-                          ),
+                  const SizedBox(height: 5),
+                  Text(
+                    context.l10n.registerPageChosseServices,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontWeight: FontWeight.w500,
+                          color: PColors.gray4,
+                        ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 25),
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        runAlignment: WrapAlignment.center,
+                        children: List.generate(
+                          state.services.length,
+                          (index) {
+                            return CategoryChip(
+                              onTap: () {
+                                BlocProvider.of<RegisterCubit>(context)
+                                    .updateServices(
+                                  key: state.services.keys.elementAt(index),
+                                );
+                              },
+                              isSelected:
+                                  state.services.values.elementAt(index),
+                              label: state.services.keys.elementAt(index),
+                            );
+                          },
                         ),
                       ),
                     ),
-                    ReactiveForm(
-                      formGroup: state.libraryInfoForm,
-                      child: PTextField(
-                        formControlName: RegisterState.libraryLabelsController,
-                        hintText:
-                            context.l10n.registerPageCategoriesLabelsHintText,
-                        label: context.l10n.registerPageCategoriesLabels,
-                      ),
+                  ),
+                  ReactiveForm(
+                    formGroup: state.libraryInfoForm,
+                    child: PTextField(
+                      formControlName: RegisterState.libraryLabelsController,
+                      hintText:
+                          context.l10n.registerPageCategoriesLabelsHintText,
+                      label: context.l10n.registerPageCategoriesLabels,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        );
-      },
+            );
+          }),
+        ),
+      ],
     );
   }
 }

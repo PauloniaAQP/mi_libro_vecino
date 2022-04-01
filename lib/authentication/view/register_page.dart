@@ -64,9 +64,10 @@ class RegisterPageState extends State<RegisterPage>
                       SliverFillRemaining(
                         fillOverscroll: true,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 80,
-                            horizontal: 100,
+                          padding: EdgeInsets.symmetric(
+                            vertical: MediaQuery.of(context).size.height * 0.1,
+                            horizontal:
+                                MediaQuery.of(context).size.width * 0.05,
                           ),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,

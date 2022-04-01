@@ -56,18 +56,29 @@ class App extends StatelessWidget {
           create: (context) => AdminCubit(),
         ),
       ],
-      child: MaterialApp.router(
-        theme: PTheme.standard,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: const Locale('es'),
-        supportedLocales: AppLocalizations.supportedLocales,
-        routeInformationParser: AppRouter.router.routeInformationParser,
-        routerDelegate: AppRouter.router.routerDelegate,
-      ),
+      child: AppView(),
+    );
+  }
+}
+
+class AppView extends StatelessWidget {
+  const AppView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      theme: PTheme.standard,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: const Locale('es'),
+      supportedLocales: AppLocalizations.supportedLocales,
+      routeInformationParser: AppRouter.router.routeInformationParser,
+      routerDelegate: AppRouter.router.routerDelegate,
     );
   }
 }
