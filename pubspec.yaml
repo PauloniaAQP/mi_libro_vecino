@@ -36,6 +36,7 @@ dev_dependencies:
     sdk: flutter
   # geocoder: 0.2.1
   geoflutterfire: 3.0.0-nullsafety.1
+  google_maps: 6.1.0
   mocktail: ^0.2.0
   paulonia_document_service: ^0.2.0
   paulonia_error_service: ^0.3.0
