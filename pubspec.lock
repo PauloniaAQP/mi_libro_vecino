@@ -477,7 +477,7 @@ packages:
     source: hosted
     version: "3.0.4"
   google_maps:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: google_maps
       url: "https://pub.dartlang.org"

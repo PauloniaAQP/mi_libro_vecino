@@ -67,8 +67,12 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
   }
 
   Future<void> checkLocation() async {
-    final currentCoordinates = await GeoService.determineCoordinates();
-    add(LocationChanged(currentCoordinates));
+    try {
+      final location = await GeoService.determineCoordinates();
+      add(LocationChanged(location));
+    } catch (error) {
+      PauloniaErrorService.sendErrorWithoutStacktrace(error);
+    }
   }
 
   final UserRepository _userRepository;
