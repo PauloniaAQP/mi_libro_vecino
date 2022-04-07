@@ -43,6 +43,17 @@
         "--target",
         "lib/main_production.dart"
       ]
+    },
+    {
+      "name": "Test",
+      "request": "launch",
+      "type": "dart",
+      "program": "test/",
+      "args": [
+        "--coverage",
+        "--platform",
+        "chrome",
+      ]
     }
   ]
 }
