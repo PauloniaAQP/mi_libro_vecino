@@ -22,16 +22,12 @@ class MockUiPick extends Mock {
 
 void main() {
   setupFirebaseAuthMocks();
-  late FirebaseAuth firebaseAuth;
-  late AuthService authService;
   group('Register cubit test', () {
     late utils.Coordinates coordinates;
     late RegisterState testState;
 
     setUp(() async {
       await Firebase.initializeApp();
-      firebaseAuth = MockFirebaseAuth();
-      authService = MockAuthService();
       coordinates = utils.Coordinates(-17, -51);
       testState = RegisterInitial();
       testState.libraryInfoForm.updateValue(
