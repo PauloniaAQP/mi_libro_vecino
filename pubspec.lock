@@ -86,7 +86,7 @@ packages:
     source: hosted
     version: "1.1.0"
   cloud_firestore:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: cloud_firestore
       url: "https://pub.dartlang.org"
@@ -226,7 +226,7 @@ packages:
     source: hosted
     version: "1.0.1"
   diacritic:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: diacritic
       url: "https://pub.dartlang.org"
@@ -275,7 +275,7 @@ packages:
     source: hosted
     version: "6.1.2"
   firebase_auth:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: firebase_auth
       url: "https://pub.dartlang.org"
@@ -317,7 +317,7 @@ packages:
     source: hosted
     version: "1.6.1"
   firebase_storage:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: firebase_storage
       url: "https://pub.dartlang.org"
@@ -407,14 +407,14 @@ packages:
     source: hosted
     version: "2.1.2"
   geoflutterfire:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: geoflutterfire
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0-nullsafety.1"
   geolocator:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: geolocator
       url: "https://pub.dartlang.org"
@@ -477,7 +477,7 @@ packages:
     source: hosted
     version: "3.0.4"
   google_maps:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: google_maps
       url: "https://pub.dartlang.org"
@@ -715,7 +715,7 @@ packages:
     source: hosted
     version: "1.8.0"
   paulonia_document_service:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: paulonia_document_service
       url: "https://pub.dartlang.org"
@@ -729,14 +729,14 @@ packages:
     source: hosted
     version: "0.3.0"
   paulonia_repository:
-    dependency: "direct dev"
+    dependency: transitive
     description:
       name: paulonia_repository
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.1"
   paulonia_utils:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: paulonia_utils
       url: "https://pub.dartlang.org"

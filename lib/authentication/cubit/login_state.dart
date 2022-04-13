@@ -10,7 +10,7 @@ class LoginState extends Equatable {
   final FormGroup loginForm;
 
   @override
-  List<Object> get props => [loginForm];
+  List<Object> get props => [loginForm.value];
 
   LoginState copyWith({
     required FormGroup loginForm,

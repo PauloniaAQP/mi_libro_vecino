@@ -34,7 +34,5 @@ class LoginCubit extends Cubit<LoginState> {
       );
       return;
     }
-    emit(LoginSuccess(loginForm: state.loginForm));
-    return;
   }
 }
