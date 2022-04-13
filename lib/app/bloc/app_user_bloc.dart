@@ -2,18 +2,22 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get/get.dart';
 import 'package:mi_libro_vecino_api/models/user_model.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
-import 'package:mi_libro_vecino_api/services/geo_service.dart';
+import 'package:mi_libro_vecino_api/services/geo_service.dart'
+    if (dart.library.io) 'package:mi_libro_vecino_api/services/test_geo_service.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:paulonia_error_service/paulonia_error_service.dart';
+import 'package:paulonia_utils/paulonia_utils.dart';
 
 part 'app_user_event.dart';
 part 'app_user_state.dart';
 
 class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
-  AppUserBloc(this._userRepository) : super(const AppUserInitial()) {
+  AppUserBloc() : super(const AppUserInitial()) {
+    _userRepository = Get.find<UserRepository>();
     on<AppUserEvent>((event, emit) {});
     on<AuthenticationStatusChanged>((event, emit) async {
       try {
@@ -68,12 +72,17 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
 
   Future<void> checkLocation() async {
     try {
-      final location = await GeoService.determineCoordinates();
+      late Coordinates location;
+      if (PUtils.isOnTest()) {
+        location = Coordinates(-16.3958409, -71.5342607);
+      } else {
+        location = await GeoService.determineCoordinates();
+      }
       add(LocationChanged(location));
     } catch (error) {
       PauloniaErrorService.sendErrorWithoutStacktrace(error);
     }
   }
 
-  final UserRepository _userRepository;
+  late final UserRepository _userRepository;
 }

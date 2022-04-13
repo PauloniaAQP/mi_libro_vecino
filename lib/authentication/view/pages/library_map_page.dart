@@ -11,7 +11,8 @@ import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
-import 'package:mi_libro_vecino_api/services/geo_service.dart';
+import 'package:mi_libro_vecino_api/services/geo_service.dart'
+    if (dart.library.io) 'package:mi_libro_vecino_api/services/test_geo_service.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:reactive_forms/reactive_forms.dart';
