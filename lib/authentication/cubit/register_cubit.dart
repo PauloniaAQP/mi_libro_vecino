@@ -170,7 +170,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
       departmentId: ubigeoModel.departmentId,
       provinceId: ubigeoModel.provinceId!,
-      districtId: ubigeoModel.districtName!,
+      districtId: ubigeoModel.districtId!,
       description:
           libraryValuesMap[RegisterState.descriptionController].toString(),
       website: libraryValuesMap[RegisterState.websiteController].toString(),
