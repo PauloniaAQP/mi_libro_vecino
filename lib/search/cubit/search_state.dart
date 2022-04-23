@@ -4,10 +4,10 @@ part of 'search_cubit.dart';
 class SearchState extends Equatable {
   const SearchState({
     required this.isSearching,
-    this.suggestions = const <String>[],
+    this.suggestions = const <UbigeoModel>[],
   });
   final bool isSearching;
-  final List<String> suggestions;
+  final List<UbigeoModel> suggestions;
   @override
   List<Object?> get props => [isSearching, suggestions];
 }
@@ -17,7 +17,7 @@ class SearchInitial extends SearchState {
 }
 
 class SearchQueryChanged extends SearchState {
-  const SearchQueryChanged(List<String> suggestions)
+  const SearchQueryChanged(List<UbigeoModel> suggestions)
       : super(
           isSearching: true,
           suggestions: suggestions,
