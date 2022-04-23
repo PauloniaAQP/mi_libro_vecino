@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
+import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/cubit/search_cubit.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
+import 'package:mi_libro_vecino/ui_utils/functions.dart';
 
 class SearchWidget extends StatefulWidget {
   SearchWidget({Key? key}) : super(key: key);
@@ -84,7 +87,7 @@ class SearchWidgetState extends State<SearchWidget> {
                     child: FloatingActionButton(
                       onPressed: () {
                         widget.textEditControler.clear();
-          
+
                         if (state.isSearching) {
                           BlocProvider.of<SearchCubit>(context)
                               .onSearchQueryChanged('');
@@ -116,16 +119,51 @@ class SearchWidgetState extends State<SearchWidget> {
                     child: ListView.builder(
                       itemCount: state.suggestions.length,
                       itemBuilder: (context, index) {
+                        /// Here only the searchKey will be in bold
+                        /// So we need to separate from the rest
+                        String before, searchKey, after;
+                        String suggestionName =
+                            getNameFromUbigeo(state.suggestions[index]);
+                        final indexOfSubstr =
+                            suggestionName.toLowerCase().indexOf(
+                                  widget.textEditControler.text.toLowerCase(),
+                                );
+                        before = suggestionName.substring(0, indexOfSubstr);
+                        searchKey = suggestionName.substring(
+                          indexOfSubstr,
+                          indexOfSubstr + widget.textEditControler.text.length,
+                        );
+                        after = suggestionName.substring(
+                          indexOfSubstr + widget.textEditControler.text.length,
+                        );
+                        if (indexOfSubstr == -1) {
+                          return const SizedBox();
+                        }
+
                         return ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            final ubigeoCode = getUbigeoCodeFromUbigeo(
+                              state.suggestions[index],
+                            );
+                            context.read<SearchCubit>().cleanSearchQuery();
+                            context
+                                .go('${Routes.libraries}?search=$ubigeoCode');
+                          },
                           title: RichText(
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: state.suggestions[index].substring(
-                                    0,
-                                    widget.textEditControler.text.length,
-                                  ),
+                                  text: before,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .apply(
+                                        color: PColors.gray2,
+                                        fontSizeDelta: 2,
+                                      ),
+                                ),
+                                TextSpan(
+                                  text: searchKey,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText2!
@@ -136,9 +174,7 @@ class SearchWidgetState extends State<SearchWidget> {
                                       ),
                                 ),
                                 TextSpan(
-                                  text: state.suggestions[index].substring(
-                                    widget.textEditControler.text.length,
-                                  ),
+                                  text: after,
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodyText2!
