@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
+import 'package:mi_libro_vecino_api/models/ubigeo_model.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
+import 'package:mi_libro_vecino_api/utils/constants/enums/ubigeo_enums.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/user_enums.dart';
 
 Future<XFile?> uiPickImage({ImageSource? imageSource}) async {
@@ -77,5 +79,33 @@ String getStringLoginStatus(LoginState status, AppLocalizations l10n) {
       return 'Error de inicio de sesión';
     case LoginState.errorInServer:
       return 'Error en el servidor';
+  }
+}
+
+/// Gets a string of the ubigeo name
+/// If the ubigeo is a district, it will return the name of the province
+/// and the name of the department
+///
+/// district, province, department
+String getNameFromUbigeo(UbigeoModel ubigeo) {
+  switch (ubigeo.type) {
+    case UbigeoType.department:
+      return ubigeo.departmentName;
+    case UbigeoType.province:
+      return '${ubigeo.provinceName}, ${ubigeo.departmentName}';
+    case UbigeoType.district:
+      return '''${ubigeo.districtName}, ${ubigeo.provinceName}, ${ubigeo.departmentName}''';
+  }
+}
+
+/// Returns the ubigeo code according to the type
+String getUbigeoCodeFromUbigeo(UbigeoModel ubigeo) {
+  switch (ubigeo.type) {
+    case UbigeoType.department:
+      return ubigeo.departmentId;
+    case UbigeoType.province:
+      return '${ubigeo.provinceId}';
+    case UbigeoType.district:
+      return '${ubigeo.districtId}';
   }
 }
