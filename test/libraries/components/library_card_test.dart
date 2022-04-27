@@ -12,7 +12,7 @@ void main() {
     testWidgets('renders Library card widget', (tester) async {
       await tester.pumpApp(
         LibraryCard(
-          imgPath: Assets.testImg,
+          gsUrl: Assets.testImg,
           labels: const [],
           onTap: () {},
           subtitle: '',

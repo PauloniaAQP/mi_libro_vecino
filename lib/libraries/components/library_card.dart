@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
+import 'package:paulonia_cache_image/paulonia_cache_image.dart';
 
 class LibraryCard extends StatelessWidget {
   const LibraryCard({
     Key? key,
-    required this.imgPath,
+    required this.gsUrl,
     required this.title,
     required this.subtitle,
     required this.labels,
     required this.onTap,
   }) : super(key: key);
 
-  final String imgPath;
+  final String gsUrl;
   final String title;
   final String subtitle;
   final List<String> labels;
@@ -33,7 +34,7 @@ class LibraryCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
                   image: DecorationImage(
-                    image: AssetImage(imgPath),
+                    image: PCacheImage(gsUrl),
                     fit: BoxFit.cover,
                   ),
                 ),
