@@ -27,12 +27,10 @@ class InfomationLibrary extends StatelessWidget {
 
     if (library == null) {
       return Center(
+        key: const Key('notFoundResultsKey'),
         child: Text(l10n.librariesListPageNotFoundResults),
       );
     }
-    // no olvides el mapa
-    // prueba borrar la bd para hacer pruebasa
-    // UserModel? owner = await context.read<LibrariesCubit>.getOwner(library!.ownerId);
     final openHourString = ApiUtils.timeOfDayToString(library!.openingHour);
     final closeHourString = ApiUtils.timeOfDayToString(library!.closingHour);
     return Scaffold(
@@ -101,11 +99,9 @@ class InfomationLibrary extends StatelessWidget {
                           Flexible(
                             child: TextButton(
                               onPressed: () {
-                                print(library!.website!);
                                 try {
                                   launchUrl(
-                                    Uri.parse(
-                                        'github.com/oscarnar/'), //library!.website!),
+                                    Uri.parse(library!.website!),
                                     webOnlyWindowName: '_blank',
                                     mode: LaunchMode.externalApplication,
                                   );
@@ -291,79 +287,80 @@ class InfomationLibrary extends StatelessWidget {
                     ],
                   ),
                   FutureBuilder<UserModel?>(
-                      future: context
-                          .read<LibrariesCubit>()
-                          .getOwner(library!.ownerId),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState != ConnectionState.done) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                        // if (snapshot.hasError || snapshot.data == null) {
-                        //   return Center(
-                        //     child: Text('Error'),
-                        //   );
-                        // }
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 18),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                width: 93,
-                                height: 93,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  image: DecorationImage(
-                                    image:
-                                        PCacheImage(snapshot.data?.gsUrl ?? ''),
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 17),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      snapshot.data?.name ?? '',
-                                      style: Theme.of(context).textTheme.button,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Row(
-                                      children: [
-                                        Image.asset(
-                                          Assets.phoneIcon,
-                                          width: 18,
-                                          height: 18,
-                                          color: PColors.gray1,
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Expanded(
-                                          child: Text(
-                                            snapshot.data?.phone ?? '',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption!
-                                                .copyWith(
-                                                  color: PColors.gray1,
-                                                  fontSize: 16,
-                                                ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
+                    future: context
+                        .read<LibrariesCubit>()
+                        .getOwner(library!.ownerId),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
                         );
-                      }),
+                      }
+                      if (snapshot.hasError || snapshot.data == null) {
+                        return const Center(
+                          child: Text('No se encontro el usuario'),
+                        );
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 93,
+                              height: 93,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image:
+                                      PCacheImage(snapshot.data?.gsUrl ?? ''),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 17),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    snapshot.data?.name ?? '',
+                                    style: Theme.of(context).textTheme.button,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        Assets.phoneIcon,
+                                        width: 18,
+                                        height: 18,
+                                        color: PColors.gray1,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Text(
+                                          snapshot.data?.phone ?? '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption!
+                                              .copyWith(
+                                                color: PColors.gray1,
+                                                fontSize: 16,
+                                              ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                   const SizedBox(
                     height: 20,
                   )

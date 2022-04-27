@@ -1,23 +1,19 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mi_libro_vecino/libraries/components/library_info.dart';
 
 import '../../helpers/pump_app.dart';
 
-
 void main() {
   group('Information library page', () {
-
-    setUp(() {
-    });
+    setUp(() {});
 
     testWidgets('renders information library Page', (tester) async {
       await tester.pumpApp(
-        const InfomationLibrary(libraryId: '45',),
+        const InfomationLibrary(),
       );
       expect(
-        find.text(
-          'Horario de atención',
-        ),
+        find.byKey(const Key('notFoundResultsKey')),
         findsOneWidget,
       );
     });

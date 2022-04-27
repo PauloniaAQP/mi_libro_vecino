@@ -122,7 +122,7 @@ class SearchWidgetState extends State<SearchWidget> {
                         /// Here only the searchKey will be in bold
                         /// So we need to separate from the rest
                         String before, searchKey, after;
-                        String suggestionName =
+                        final suggestionName =
                             getNameFromUbigeo(state.suggestions[index]);
                         final indexOfSubstr =
                             suggestionName.toLowerCase().indexOf(
