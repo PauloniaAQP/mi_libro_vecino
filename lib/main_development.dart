@@ -12,9 +12,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:mi_libro_vecino/app/app.dart';
 import 'package:mi_libro_vecino/bloc_observer.dart';
 import 'package:mi_libro_vecino/bootstrap.dart';
+import 'package:paulonia_cache_image/paulonia_cache_image.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await PCacheImage.init();
   await Firebase.initializeApp();
 
   unawaited(

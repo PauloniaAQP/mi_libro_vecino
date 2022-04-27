@@ -21,8 +21,11 @@ dependencies:
   intl: ^0.17.0
   mi_libro_vecino_api:
     path: ./mi_libro_vecino_api
+  paulonia_cache_image: ^0.5.0
+  paulonia_image_service: ^0.0.2
   paulonia_utils: ^0.3.0
   reactive_forms: ^10.6.8
+  url_launcher: ^6.1.0
 
 dev_dependencies:
   bloc_test: ^9.0.2

@@ -21,6 +21,7 @@ import 'package:mi_libro_vecino/search/cubit/search_cubit.dart';
 import 'package:mi_libro_vecino/ui_utils/theme.dart';
 import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
+import 'package:mi_libro_vecino_api/services/ubigeo_service.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -31,6 +32,8 @@ class App extends StatelessWidget {
     Get
       ..put(UserRepository(), permanent: true)
       ..put(LibraryRepository(), permanent: true);
+
+    final ubigeoService = UbigeoService()..init();
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -38,7 +41,7 @@ class App extends StatelessWidget {
           lazy: false,
         ),
         BlocProvider(
-          create: (context) => SearchCubit(),
+          create: (context) => SearchCubit(ubigeoService),
         ),
         BlocProvider(
           create: (context) => RegisterCubit(),
