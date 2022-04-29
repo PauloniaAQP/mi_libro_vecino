@@ -15,8 +15,10 @@ import 'package:mi_libro_vecino_api/services/geo_service.dart'
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:paulonia_error_service/paulonia_error_service.dart';
 
 part 'register_state.dart';
+
 
 class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit() : super(RegisterInitial());
@@ -79,111 +81,116 @@ class RegisterCubit extends Cubit<RegisterState> {
   }
 
   Future<void> onTapRegisterAndContinue() async {
-    state.registerForm.markAllAsTouched();
-    state.personInfoForm.markAllAsTouched();
-    state.libraryInfoForm.markAllAsTouched();
-    if (!state.registerForm.valid &&
-        !state.personInfoForm.valid &&
-        !state.libraryInfoForm.valid) {
-      return;
-    }
+    try {
+      state.registerForm.markAllAsTouched();
+      state.personInfoForm.markAllAsTouched();
+      state.libraryInfoForm.markAllAsTouched();
+      if (!state.registerForm.valid &&
+          !state.personInfoForm.valid &&
+          !state.libraryInfoForm.valid) {
+        return;
+      }
 
-    final userName = state.personInfoForm
-        .control(RegisterState.fullnameController)
-        .value
-        .toString();
-    final userEmail = state.registerForm
-        .control(RegisterState.emailController)
-        .value
-        .toString();
-    final userPassword = state.registerForm
-        .control(RegisterState.passwordController)
-        .value
-        .toString();
-    final user = await AuthService.emailPasswordSignUp(
-      userEmail,
-      userPassword,
-      userName,
-    );
-    if (user == null) {
-      emit(state.copyWith(status: RegisterStatus.error));
-      return;
-    }
-
-    final userModel = await _userRepository.createUser(
-      userId: user.uid,
-      name: userName,
-      email: userEmail,
-      phone: state.personInfoForm
-          .control(RegisterState.phoneController)
+      final userName = state.personInfoForm
+          .control(RegisterState.fullnameController)
           .value
-          .toString(),
-      photo: state.personPhoto,
-    );
+          .toString();
+      final userEmail = state.registerForm
+          .control(RegisterState.emailController)
+          .value
+          .toString();
+      final userPassword = state.registerForm
+          .control(RegisterState.passwordController)
+          .value
+          .toString();
+      final user = await AuthService.emailPasswordSignUp(
+        userEmail,
+        userPassword,
+        userName,
+      );
+      if (user == null) {
+        emit(state.copyWith(status: RegisterStatus.error));
+        return;
+      }
 
-    if (userModel == null) {
-      await AuthService.removeUser(user);
-      emit(state.copyWith(status: RegisterStatus.error));
-      return;
-    }
-    final libraryValuesMap = state.libraryInfoForm.value;
+      final userModel = await _userRepository.createUser(
+        userId: user.uid,
+        name: userName,
+        email: userEmail,
+        phone: state.personInfoForm
+            .control(RegisterState.phoneController)
+            .value
+            .toString(),
+        photo: state.personPhoto,
+      );
 
-    final ubigeoModel =
-        await GeoService.getUbigeoFromCoordinates(state.location);
-    if (ubigeoModel == null) {
-      await _userRepository.removeUserById(userModel.id);
-      await AuthService.removeUser(user);
-      emit(state.copyWith(status: RegisterStatus.error));
-      return;
-    }
+      if (userModel == null) {
+        await AuthService.removeUser(user);
+        emit(state.copyWith(status: RegisterStatus.error));
+        return;
+      }
+      final libraryValuesMap = state.libraryInfoForm.value;
 
-    if (!AuthService.isLoggedIn()) {
-      final userLogged =
-          await AuthService.emailPasswordSignIn(userEmail, userPassword);
-      if (userLogged == null) {
+      final ubigeoModel =
+      await GeoService.getUbigeoFromCoordinates(state.location);
+      if (ubigeoModel == null) {
         await _userRepository.removeUserById(userModel.id);
         await AuthService.removeUser(user);
         emit(state.copyWith(status: RegisterStatus.error));
         return;
       }
+
+      if (!AuthService.isLoggedIn()) {
+        final userLogged =
+        await AuthService.emailPasswordSignIn(userEmail, userPassword);
+        if (userLogged == null) {
+          await _userRepository.removeUserById(userModel.id);
+          await AuthService.removeUser(user);
+          emit(state.copyWith(status: RegisterStatus.error));
+          return;
+        }
+      }
+
+      final libraryModel = await _libraryRepository.createLibrary(
+        userId: user.uid,
+        name: libraryValuesMap[RegisterState.libraryNameController].toString(),
+        type: LibraryType.values[int.parse(state.libraryRolController.text)],
+        openingHour: fromStringToTimeOfDay(
+          libraryValuesMap[RegisterState.openTimeController].toString(),
+        ),
+        closingHour: fromStringToTimeOfDay(
+          libraryValuesMap[RegisterState.closeTimeController].toString(),
+        ),
+        address: libraryValuesMap[RegisterState.addressController].toString(),
+        location: state.location!,
+        services: state.services.keys
+            .where((key) => state.services[key] == true)
+            .toList(),
+        tags: state.libraryCategories,
+
+        // TODO(oscarnar): get search keys
+        searchKeys: state.libraryCategories,
+
+        departmentId: ubigeoModel.departmentId,
+        provinceId: ubigeoModel.provinceId!,
+        districtId: ubigeoModel.districtId!,
+        description:
+        libraryValuesMap[RegisterState.descriptionController].toString(),
+        website: libraryValuesMap[RegisterState.websiteController].toString(),
+        photo: state.libraryPhoto,
+      );
+      if (libraryModel == null) {
+        await AuthService.removeUser(user);
+        await _userRepository.removeUserById(userModel.id);
+        emit(state.copyWith(status: RegisterStatus.error));
+        return;
+      } else {
+        emit(state.copyWith(status: RegisterStatus.success));
+        return;
+      }
     }
-
-    final libraryModel = await _libraryRepository.createLibrary(
-      userId: user.uid,
-      name: libraryValuesMap[RegisterState.libraryNameController].toString(),
-      type: LibraryType.values[int.parse(state.libraryRolController.text)],
-      openingHour: fromStringToTimeOfDay(
-        libraryValuesMap[RegisterState.openTimeController].toString(),
-      ),
-      closingHour: fromStringToTimeOfDay(
-        libraryValuesMap[RegisterState.closeTimeController].toString(),
-      ),
-      address: libraryValuesMap[RegisterState.addressController].toString(),
-      location: state.location!,
-      services: state.services.keys
-          .where((key) => state.services[key] == true)
-          .toList(),
-      tags: state.libraryCategories,
-
-      // TODO(oscarnar): get search keys
-      searchKeys: state.libraryCategories,
-
-      departmentId: ubigeoModel.departmentId,
-      provinceId: ubigeoModel.provinceId!,
-      districtId: ubigeoModel.districtId!,
-      description:
-          libraryValuesMap[RegisterState.descriptionController].toString(),
-      website: libraryValuesMap[RegisterState.websiteController].toString(),
-      photo: state.libraryPhoto,
-    );
-    if (libraryModel == null) {
-      await AuthService.removeUser(user);
-      await _userRepository.removeUserById(userModel.id);
-      emit(state.copyWith(status: RegisterStatus.error));
-      return;
-    } else {
-      emit(state.copyWith(status: RegisterStatus.success));
-      return;
+    catch (error, stacktrace) {
+      PauloniaErrorService.sendError(error, stacktrace);
     }
   }
 
