@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   bloc: ^8.0.2
+  catcher: ^0.6.6
   equatable: ^2.0.3
   firebase_core: 1.7.0
   flutter:
@@ -21,6 +22,7 @@ dependencies:
   intl: ^0.17.0
   mi_libro_vecino_api:
     path: ./mi_libro_vecino_api
+  paulonia_error_service: ^0.3.0
   paulonia_utils: ^0.3.0
   reactive_forms: ^10.6.8
 
