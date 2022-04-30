@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
+import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 
@@ -86,7 +88,7 @@ class WaitingPage extends StatelessWidget {
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(PColors.white),
                     ),
-                    onPressed: () {},
+                    onPressed: () => context.go(Routes.login),
                     child: Text(
                       l10n.registerPageBackToStartButton,
                       textAlign: TextAlign.center,
