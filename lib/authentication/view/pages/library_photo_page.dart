@@ -49,7 +49,6 @@ class LibraryPhotoPage extends StatelessWidget {
                     Center(
                       child: PickImage(
                         image: state.libraryPhotoBytes,
-                        isLoading: state is RegisterPhotoLoading,
                         pickLabel: l10n.registerPageLibraryPhotoButtonLabel,
                         modifyLabel:
                             l10n.registerPageLibraryChangePhotoButtonLabel,
