@@ -28,7 +28,6 @@ dependencies:
 
 dev_dependencies:
   bloc_test: ^9.0.2
-  catcher: 0.6.6
   # cloud_firestore: 1.0.7
   # Temporal solution for api dependecies
   # firebase_auth: 1.0.3
@@ -39,7 +38,6 @@ dev_dependencies:
   # geoflutterfire: 3.0.0-nullsafety.1
   mocktail: ^0.2.0
   # paulonia_document_service: ^0.2.0
-  paulonia_error_service: ^0.3.0
   # paulonia_repository: ^0.3.1
   very_good_analysis: ^2.4.0
 

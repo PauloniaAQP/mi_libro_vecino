@@ -13,7 +13,8 @@ Future<XFile?> uiPickImage({ImageSource? imageSource}) async {
     try {
       pickedfile = await _imagePicker.pickImage(source: imageSource);
     } catch (e, stacktrace) {
-      /// TODO: Find a way to handle the event when the user cancels the image picker
+      // TODO(oscarnar): Find a way to handle the event
+      // when the user cancels the image picker
       PauloniaErrorService.sendError(e, stacktrace);
       return null;
     }
