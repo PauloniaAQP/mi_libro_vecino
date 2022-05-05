@@ -7,10 +7,11 @@ void main() {
   group('Search cubit test', () {
     late String query;
     late UbigeoService ubigeoService;
-
-    setUp(() {
+    setUp(() async {
+      TestWidgetsFlutterBinding.ensureInitialized();
       query = 'qwerty';
       ubigeoService = UbigeoService();
+      await ubigeoService.init();
     });
 
     test('Initial state isSearching is false and suggestions list is empty',

@@ -72,7 +72,7 @@ class LocationsMap extends StatelessWidget {
                       ),
                     if (!isLibraryInfo)
                       ...List.generate(
-                        state.libraries!.length,
+                        state.libraries?.length ?? 0,
                         (index) => Marker(
                           width: 40,
                           height: 40,
@@ -107,20 +107,18 @@ class LocationsMap extends StatelessWidget {
             ),
             Visibility(
               visible: !_areThereResults(state),
-              child: Expanded(
-                child: Container(
-                  color: const Color(
-                    0xBB5D5D5D,
-                  ),
-                  child: Center(
-                    child: Text(
-                      l10n.librariesListPageNotFoundResults,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline1!
-                          .copyWith(color: Colors.white),
-                      textAlign: TextAlign.center,
-                    ),
+              child: Container(
+                color: const Color(
+                  0xBB5D5D5D,
+                ),
+                child: Center(
+                  child: Text(
+                    l10n.librariesListPageNotFoundResults,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline1!
+                        .copyWith(color: Colors.white),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ),

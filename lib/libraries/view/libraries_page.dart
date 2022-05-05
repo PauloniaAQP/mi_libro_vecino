@@ -69,7 +69,7 @@ class LibrariesPage extends StatelessWidget {
                         } else {
                           center = ApiUtils.getCenterFromCoordinates(
                             List.generate(
-                              state.libraries!.length,
+                              state.libraries?.length ?? 0,
                               (index) => state.libraries![index].location,
                             ),
                           );

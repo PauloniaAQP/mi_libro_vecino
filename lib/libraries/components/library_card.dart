@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:paulonia_cache_image/paulonia_cache_image.dart';
+import 'package:paulonia_utils/paulonia_utils.dart';
 
 class LibraryCard extends StatelessWidget {
   const LibraryCard({
@@ -33,10 +34,12 @@ class LibraryCard extends StatelessWidget {
                 width: 128,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
-                  image: DecorationImage(
-                    image: PCacheImage(gsUrl),
-                    fit: BoxFit.cover,
-                  ),
+                  image: PUtils.isOnTest()
+                      ? null
+                      : DecorationImage(
+                          image: PCacheImage(gsUrl),
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
               const SizedBox(width: 16),
