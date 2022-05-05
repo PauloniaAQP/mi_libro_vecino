@@ -39,11 +39,16 @@ class QuotesPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 60),
         child: Column(
           children: [
-            const Expanded(
-              flex: 6,
+            Expanded(
+              flex: 5,
               child: Center(
-                child: Image(
-                  image: AssetImage(Assets.registerTestImg),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: MediaQuery.of(context).size.width * 0.03,
+                  ),
+                  child: const Image(
+                    image: AssetImage(Assets.registerTestImg),
+                  ),
                 ),
               ),
             ),

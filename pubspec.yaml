@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   bloc: ^8.0.2
+  catcher: ^0.6.6
   equatable: ^2.0.3
   firebase_core: 1.7.0
   flutter:
@@ -23,13 +24,13 @@ dependencies:
     path: ./mi_libro_vecino_api
   paulonia_cache_image: ^0.5.0
   paulonia_image_service: ^0.0.2
+  paulonia_error_service: ^0.3.0
   paulonia_utils: ^0.3.0
   reactive_forms: ^10.6.8
   url_launcher: ^6.1.0
 
 dev_dependencies:
   bloc_test: ^9.0.2
-  catcher: 0.6.6
   # cloud_firestore: 1.0.7
   # Temporal solution for api dependecies
   # firebase_auth: 1.0.3
@@ -40,7 +41,6 @@ dev_dependencies:
   # geoflutterfire: 3.0.0-nullsafety.1
   mocktail: ^0.2.0
   # paulonia_document_service: ^0.2.0
-  paulonia_error_service: ^0.3.0
   # paulonia_repository: ^0.3.1
   very_good_analysis: ^2.4.0
 

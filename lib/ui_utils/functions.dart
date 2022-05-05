@@ -5,19 +5,34 @@ import 'package:mi_libro_vecino_api/models/ubigeo_model.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/ubigeo_enums.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/user_enums.dart';
+import 'package:paulonia_error_service/paulonia_error_service.dart';
 
 Future<XFile?> uiPickImage({ImageSource? imageSource}) async {
   XFile? image;
   if (imageSource != null) {
     final _imagePicker = ImagePicker();
-    final pickedfile = await _imagePicker.pickImage(source: imageSource);
+    XFile? pickedfile;
+    try {
+      pickedfile = await _imagePicker.pickImage(source: imageSource);
+    } catch (e, stacktrace) {
+      // TODO(oscarnar): Find a way to handle the event
+      // when the user cancels the image picker
+      PauloniaErrorService.sendError(e, stacktrace);
+      return null;
+    }
+
     if (pickedfile != null) {
       image = pickedfile;
     }
   } else {
     final _imagePicker = ImagePicker();
-    final pickedfile =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+    XFile? pickedfile;
+    try {
+      pickedfile = await _imagePicker.pickImage(source: ImageSource.gallery);
+    } catch (e, stacktrace) {
+      PauloniaErrorService.sendError(e, stacktrace);
+      return null;
+    }
     if (pickedfile != null) {
       image = pickedfile;
     }

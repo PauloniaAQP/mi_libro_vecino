@@ -22,9 +22,7 @@ Future<void> main() async {
   await PCacheImage.init();
   await Firebase.initializeApp();
 
-  final catcherConf = PauloniaErrorService.getCatcherConfig(
-      //sentryDSN: ApiConfiguration.SENTRY_DSN_STRING,
-      );
+  final catcherConf = PauloniaErrorService.getCatcherConfig();
 
   Catcher(
     runAppFunction: () {

@@ -51,7 +51,7 @@ packages:
     source: hosted
     version: "2.1.0"
   catcher:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: catcher
       url: "https://pub.dartlang.org"
@@ -792,7 +792,7 @@ packages:
     source: hosted
     version: "0.2.0"
   paulonia_error_service:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: paulonia_error_service
       url: "https://pub.dartlang.org"

@@ -2,11 +2,15 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/globals.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
+import 'package:mi_libro_vecino_api/models/library_model.dart';
+import 'package:mi_libro_vecino_api/models/ubigeo_model.dart';
+import 'package:mi_libro_vecino_api/models/user_model.dart';
 import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
@@ -112,12 +116,12 @@ class RegisterCubit extends Cubit<RegisterState> {
           user = await AuthService.emailPasswordSignIn(userEmail, userPassword);
         } catch (error, stacktrace) {
           PauloniaErrorService.sendError(error, stacktrace);
-          emit(state.copyWith(status: RegisterStatus.error));
+          emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
           return;
         }
       }
       if (user == null) {
-        emit(state.copyWith(status: RegisterStatus.error));
+        emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
         return;
       }
 
@@ -134,7 +138,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
       if (userModel == null) {
         await AuthService.removeUser(user);
-        emit(state.copyWith(status: RegisterStatus.error));
+        emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
         return;
       }
       final libraryValuesMap = state.libraryInfoForm.value;
@@ -144,7 +148,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       if (ubigeoModel == null) {
         await _userRepository.removeUserById(userModel.id);
         await AuthService.removeUser(user);
-        emit(state.copyWith(status: RegisterStatus.error));
+        emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
         return;
       }
 
@@ -154,7 +158,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         if (userLogged == null) {
           await _userRepository.removeUserById(userModel.id);
           await AuthService.removeUser(user);
-          emit(state.copyWith(status: RegisterStatus.error));
+          emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
           return;
         }
       }
@@ -190,10 +194,10 @@ class RegisterCubit extends Cubit<RegisterState> {
       if (libraryModel == null) {
         await AuthService.removeUser(user);
         await _userRepository.removeUserById(userModel.id);
-        emit(state.copyWith(status: RegisterStatus.error));
+        emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
         return;
       } else {
-        emit(state.copyWith(status: RegisterStatus.success));
+        emit(RegisterInitial()..copyWith(status: RegisterStatus.success));
         return;
       }
     } catch (error, stacktrace) {
