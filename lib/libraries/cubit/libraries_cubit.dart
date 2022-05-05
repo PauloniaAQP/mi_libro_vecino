@@ -6,6 +6,7 @@ import 'package:mi_libro_vecino_api/models/user_model.dart';
 import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/ubigeo_enums.dart';
+import 'package:paulonia_error_service/paulonia_error_service.dart';
 
 part 'libraries_state.dart';
 
@@ -27,10 +28,10 @@ class LibrariesCubit extends Cubit<LibrariesState> {
         type,
         ubigeoCode,
         resetPagination: true,
-        cache: true,
       );
       emit(LibrariesLoaded(libraries));
-    } catch (e) {
+    } catch (e, stacktrace) {
+      PauloniaErrorService.sendError(e, stacktrace);
       emit(const LibrariesError());
     }
   }

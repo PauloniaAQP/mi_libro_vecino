@@ -14,11 +14,10 @@ import 'package:mi_libro_vecino_api/services/geo_service.dart'
     if (dart.library.io) 'package:mi_libro_vecino_api/services/test_geo_service.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 import 'package:paulonia_error_service/paulonia_error_service.dart';
+import 'package:reactive_forms/reactive_forms.dart';
 
 part 'register_state.dart';
-
 
 class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit() : super(RegisterInitial());
@@ -103,11 +102,20 @@ class RegisterCubit extends Cubit<RegisterState> {
           .control(RegisterState.passwordController)
           .value
           .toString();
-      final user = await AuthService.emailPasswordSignUp(
+      var user = await AuthService.emailPasswordSignUp(
         userEmail,
         userPassword,
         userName,
       );
+      if (user == null) {
+        try {
+          user = await AuthService.emailPasswordSignIn(userEmail, userPassword);
+        } catch (error, stacktrace) {
+          PauloniaErrorService.sendError(error, stacktrace);
+          emit(state.copyWith(status: RegisterStatus.error));
+          return;
+        }
+      }
       if (user == null) {
         emit(state.copyWith(status: RegisterStatus.error));
         return;
@@ -132,7 +140,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       final libraryValuesMap = state.libraryInfoForm.value;
 
       final ubigeoModel =
-      await GeoService.getUbigeoFromCoordinates(state.location);
+          await GeoService.getUbigeoFromCoordinates(state.location);
       if (ubigeoModel == null) {
         await _userRepository.removeUserById(userModel.id);
         await AuthService.removeUser(user);
@@ -142,7 +150,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
       if (!AuthService.isLoggedIn()) {
         final userLogged =
-        await AuthService.emailPasswordSignIn(userEmail, userPassword);
+            await AuthService.emailPasswordSignIn(userEmail, userPassword);
         if (userLogged == null) {
           await _userRepository.removeUserById(userModel.id);
           await AuthService.removeUser(user);
@@ -175,7 +183,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         provinceId: ubigeoModel.provinceId!,
         districtId: ubigeoModel.districtId!,
         description:
-        libraryValuesMap[RegisterState.descriptionController].toString(),
+            libraryValuesMap[RegisterState.descriptionController].toString(),
         website: libraryValuesMap[RegisterState.websiteController].toString(),
         photo: state.libraryPhoto,
       );
@@ -188,8 +196,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         emit(state.copyWith(status: RegisterStatus.success));
         return;
       }
-    }
-    catch (error, stacktrace) {
+    } catch (error, stacktrace) {
       PauloniaErrorService.sendError(error, stacktrace);
     }
   }

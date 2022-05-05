@@ -22,23 +22,23 @@ Future<void> main() async {
   await PCacheImage.init();
   await Firebase.initializeApp();
 
-  var catcherConf = PauloniaErrorService.getCatcherConfig(
+  final catcherConf = PauloniaErrorService.getCatcherConfig(
       //sentryDSN: ApiConfiguration.SENTRY_DSN_STRING,
-  );
+      );
 
   Catcher(
-      runAppFunction:  (){
-        unawaited(
-          bootstrap(
-                () => BlocOverrides.runZoned(
-                  () => const App(),
-              blocObserver: MyLibroVecinoBlocObserver(),
-            ),
+    runAppFunction: () {
+      unawaited(
+        bootstrap(
+          () => BlocOverrides.runZoned(
+            () => const App(),
+            blocObserver: MyLibroVecinoBlocObserver(),
           ),
-        );
-      },
-      debugConfig: catcherConf['debug'],
-      releaseConfig: catcherConf['release'],
-      profileConfig: catcherConf['profile'],
+        ),
+      );
+    },
+    debugConfig: catcherConf['debug'],
+    releaseConfig: catcherConf['release'],
+    profileConfig: catcherConf['profile'],
   );
 }
