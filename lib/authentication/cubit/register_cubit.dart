@@ -2,15 +2,11 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/globals.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
-import 'package:mi_libro_vecino_api/models/library_model.dart';
-import 'package:mi_libro_vecino_api/models/ubigeo_model.dart';
-import 'package:mi_libro_vecino_api/models/user_model.dart';
 import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
