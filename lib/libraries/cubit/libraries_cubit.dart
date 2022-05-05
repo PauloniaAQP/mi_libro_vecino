@@ -28,6 +28,7 @@ class LibrariesCubit extends Cubit<LibrariesState> {
         type,
         ubigeoCode,
         resetPagination: true,
+        limit: pageSize,
       );
       emit(LibrariesLoaded(libraries));
     } catch (e, stacktrace) {
@@ -36,7 +37,12 @@ class LibrariesCubit extends Cubit<LibrariesState> {
     }
   }
 
+  /// Id [isAllLibraries] is true, it means that all libraries
+  /// from repository are already loaded.
   Future<void> loadMoreLibraries(String ubigeoCode) async {
+    if (isAllLibraries) {
+      return;
+    }
     try {
       late UbigeoType type;
       if (ubigeoCode.length == 2) {
@@ -50,7 +56,9 @@ class LibrariesCubit extends Cubit<LibrariesState> {
         type,
         ubigeoCode,
         cache: true,
+        limit: pageSize,
       );
+      if (libraries.length < pageSize) isAllLibraries = true;
       state.libraries?.addAll(libraries);
       emit(LibrariesLoaded(state.libraries));
     } catch (e) {
@@ -79,4 +87,6 @@ class LibrariesCubit extends Cubit<LibrariesState> {
 
   final LibraryRepository _libraryRepository = Get.find<LibraryRepository>();
   final UserRepository _userRepository = Get.find<UserRepository>();
+  bool isAllLibraries = false;
+  final int pageSize = 7;
 }
