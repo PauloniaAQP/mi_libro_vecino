@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   bloc: ^8.0.2
+  catcher: ^0.6.6
   equatable: ^2.0.3
   firebase_core: 1.7.0
   flutter:
@@ -17,17 +18,27 @@ dependencies:
     sdk: flutter
   flutter_map: ^0.14.0
   go_router: ^3.0.1
-  image_picker: ^0.8.4+4
+  image_picker: ^0.8.4+10
   intl: ^0.17.0
   mi_libro_vecino_api:
     path: ./mi_libro_vecino_api
+  paulonia_error_service: ^0.3.0
+  paulonia_utils: ^0.3.0
   reactive_forms: ^10.6.8
 
 dev_dependencies:
   bloc_test: ^9.0.2
+  # cloud_firestore: 1.0.7
+  # Temporal solution for api dependecies
+  # firebase_auth: 1.0.3
+  # firebase_storage: 10.0.1
   flutter_test:
     sdk: flutter
+  # geocoder: 0.2.1
+  # geoflutterfire: 3.0.0-nullsafety.1
   mocktail: ^0.2.0
+  # paulonia_document_service: ^0.2.0
+  # paulonia_repository: ^0.3.1
   very_good_analysis: ^2.4.0
 
 flutter:
@@ -37,6 +48,7 @@ flutter:
     - assets/images/
     - assets/images/test_images/
     - assets/icons/
+    - assets/ubigeo/
   fonts:
     - family: NotoSans
       fonts:

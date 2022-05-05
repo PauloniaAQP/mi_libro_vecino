@@ -1,6 +1,6 @@
 part of 'login_cubit.dart';
 
-abstract class LoginState extends Equatable {
+class LoginState extends Equatable {
   const LoginState({
     required this.loginForm,
   });
@@ -10,7 +10,15 @@ abstract class LoginState extends Equatable {
   final FormGroup loginForm;
 
   @override
-  List<Object> get props => [loginForm];
+  List<Object> get props => [loginForm.value];
+
+  LoginState copyWith({
+    required FormGroup loginForm,
+  }) {
+    return LoginState(
+      loginForm: this.loginForm,
+    );
+  }
 }
 
 class LoginInitial extends LoginState {
@@ -31,4 +39,20 @@ class LoginInitial extends LoginState {
             ),
           }),
         );
+}
+
+class LoginSuccess extends LoginState {
+  const LoginSuccess({required FormGroup loginForm})
+      : super(loginForm: loginForm);
+}
+
+class LoginLoading extends LoginState {
+  const LoginLoading({required FormGroup loginForm})
+      : super(loginForm: loginForm);
+}
+
+class LoginError extends LoginState {
+  const LoginError({required FormGroup loginForm, required this.loginStatus})
+      : super(loginForm: loginForm);
+  final status.LoginState loginStatus;
 }

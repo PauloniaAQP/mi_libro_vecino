@@ -67,7 +67,7 @@ jobs:
     - name: Analyze
       run: flutter analyze lib    
     - name: Test
-      run: flutter test --coverage  
+      run: flutter test --coverage
     - name: Build
       run: flutter build web --target lib/main_development.dart
     - uses: codecov/codecov-action@v2

@@ -119,5 +119,9 @@
     "adminPageMapLocation": "Ubicación en mapa",
     "adminPagePersonalLabels": "Etiquetas personalizadas",
     "adminPageLogoutButton": "Cerrar sesión",
-    "messageValidationHours": "El formato debe ser 12:00"
+    "messageValidationHours": "El formato debe ser 12:00",
+    "messageValidationToUnknownAddress": "Lugar no identificado",
+    "messageValidationToLoadingAddress": "Cargando...",
+    "locationDisableDialogTitle": "Permiso de ubicación denegado",
+    "locationDisableDialogContent": "Por favor active el permiso de ubicación para continuar"
 }

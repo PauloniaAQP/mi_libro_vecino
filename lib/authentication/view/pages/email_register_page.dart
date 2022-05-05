@@ -62,6 +62,7 @@ class EmailRegisterPage extends StatelessWidget {
                               .l10n.registerPageEnterEmailErrorTextRequired,
                           ValidationMessage.email:
                               context.l10n.registerPageEnterEmailErrorTextEmail,
+                          CustomValidators.alreadyExists: 'El email ya existe',
                         },
                       ),
                       const SizedBox(height: 15),
@@ -74,6 +75,9 @@ class EmailRegisterPage extends StatelessWidget {
                               .l10n.registerPagePasswordErrorTextRequired,
                           ValidationMessage.minLength: context
                               .l10n.registerPagePasswordErrorTextMinLength,
+                          // TODO(oscarnar): Internationalization
+                          ValidationMessage.mustMatch:
+                              'Las contraseñas no coinciden',
                         },
                         obscureText: true,
                       ),
@@ -89,6 +93,8 @@ class EmailRegisterPage extends StatelessWidget {
                               .registerPageConfirmPasswordErrorTextRequired,
                           ValidationMessage.minLength: context.l10n
                               .registerPageConfirmPasswordErrorTextMinLength,
+                          ValidationMessage.mustMatch:
+                              'Las contraseñas no coinciden',
                         },
                         obscureText: true,
                       ),

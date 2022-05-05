@@ -2,10 +2,23 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/globals.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
+import 'package:mi_libro_vecino_api/models/library_model.dart';
+import 'package:mi_libro_vecino_api/models/ubigeo_model.dart';
+import 'package:mi_libro_vecino_api/models/user_model.dart';
+import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
+import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
+import 'package:mi_libro_vecino_api/services/auth_service.dart';
+import 'package:mi_libro_vecino_api/services/geo_service.dart'
+    if (dart.library.io) 'package:mi_libro_vecino_api/services/test_geo_service.dart';
+import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
+import 'package:mi_libro_vecino_api/utils/utils.dart';
+import 'package:paulonia_error_service/paulonia_error_service.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 part 'register_state.dart';
@@ -14,7 +27,9 @@ class RegisterCubit extends Cubit<RegisterState> {
   RegisterCubit() : super(RegisterInitial());
 
   void nextPage() {
-    emit(state.copyWith(index: state.index + 1));
+    if (_validateFieldsInPage(state.index)) {
+      emit(state.copyWith(index: state.index + 1));
+    }
   }
 
   void backPage() {
@@ -36,16 +51,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   Future<void> onTapUploadLibraryPhoto() async {
     emit(
-      RegisterPhotoLoading(
-        libraryInfoForm: state.libraryInfoForm,
-        personInfoForm: state.personInfoForm,
-        registerForm: state.registerForm,
-        index: state.index,
-        services: state.services,
-        closingController: state.closingController,
-        libraryRolController: state.libraryRolController,
-        openingController: state.openingController,
-      ),
+      RegisterPhotoLoading(state),
     );
     final image = await uiPickImage();
     Uint8List? imageBytes;
@@ -62,16 +68,7 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   Future<void> onTapUploadPersonalPhoto() async {
     emit(
-      RegisterPhotoLoading(
-        libraryInfoForm: state.libraryInfoForm,
-        personInfoForm: state.personInfoForm,
-        registerForm: state.registerForm,
-        index: state.index,
-        services: state.services,
-        closingController: state.closingController,
-        libraryRolController: state.libraryRolController,
-        openingController: state.openingController,
-      ),
+      RegisterPhotoLoading(state),
     );
     final image = await uiPickImage();
     Uint8List? imageBytes;
@@ -85,4 +82,179 @@ class RegisterCubit extends Cubit<RegisterState> {
       ),
     );
   }
+
+  Future<void> onTapRegisterAndContinue() async {
+    try {
+      state.registerForm.markAllAsTouched();
+      state.personInfoForm.markAllAsTouched();
+      state.libraryInfoForm.markAllAsTouched();
+      if (!state.registerForm.valid &&
+          !state.personInfoForm.valid &&
+          !state.libraryInfoForm.valid) {
+        return;
+      }
+
+      final userName = state.personInfoForm
+          .control(RegisterState.fullnameController)
+          .value
+          .toString();
+      final userEmail = state.registerForm
+          .control(RegisterState.emailController)
+          .value
+          .toString();
+      final userPassword = state.registerForm
+          .control(RegisterState.passwordController)
+          .value
+          .toString();
+      User? user;
+
+      user = await AuthService.emailPasswordSignUp(
+        userEmail,
+        userPassword,
+        userName,
+      );
+
+      if (user == null) {
+        emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+        return;
+      }
+
+      if (!AuthService.isLoggedIn()) {
+        final userLogged =
+            await AuthService.emailPasswordSignIn(userEmail, userPassword);
+        if (userLogged == null) {
+          await _userRepository.removeUserById(user.uid);
+          await AuthService.removeUser(user);
+          emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+          return;
+        }
+      }
+      UserModel? userModel;
+
+      userModel = await _userRepository.createUser(
+        userId: user.uid,
+        name: userName,
+        email: userEmail,
+        phone: state.personInfoForm
+            .control(RegisterState.phoneController)
+            .value
+            .toString(),
+        photo: state.personPhoto,
+      );
+
+      if (userModel == null) {
+        await AuthService.removeUser(user);
+        emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+        return;
+      }
+      final libraryValuesMap = state.libraryInfoForm.value;
+
+      UbigeoModel? ubigeoModel;
+
+      ubigeoModel = await GeoService.getUbigeoFromCoordinates(state.location);
+
+      if (ubigeoModel == null) {
+        await _userRepository.removeUserById(userModel.id);
+        await AuthService.removeUser(user);
+        emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+        return;
+      }
+
+      LibraryModel? libraryModel;
+
+      libraryModel = await _libraryRepository.createLibrary(
+        userId: user.uid,
+        name: libraryValuesMap[RegisterState.libraryNameController].toString(),
+        type: LibraryType.values[int.parse(state.libraryRolController.text)],
+        openingHour: fromStringToTimeOfDay(
+          libraryValuesMap[RegisterState.openTimeController].toString(),
+        ),
+        closingHour: fromStringToTimeOfDay(
+          libraryValuesMap[RegisterState.closeTimeController].toString(),
+        ),
+        address: libraryValuesMap[RegisterState.addressController].toString(),
+        location: state.location!,
+        services: state.services.keys
+            .where((key) => state.services[key] == true)
+            .toList(),
+        tags: state.libraryCategories,
+
+        // TODO(oscarnar): get search keys
+        searchKeys: state.libraryCategories,
+
+        departmentId: ubigeoModel.departmentId,
+        provinceId: ubigeoModel.provinceId!,
+        districtId: ubigeoModel.districtName!,
+        description:
+            libraryValuesMap[RegisterState.descriptionController].toString(),
+        website: libraryValuesMap[RegisterState.websiteController].toString(),
+        photo: state.libraryPhoto,
+      );
+
+      if (libraryModel == null) {
+        await AuthService.removeUser(user);
+        await _userRepository.removeUserById(userModel.id);
+        emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+        return;
+      } else {
+        emit(state.copyWith(status: RegisterStatus.success));
+        return;
+      }
+    } catch (e, stacktrace) {
+      PauloniaErrorService.sendError(e, stacktrace);
+    }
+  }
+
+  void setMapLocation(Coordinates coordinates) {
+    emit(state.copyWith(location: coordinates));
+  }
+
+  /// Validate fields in the current index page
+  /// Photos are optional
+  bool _validateFieldsInPage(int index) {
+    switch (index) {
+      case 0:
+        state.registerForm.markAllAsTouched();
+        return state.registerForm.valid;
+      case 1:
+        state.personInfoForm.markAllAsTouched();
+        return state.personInfoForm.valid;
+      case 2:
+        return true;
+      case 3:
+        final nameValid = state.libraryInfoForm
+                .controls[RegisterState.libraryNameController]?.valid ??
+            false;
+        final websiteValid = state.libraryInfoForm
+                .controls[RegisterState.websiteController]?.valid ??
+            false;
+        final descriptionValid = state.libraryInfoForm
+                .controls[RegisterState.descriptionController]?.valid ??
+            false;
+        final openValid = state.libraryInfoForm
+                .controls[RegisterState.openTimeController]?.valid ??
+            false;
+        final closeValid = state.libraryInfoForm
+                .controls[RegisterState.closeTimeController]?.valid ??
+            false;
+        return nameValid &&
+            websiteValid &&
+            descriptionValid &&
+            openValid &&
+            closeValid;
+      case 4:
+        return state.services.values.any((value) => value == true);
+      case 5:
+        return state.libraryInfoForm.controls[RegisterState.addressController]
+                ?.valid ??
+            false;
+      case 6:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  UserRepository get _userRepository => Get.find();
+  LibraryRepository get _libraryRepository => Get.find();
 }

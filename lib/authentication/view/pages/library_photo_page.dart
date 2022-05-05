@@ -4,6 +4,8 @@ import 'package:mi_libro_vecino/authentication/components/pick_image.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
+import 'package:mi_libro_vecino/ui_utils/functions.dart';
+import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 
 class LibraryPhotoPage extends StatelessWidget {
   const LibraryPhotoPage({Key? key}) : super(key: key);
@@ -13,12 +15,19 @@ class LibraryPhotoPage extends StatelessWidget {
     final l10n = context.l10n;
     return BlocBuilder<RegisterCubit, RegisterState>(
       builder: (context, state) {
+        final libraryRol = getStringRolByType(
+          LibraryType.values[int.parse(
+            context.read<RegisterCubit>().state.libraryRolController.text == ''
+                ? '0'
+                : context.read<RegisterCubit>().state.libraryRolController.text,
+          )],
+          l10n,
+        );
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              l10n.registerPageLibraryInformationTitle +
-                  state.libraryRolController.text,
+              l10n.registerPageLibraryInformationTitle + libraryRol,
               style: Theme.of(context).textTheme.headline3!.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -40,12 +49,12 @@ class LibraryPhotoPage extends StatelessWidget {
                     Center(
                       child: PickImage(
                         image: state.libraryPhotoBytes,
-                        isLoading: state is RegisterPhotoLoading,
                         pickLabel: l10n.registerPageLibraryPhotoButtonLabel,
                         modifyLabel:
                             l10n.registerPageLibraryChangePhotoButtonLabel,
                         onTap: () {
-                          BlocProvider.of<RegisterCubit>(context)
+                          context
+                              .read<RegisterCubit>()
                               .onTapUploadLibraryPhoto();
                         },
                         selectedPhotoIconPath: Assets.imageWhiteIcon,

@@ -6,8 +6,10 @@ import 'package:mi_libro_vecino/collaborators/cubit/collaborator_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
+import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dropdown_button.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
+import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class CollaboratorsLibraryForm extends StatelessWidget {
@@ -18,12 +20,6 @@ class CollaboratorsLibraryForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final rolesList = <String>[
-      l10n.registerPageRolMediator,
-      l10n.registerPageRolLibrary,
-      l10n.registerPageRolEditorial,
-      l10n.registerPageRolBookshop,
-    ];
     return SingleChildScrollView(
       child: BlocBuilder<CollaboratorCubit, CollaboratorState>(
         builder: (context, state) {
@@ -36,46 +32,36 @@ class CollaboratorsLibraryForm extends StatelessWidget {
               children: [
                 PTextField(
                   label: context.l10n.registerPageLibraryNameLabel,
-                  hintText:
-                      context.l10n.registerPageLibraryNameHintText,
-                  formControlName:
-                      CollaboratorState.libraryNameController,
+                  hintText: context.l10n.registerPageLibraryNameHintText,
+                  formControlName: CollaboratorState.libraryNameController,
                   validationMessages: {
-                    ValidationMessage.required: context.l10n
-                        .registerPageLibraryNameErrorTextRequired,
+                    ValidationMessage.required:
+                        context.l10n.registerPageLibraryNameErrorTextRequired,
                   },
                 ),
                 PTextField(
                   label: context.l10n.registerPageLibraryWebLabel,
-                  hintText:
-                      context.l10n.registerPageLibraryWebHintText,
-                  formControlName:
-                      CollaboratorState.websiteController,
+                  hintText: context.l10n.registerPageLibraryWebHintText,
+                  formControlName: CollaboratorState.websiteController,
                   keyboardType: TextInputType.url,
                 ),
                 PTextField(
-                  label: context
-                      .l10n.registerPageLibraryDescriptionLabel,
-                  hintText: context
-                      .l10n.registerPageLibraryDescriptionHintText,
-                  formControlName:
-                      CollaboratorState.descriptionController,
+                  label: context.l10n.registerPageLibraryDescriptionLabel,
+                  hintText: context.l10n.registerPageLibraryDescriptionHintText,
+                  formControlName: CollaboratorState.descriptionController,
                   keyboardType: TextInputType.number,
                   validationMessages: {
-                    ValidationMessage.required: context
-                        .l10n.registerPageLibraryDescriptionErrorText,
+                    ValidationMessage.required:
+                        context.l10n.registerPageLibraryDescriptionErrorText,
                   },
                 ),
                 Row(
                   children: [
                     Expanded(
                       child: PTextField(
-                        label: context
-                            .l10n.registerPageLibraryOpeningTimeLabel,
-                        hintText: context
-                            .l10n.registerPageLibraryTimeHintText,
-                        formControlName:
-                            CollaboratorState.openTimeController,
+                        label: context.l10n.registerPageLibraryOpeningTimeLabel,
+                        hintText: context.l10n.registerPageLibraryTimeHintText,
+                        formControlName: CollaboratorState.openTimeController,
                         keyboardType: TextInputType.number,
                         suffixIcon: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -98,20 +84,17 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                           ],
                         ),
                         validationMessages: {
-                          ValidationMessage.required: context.l10n
-                              .registerPageLibraryTimeErrorTextRequired,
+                          ValidationMessage.required: context
+                              .l10n.registerPageLibraryTimeErrorTextRequired,
                         },
                       ),
                     ),
                     const SizedBox(width: 30),
                     Expanded(
                       child: PTextField(
-                        label: context
-                            .l10n.registerPageLibraryClosingTimeLabel,
-                        hintText: context
-                            .l10n.registerPageLibraryTimeHintText,
-                        formControlName:
-                            CollaboratorState.closeTimeController,
+                        label: context.l10n.registerPageLibraryClosingTimeLabel,
+                        hintText: context.l10n.registerPageLibraryTimeHintText,
+                        formControlName: CollaboratorState.closeTimeController,
                         keyboardType: TextInputType.number,
                         suffixIcon: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -134,8 +117,8 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                           ],
                         ),
                         validationMessages: {
-                          ValidationMessage.required: context.l10n
-                              .registerPageLibraryTimeErrorTextRequired,
+                          ValidationMessage.required: context
+                              .l10n.registerPageLibraryTimeErrorTextRequired,
                         },
                       ),
                     ),
@@ -146,10 +129,7 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Text(
                     context.l10n.registerPageLibraryRolLabel,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2!
-                        .copyWith(
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
                           fontWeight: FontWeight.w500,
                           fontSize: 13,
                           color: PColors.gray1,
@@ -157,38 +137,38 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                   ),
                 ),
                 PDropdownButton(
-                  valuesList: rolesList,
+                  valuesList: List.generate(
+                    LibraryType.values.length,
+                    (index) =>
+                        getStringRolByType(LibraryType.values[index], l10n),
+                  ),
                   controller: state.libraryRolController,
                   isExpanded: true,
                 ),
                 PTextField(
                   label: l10n.registerPageLibraryAddressLabel,
                   hintText: l10n.registerPageLibraryAddressHintText,
-                  formControlName:
-                      CollaboratorState.addressController,
+                  formControlName: CollaboratorState.addressController,
                   validationMessages: {
-                    ValidationMessage.required: l10n
-                        .registerPageLibraryAddressErrorTextRequired,
+                    ValidationMessage.required:
+                        l10n.registerPageLibraryAddressErrorTextRequired,
                   },
                 ),
                 const SizedBox(height: 5),
                 Text(
                   l10n.registerPageLibraryMapLabel,
-                  style:
-                      Theme.of(context).textTheme.bodyText2!.copyWith(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 13,
-                            color: PColors.gray1,
-                          ),
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                        color: PColors.gray1,
+                      ),
                 ),
                 ReactiveTextField<String>(
-                  formControlName:
-                      CollaboratorState.addressController,
+                  formControlName: CollaboratorState.addressController,
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     suffixIcon: (state.libraryInfoForm.value[
-                                CollaboratorState
-                                    .mapAddressController] !=
+                                CollaboratorState.mapAddressController] !=
                             '')
                         ? const SizedBox(
                             height: 20,
@@ -199,8 +179,7 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                           )
                         : Icon(
                             Icons.check,
-                            color:
-                                Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                     suffixIconConstraints: const BoxConstraints(
                       minWidth: 20,
@@ -215,8 +194,7 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                 Container(
                   height: MediaQuery.of(context).size.height * 0.38,
                   constraints: BoxConstraints(
-                    maxHeight:
-                        MediaQuery.of(context).size.height * 0.5,
+                    maxHeight: MediaQuery.of(context).size.height * 0.5,
                     minHeight: 200,
                   ),
                   child: FlutterMap(
@@ -237,8 +215,7 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                             height: 80,
                             point: LatLng(51.5, -0.09),
                             builder: (ctx) => const Image(
-                              image:
-                                  AssetImage(Assets.locationPinIcon),
+                              image: AssetImage(Assets.locationPinIcon),
                               height: 79,
                             ),
                           ),

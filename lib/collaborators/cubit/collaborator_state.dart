@@ -24,6 +24,11 @@ class CollaboratorState extends Equatable {
 
   final TextEditingController openingController;
   final TextEditingController closingController;
+
+  /// This controller has only int values
+  /// and is used to select the library type index
+  /// from LibraryType -> [mediator,library,editorial,bookshop]
+  /// This controller is used to select the library type in the PBottomDrown
   final TextEditingController libraryRolController;
 
   final Map<String, bool> services;
@@ -81,8 +86,7 @@ class CollaboratorInitial extends CollaboratorState {
               ],
             ),
             CollaboratorState.websiteController: FormControl<String>(
-              validators: [
-              ],
+              validators: [],
             ),
             CollaboratorState.descriptionController: FormControl<String>(
               validators: [

@@ -25,7 +25,7 @@ class SearchPage extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () => context.go(Routes.login),
             child: Text(
               l10n.searchPageImLibraryButton,
               style: Theme.of(context).textTheme.subtitle1!.apply(
@@ -60,14 +60,14 @@ class SearchPage extends StatelessWidget {
           ),
         ],
       ),
-      body: Center(
-        child: Container(
-          padding: const EdgeInsets.fromLTRB(20, 0, 20, 80),
-          width: 800,
-          constraints: BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width * 0.5,
-          ),
-          child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 80),
+            width: 800,
+            constraints: BoxConstraints(
+              minWidth: MediaQuery.of(context).size.width * 0.5,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -162,7 +162,8 @@ class SearchPage extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 20),
                 child: TextButton(
                   onPressed: () {
-                    GoRouter.of(context).go(Routes.admin);
+                    const queryAdmin = '?isAdmin=true';
+                    GoRouter.of(context).go(Routes.login + queryAdmin);
                   },
                   child: Text(
                     l10n.searchPageAdminButton,
