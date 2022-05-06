@@ -1,20 +1,38 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
+import 'package:mi_libro_vecino/libraries/cubit/libraries_cubit.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
+import 'package:mi_libro_vecino/ui_utils/functions.dart';
+import 'package:mi_libro_vecino_api/models/library_model.dart';
+import 'package:mi_libro_vecino_api/models/user_model.dart';
+import 'package:mi_libro_vecino_api/utils/utils.dart';
+import 'package:paulonia_cache_image/paulonia_cache_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InfomationLibrary extends StatelessWidget {
   const InfomationLibrary({
     Key? key,
-    required this.libraryId,
+    this.library,
   }) : super(key: key);
 
-  final String libraryId;
+  final LibraryModel? library;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
+    if (library == null) {
+      return Center(
+        key: const Key('notFoundResultsKey'),
+        child: Text(l10n.librariesListPageNotFoundResults),
+      );
+    }
+    final openHourString = ApiUtils.timeOfDayToString(library!.openingHour);
+    final closeHourString = ApiUtils.timeOfDayToString(library!.closingHour);
     return Scaffold(
       body: Column(
         children: [
@@ -28,31 +46,12 @@ class InfomationLibrary extends StatelessWidget {
                   Container(
                     height: 280,
                     width: double.infinity,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage(
-                          Assets.testImg,
-                        ),
+                        image: PCacheImage(library!.gsUrl),
                         fit: BoxFit.cover,
                       ),
                     ),
-
-                    // TODO(oscarnar): For future, now pop() behavior is
-                    // different from the default
-                    // child: Align(
-                    //   alignment: Alignment.topLeft,
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.all(10),
-                    //     child: IconButton(
-                    //       icon: Image.asset(
-                    //         Assets.backIcon,
-                    //         color: Colors.white,
-                    //       ),
-                    //       iconSize: 45,
-                    //       onPressed: () {},
-                    //     ),
-                    //   ),
-                    // ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
@@ -60,16 +59,16 @@ class InfomationLibrary extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: List.generate(
-                          3,
-                          (index) => const Chip(
-                            label: Text('Etiquetas propias'),
+                          library!.services.length,
+                          (index) => Chip(
+                            label: Text(library!.services[index]),
                           ),
                         ),
                       ),
                     ),
                   ),
                   Text(
-                    'La librería que tiene todo, en el centro de Arequipa',
+                    library!.name,
                     style: Theme.of(context).textTheme.headline2,
                   ),
                   Padding(
@@ -79,7 +78,7 @@ class InfomationLibrary extends StatelessWidget {
                         const Icon(Icons.location_on),
                         const SizedBox(width: 14),
                         Text(
-                          'Avenida Arequipa 40041',
+                          library!.address,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.caption!.copyWith(
                                 fontSize: 16,
@@ -89,38 +88,51 @@ class InfomationLibrary extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Row(
-                      children: [
-                        const Icon(Icons.language_outlined),
-                        const SizedBox(width: 6),
-                        Flexible(
-                          child: TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              l10n.libraryInformationWebsite,
-                              style: const TextStyle(
-                                color: PColors.blue,
-                                decoration: TextDecoration.underline,
-                                fontWeight: FontWeight.w300,
-                                height: 1.5,
-                                fontSize: 16,
+                  Visibility(
+                    visible: library!.website != null,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.language_outlined),
+                          const SizedBox(width: 6),
+                          Flexible(
+                            child: TextButton(
+                              onPressed: () {
+                                try {
+                                  launchUrl(
+                                    Uri.parse(library!.website!),
+                                    webOnlyWindowName: '_blank',
+                                    mode: LaunchMode.externalApplication,
+                                  );
+                                } catch (e) {
+                                  log(e.toString());
+                                }
+                              },
+                              child: Text(
+                                l10n.libraryInformationWebsite,
+                                style: const TextStyle(
+                                  color: PColors.blue,
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w300,
+                                  height: 1.5,
+                                  fontSize: 16,
+                                ),
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ),
-                        const Icon(
-                          Icons.north_east_outlined,
-                          color: PColors.blue,
-                        ),
-                      ],
+                          const Icon(
+                            Icons.north_east_outlined,
+                            color: PColors.blue,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 18),
                   Text(
-                    'Amet minim mollit non deserunt ullamco est sit aliqua.',
+                    library!.description,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 8,
                     style: Theme.of(context).textTheme.caption!.copyWith(
@@ -129,7 +141,7 @@ class InfomationLibrary extends StatelessWidget {
                         ),
                   ),
                   const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 40),
+                    padding: EdgeInsets.symmetric(vertical: 30),
                     child: Divider(),
                   ),
                   Row(
@@ -171,7 +183,7 @@ class InfomationLibrary extends StatelessWidget {
                                 const SizedBox(width: 6),
                                 Expanded(
                                   child: Text(
-                                    '9:00 a.m. - 10:00 p.m.',
+                                    '$openHourString - $closeHourString',
                                     style: Theme.of(context)
                                         .textTheme
                                         .caption!
@@ -207,7 +219,7 @@ class InfomationLibrary extends StatelessWidget {
                                 const SizedBox(width: 6),
                                 Expanded(
                                   child: Text(
-                                    '9:00 a.m. - 10:00 p.m.',
+                                    getStringRolByType(library!.type, l10n),
                                     style: Theme.of(context)
                                         .textTheme
                                         .caption!
@@ -243,7 +255,7 @@ class InfomationLibrary extends StatelessWidget {
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
-                          'Presto libros - Vendo libros - Edito libros',
+                          library!.services.join(', '),
                           style: Theme.of(context).textTheme.caption!.copyWith(
                                 color: PColors.gray1,
                                 fontSize: 16,
@@ -254,7 +266,7 @@ class InfomationLibrary extends StatelessWidget {
                     ],
                   ),
                   const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 40),
+                    padding: EdgeInsets.symmetric(vertical: 30),
                     child: Divider(),
                   ),
                   Row(
@@ -274,62 +286,80 @@ class InfomationLibrary extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 18),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 93,
-                          height: 93,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: const DecorationImage(
-                              image: AssetImage(Assets.testImg),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 17),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Jessica Robles',
-                                style: Theme.of(context).textTheme.button,
-                                overflow: TextOverflow.ellipsis,
+                  FutureBuilder<UserModel?>(
+                    future: context
+                        .read<LibrariesCubit>()
+                        .getOwner(library!.ownerId),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState != ConnectionState.done) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      if (snapshot.hasError || snapshot.data == null) {
+                        return const Center(
+                          child: Text('No se encontro el usuario'),
+                        );
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 18),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 93,
+                              height: 93,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image:
+                                      PCacheImage(snapshot.data?.gsUrl ?? ''),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                              const SizedBox(height: 10),
-                              Row(
+                            ),
+                            const SizedBox(width: 17),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Image.asset(
-                                    Assets.phoneIcon,
-                                    width: 18,
-                                    height: 18,
-                                    color: PColors.gray1,
+                                  Text(
+                                    snapshot.data?.name ?? '',
+                                    style: Theme.of(context).textTheme.button,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: Text(
-                                      '+51 999 999 999',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .caption!
-                                          .copyWith(
-                                            color: PColors.gray1,
-                                            fontSize: 16,
-                                          ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        Assets.phoneIcon,
+                                        width: 18,
+                                        height: 18,
+                                        color: PColors.gray1,
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Text(
+                                          snapshot.data?.phone ?? '',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption!
+                                              .copyWith(
+                                                color: PColors.gray1,
+                                                fontSize: 16,
+                                              ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                   const SizedBox(
                     height: 20,

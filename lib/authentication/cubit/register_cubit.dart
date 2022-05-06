@@ -2,15 +2,11 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/globals.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
-import 'package:mi_libro_vecino_api/models/library_model.dart';
-import 'package:mi_libro_vecino_api/models/ubigeo_model.dart';
-import 'package:mi_libro_vecino_api/models/user_model.dart';
 import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
@@ -106,32 +102,26 @@ class RegisterCubit extends Cubit<RegisterState> {
           .control(RegisterState.passwordController)
           .value
           .toString();
-      User? user;
-
-      user = await AuthService.emailPasswordSignUp(
+      var user = await AuthService.emailPasswordSignUp(
         userEmail,
         userPassword,
         userName,
       );
-
+      if (user == null) {
+        try {
+          user = await AuthService.emailPasswordSignIn(userEmail, userPassword);
+        } catch (error, stacktrace) {
+          PauloniaErrorService.sendError(error, stacktrace);
+          emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+          return;
+        }
+      }
       if (user == null) {
         emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
         return;
       }
 
-      if (!AuthService.isLoggedIn()) {
-        final userLogged =
-            await AuthService.emailPasswordSignIn(userEmail, userPassword);
-        if (userLogged == null) {
-          await _userRepository.removeUserById(user.uid);
-          await AuthService.removeUser(user);
-          emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
-          return;
-        }
-      }
-      UserModel? userModel;
-
-      userModel = await _userRepository.createUser(
+      final userModel = await _userRepository.createUser(
         userId: user.uid,
         name: userName,
         email: userEmail,
@@ -149,10 +139,8 @@ class RegisterCubit extends Cubit<RegisterState> {
       }
       final libraryValuesMap = state.libraryInfoForm.value;
 
-      UbigeoModel? ubigeoModel;
-
-      ubigeoModel = await GeoService.getUbigeoFromCoordinates(state.location);
-
+      final ubigeoModel =
+          await GeoService.getUbigeoFromCoordinates(state.location);
       if (ubigeoModel == null) {
         await _userRepository.removeUserById(userModel.id);
         await AuthService.removeUser(user);
@@ -160,9 +148,18 @@ class RegisterCubit extends Cubit<RegisterState> {
         return;
       }
 
-      LibraryModel? libraryModel;
+      if (!AuthService.isLoggedIn()) {
+        final userLogged =
+            await AuthService.emailPasswordSignIn(userEmail, userPassword);
+        if (userLogged == null) {
+          await _userRepository.removeUserById(userModel.id);
+          await AuthService.removeUser(user);
+          emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+          return;
+        }
+      }
 
-      libraryModel = await _libraryRepository.createLibrary(
+      final libraryModel = await _libraryRepository.createLibrary(
         userId: user.uid,
         name: libraryValuesMap[RegisterState.libraryNameController].toString(),
         type: LibraryType.values[int.parse(state.libraryRolController.text)],
@@ -184,24 +181,23 @@ class RegisterCubit extends Cubit<RegisterState> {
 
         departmentId: ubigeoModel.departmentId,
         provinceId: ubigeoModel.provinceId!,
-        districtId: ubigeoModel.districtName!,
+        districtId: ubigeoModel.districtId!,
         description:
             libraryValuesMap[RegisterState.descriptionController].toString(),
         website: libraryValuesMap[RegisterState.websiteController].toString(),
         photo: state.libraryPhoto,
       );
-
       if (libraryModel == null) {
         await AuthService.removeUser(user);
         await _userRepository.removeUserById(userModel.id);
         emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
         return;
       } else {
-        emit(state.copyWith(status: RegisterStatus.success));
+        emit(RegisterInitial()..copyWith(status: RegisterStatus.success));
         return;
       }
-    } catch (e, stacktrace) {
-      PauloniaErrorService.sendError(e, stacktrace);
+    } catch (error, stacktrace) {
+      PauloniaErrorService.sendError(error, stacktrace);
     }
   }
 

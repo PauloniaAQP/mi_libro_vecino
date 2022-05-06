@@ -1,33 +1,28 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:mi_libro_vecino_api/models/ubigeo_model.dart';
+import 'package:mi_libro_vecino_api/services/ubigeo_service.dart';
 
 part 'search_state.dart';
 
 class SearchCubit extends Cubit<SearchState> {
-  SearchCubit() : super(const SearchInitial());
-
-  static final List<String> _places = [
-    'Arequipa',
-    'Lima',
-    'Cusco',
-    'Machu Picchu',
-    'Caylloma',
-    'Cayma',
-  ];
+  SearchCubit(this.ubigeoService) : super(const SearchInitial());
 
   void onSearchQueryChanged(String query) {
     if (query == '') {
       emit(const SearchInitial());
     } else {
-      final searchResults = _places
-          .where(
-            (String item) => item.toLowerCase().startsWith(
-                  query.toLowerCase(),
-                ),
-          )
-          .toList();
+      ubigeoService.init();
+      final searchResults = ubigeoService.searchUbigeo(query);
+
       emit(SearchQueryChanged(searchResults));
     }
   }
+
+  void cleanSearchQuery() {
+    emit(const SearchInitial());
+  }
+
+  UbigeoService ubigeoService;
 }

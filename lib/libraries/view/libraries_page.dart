@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:mi_libro_vecino/l10n/l10n.dart';
+import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/libraries/components/libraries_appbar.dart';
 import 'package:mi_libro_vecino/libraries/components/libraries_list.dart';
 import 'package:mi_libro_vecino/libraries/components/library_info.dart';
+import 'package:mi_libro_vecino/libraries/components/locations_map.dart';
 import 'package:mi_libro_vecino/libraries/cubit/libraries_cubit.dart';
 import 'package:mi_libro_vecino/search/widgets/search_widget.dart';
-import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
+import 'package:mi_libro_vecino_api/utils/utils.dart';
 
 class LibrariesPage extends StatelessWidget {
   const LibrariesPage({
@@ -22,12 +21,18 @@ class LibrariesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
+    if (libraryIdQuery != null) {
+      context.read<LibrariesCubit>().getLibrary(libraryIdQuery!);
+    } else if (searchQuery != null) {
+      context.read<LibrariesCubit>().loadLibraries(searchQuery!);
+    }
     return Scaffold(
       appBar: const LibrariesAppBar(),
       body: BlocBuilder<LibrariesCubit, LibrariesState>(
         builder: (context, state) {
+          if (state is LibrariesLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -38,7 +43,7 @@ class LibrariesPage extends StatelessWidget {
                     children: [
                       if (libraryIdQuery != null)
                         InfomationLibrary(
-                          libraryId: libraryIdQuery ?? '',
+                          library: state.currentLibrary,
                         )
                       else
                         LibrariesList(
@@ -56,59 +61,23 @@ class LibrariesPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20),
                     child: BlocBuilder<LibrariesCubit, LibrariesState>(
                       builder: (context, state) {
-                        return Stack(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: FlutterMap(
-                                options: MapOptions(
-                                  center: LatLng(-16.39, -71.53),
-                                  zoom: 15,
-                                ),
-                                layers: [
-                                  TileLayerOptions(
-                                    urlTemplate:
-                                        'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                    subdomains: ['a', 'b', 'c'],
-                                  ),
-                                  MarkerLayerOptions(
-                                    markers: [
-                                      Marker(
-                                        width: 80,
-                                        height: 80,
-                                        point: LatLng(-16.39, -71.53),
-                                        builder: (ctx) => Image.asset(
-                                          Assets.locationIcon,
-                                          height: 100,
-                                          width: 100,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                        final currentLocation =
+                            context.read<AppUserBloc>().state.currentLocation;
+                        Coordinates? center;
+                        if (libraryIdQuery != null) {
+                          center = state.currentLibrary?.location;
+                        } else {
+                          center = ApiUtils.getCenterFromCoordinates(
+                            List.generate(
+                              state.libraries?.length ?? 0,
+                              (index) => state.libraries![index].location,
                             ),
-                            if (searchQuery != null && state.libraries!.isEmpty)
-                              Expanded(
-                                child: Container(
-                                  color: const Color(
-                                    0xBB5D5D5D,
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      l10n.librariesListPageNotFoundResults,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline1!
-                                          .copyWith(color: Colors.white),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            else
-                              const SizedBox(),
-                          ],
+                          );
+                        }
+                        return LocationsMap(
+                          center: center,
+                          currentLocation: currentLocation,
+                          isLibraryInfo: libraryIdQuery != null,
                         );
                       },
                     ),
