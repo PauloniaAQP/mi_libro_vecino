@@ -47,6 +47,7 @@ class _PDropdownButtonState extends State<PDropdownButton> {
 
   @override
   Widget build(BuildContext context) {
+    currentValue = int.tryParse(widget.controller.text);
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
         isExpanded: widget.isExpanded,

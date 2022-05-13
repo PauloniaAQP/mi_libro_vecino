@@ -10,7 +10,9 @@ part 'login_state.dart';
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit() : super(LoginInitial());
 
-  Future<void> login({bool isAdmin = false}) async {
+  Future<status.LoginState?> login({bool isAdmin = false}) async {
+    state.loginForm.markAllAsTouched();
+    if (state.loginForm.invalid) return null;
     emit(LoginLoading(loginForm: state.loginForm));
     final email =
         state.loginForm.control(LoginState.emailController).value.toString();
@@ -23,16 +25,14 @@ class LoginCubit extends Cubit<LoginState> {
         isAdmin: isAdmin,
       );
       if (user != null) {
-        emit(LoginSuccess(loginForm: state.loginForm));
+        final newLoginForm = state.loginForm;
+        newLoginForm.control(LoginState.passwordController).value = '';
+        emit(LoginSuccess(loginForm: newLoginForm));
+        return status.LoginState.success;
       }
+      return status.LoginState.unknownError;
     } catch (e) {
-      emit(
-        LoginError(
-          loginForm: state.loginForm,
-          loginStatus: e as status.LoginState,
-        ),
-      );
-      return;
+      return e as status.LoginState;
     }
   }
 }

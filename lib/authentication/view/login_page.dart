@@ -8,6 +8,9 @@ import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
+import 'package:mi_libro_vecino/ui_utils/general_widgets/future_with_loading.dart';
+import 'package:mi_libro_vecino_api/utils/constants/enums/user_enums.dart'
+    as status;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({
@@ -27,98 +30,109 @@ class LoginPageState extends State<LoginPage>
     super.build(context);
     final l10n = context.l10n;
     return Scaffold(
-      body: BlocListener<LoginCubit, LoginState>(
-        listener: (context, state) {
-          if (state is LoginError) {
-            showDialog<void>(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Error de autenticación'),
-                content: Text(
-                  getStringLoginStatus(state.loginStatus, l10n),
-                ),
-                actions: <Widget>[
-                  ElevatedButton(
-                    child: Text(context.l10n.accept),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+      body: Row(
+        children: [
+          const Expanded(
+            child: QuotesPage(),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 80,
+                horizontal: 100,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Visibility(
+                    visible: !widget.isAdmin,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {
+                          GoRouter.of(context).go(Routes.register);
+                        },
+                        child: Text(
+                          l10n.loginPageNewRegisterBotton,
+                          style: Theme.of(context).textTheme.button!.apply(
+                                fontSizeDelta: 2,
+                                color: PColors.blue,
+                              ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Text(
+                    l10n.loginPageLoginTitle,
+                    style: Theme.of(context).textTheme.headline2!.apply(
+                          fontWeightDelta: 100,
+                        ),
+                  ),
+                  const SizedBox(height: 10),
+                  const Expanded(
+                    child: SingleChildScrollView(
+                      child: LoginForm(),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Center(
+                    child: SizedBox(
+                      height: 56,
+                      width: 400,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          futureWithLoading(
+                            context
+                                .read<LoginCubit>()
+                                .login(isAdmin: widget.isAdmin),
+                            context,
+                          ).then((value) {
+                            if (value == null) {
+                              return;
+                            } else {
+                              if (value == status.LoginState.success) {
+                                if (widget.isAdmin) {
+                                  GoRouter.of(context).go(Routes.admin);
+                                } else {
+                                  GoRouter.of(context)
+                                      .go(Routes.adminLibraries);
+                                }
+                              } else {
+                                showDialog<void>(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Error de autenticación'),
+                                    content: Text(
+                                      getStringLoginStatus(value, l10n),
+                                    ),
+                                    actions: <Widget>[
+                                      ElevatedButton(
+                                        child: Text(context.l10n.accept),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            }
+                          });
+                        },
+                        child: Text(
+                          l10n.loginPageLoginButton,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
-            );
-          }
-        },
-        child: Row(
-          children: [
-            const Expanded(
-              child: QuotesPage(),
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 80,
-                  horizontal: 100,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Visibility(
-                      visible: !widget.isAdmin,
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {
-                            GoRouter.of(context).go(Routes.register);
-                          },
-                          child: Text(
-                            l10n.loginPageNewRegisterBotton,
-                            style: Theme.of(context).textTheme.button!.apply(
-                                  fontSizeDelta: 2,
-                                  color: PColors.blue,
-                                ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    Text(
-                      l10n.loginPageLoginTitle,
-                      style: Theme.of(context).textTheme.headline2!.apply(
-                            fontWeightDelta: 100,
-                          ),
-                    ),
-                    const SizedBox(height: 10),
-                    const Expanded(
-                      child: SingleChildScrollView(
-                        child: LoginForm(),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Center(
-                      child: SizedBox(
-                        height: 56,
-                        width: 400,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            context
-                                .read<LoginCubit>()
-                                .login(isAdmin: widget.isAdmin);
-                          },
-                          child: Text(
-                            l10n.loginPageLoginButton,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

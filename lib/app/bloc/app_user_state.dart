@@ -10,7 +10,7 @@ class AppUserState extends Equatable {
   final Coordinates? currentLocation;
 
   @override
-  List<Object> get props => [status];
+  List<Object> get props => [status, currentLocation ?? Coordinates(0, 0)];
 
   AppUserState copyWith({
     AuthenticationStatus? status,
