@@ -6,6 +6,7 @@ import 'package:mi_libro_vecino/admin/components/admin_search_widget.dart';
 import 'package:mi_libro_vecino/admin/cubit/admin_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
+import 'package:mi_libro_vecino_api/models/library_model.dart';
 
 class LibrariesCardList extends StatelessWidget {
   const LibrariesCardList({
@@ -20,6 +21,12 @@ class LibrariesCardList extends StatelessWidget {
     final l10n = context.l10n;
     return BlocBuilder<AdminCubit, AdminState>(
       builder: (context, state) {
+        List<LibraryModel> libraries;
+        if (index == 0) {
+          libraries = state.pendingLibraries;
+        } else {
+          libraries = state.acceptedLibraries;
+        }
         return Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -52,15 +59,17 @@ class LibrariesCardList extends StatelessWidget {
                 const SizedBox(height: 14),
                 Expanded(
                   child: ListView.builder(
+                    itemCount: libraries.length,
                     itemBuilder: (_, index) {
                       return AdminLibraryCard(
-                        labels: const ['label1'],
-                        name: 'Holaaa',
+                        labels: libraries[index].services,
+                        name: libraries[index].description,
                         onContact: () {},
-                        title: 'asdasdasd',
+                        title: libraries[index].name,
+                        gsUrl: libraries[index].gsUrl,
                         onTap: () {
-                          final route =
-                              '${GoRouter.of(context).location}?id=as';
+                          final route = '''
+${GoRouter.of(context).location}?id=${libraries[index].id}''';
                           GoRouter.of(context).go(route);
                         },
                       );

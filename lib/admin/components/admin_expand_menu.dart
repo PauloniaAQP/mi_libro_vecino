@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mi_libro_vecino/admin/cubit/admin_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
+import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
-import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
+import 'package:paulonia_cache_image/paulonia_cache_image.dart';
 
 class AdminExpandMenu extends StatefulWidget {
   const AdminExpandMenu({
@@ -70,29 +74,36 @@ class _AdminExpandMenuState extends State<AdminExpandMenu>
           child: Column(
             children: [
               Flexible(
-                child: Row(
-                  children: [
-                    const CircleAvatar(
-                      backgroundImage: AssetImage(Assets.testImg),
-                      radius: 20,
-                    ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: Text(
-                        'Josefina',
-                        style: Theme.of(context).textTheme.button!.copyWith(
-                              color: PColors.black,
-                              fontSize: 14,
-                            ),
+                child: BlocBuilder<AdminCubit, AdminState>(
+                  buildWhen: (previous, current) =>
+                      previous.user != current.user,
+                  builder: (context, state) {
+                    return Row(
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: PCacheImage(state.user?.gsUrl ?? ''),
+                          radius: 20,
+                          backgroundColor: Colors.black12,
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: Text(
+                            state.user?.name ?? '',
+                            style: Theme.of(context).textTheme.button!.copyWith(
+                                  color: PColors.black,
+                                  fontSize: 14,
+                                ),
                             overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    Icon(
-                      isExpanded ? Icons.expand_less : Icons.expand_more,
-                      color: PColors.black,
-                    ),
-                  ],
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Icon(
+                          isExpanded ? Icons.expand_less : Icons.expand_more,
+                          color: PColors.black,
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
               const Spacer(),
@@ -107,7 +118,11 @@ class _AdminExpandMenuState extends State<AdminExpandMenu>
                       borderRadius: BorderRadius.circular(10),
                     ),
                     elevation: 0,
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<AdminCubit>().signOut().then((_) {
+                        context.go(Routes.login);
+                      });
+                    },
                     child: Text(
                       l10n.adminPageLogoutButton,
                       style: Theme.of(context).textTheme.subtitle1!.copyWith(
