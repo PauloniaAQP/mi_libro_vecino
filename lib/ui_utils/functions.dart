@@ -1,4 +1,6 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino_api/models/ubigeo_model.dart';
@@ -123,4 +125,15 @@ String getUbigeoCodeFromUbigeo(UbigeoModel ubigeo) {
     case UbigeoType.district:
       return '${ubigeo.districtId}';
   }
+}
+
+/// Download an image from Google Storage
+/// and return a XFile
+Future<XFile> downloadFileFromGsurl(String gsUrl) async {
+  final uri = Uri.parse(gsUrl);
+  final url =
+      await FirebaseStorage.instance.ref().child(uri.path).getDownloadURL();
+  final response = await http.get(Uri.parse(url));
+  final file = XFile.fromData(response.bodyBytes);
+  return file;
 }

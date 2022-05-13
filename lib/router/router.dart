@@ -13,6 +13,7 @@ import 'package:mi_libro_vecino/collaborators/view/collaborators_page.dart';
 import 'package:mi_libro_vecino/libraries/view/libraries_page.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/search.dart';
+import 'package:mi_libro_vecino_api/services/auth_service.dart';
 
 abstract class AppRouter {
   static GoRouter get router => GoRouter(
@@ -100,22 +101,54 @@ abstract class AppRouter {
           ),
           GoRoute(
             path: Routes.collaborators,
-            pageBuilder: (context, state) => const MaterialPage(
-              child: CollaboratorsPage(),
+            pageBuilder: (context, state) => MaterialPage(
+              child: BlocListener<AppUserBloc, AppUserState>(
+                listener: (context, state) {
+                  if (state.status != AuthenticationStatus.authenticated) {
+                    GoRouter.of(context).go(Routes.login);
+                  }
+                },
+                child: const CollaboratorsPage(),
+              ),
             ),
-            redirect: (_) =>
-                '${Routes.collaborators}/${Routes.collaboratorsPersonal}',
+            redirect: (_) {
+              if (AuthService.isLoggedIn()) {
+                return '${Routes.collaborators}/${Routes.collaboratorsPersonal}';
+              }
+              return Routes.login;
+            },
             routes: [
+              // TODO(oscanar): Handle the case when the user is not logged in
               GoRoute(
                 path: Routes.collaboratorsPersonal,
-                pageBuilder: (context, state) => const MaterialPage(
-                  child: CollaboratorsPage(),
+                redirect: (_) {
+                  if (!AuthService.isLoggedIn()) {
+                    return Routes.login;
+                  }
+                  return null;
+                },
+                pageBuilder: (context, state) => MaterialPage(
+                  child: BlocListener<AppUserBloc, AppUserState>(
+                    listener: (context, state) {
+                      if (state.status != AuthenticationStatus.authenticated) {
+                        GoRouter.of(context).go(Routes.login);
+                      }
+                    },
+                    child: const CollaboratorsPage(),
+                  ),
                 ),
               ),
               GoRoute(
                 path: Routes.collaboratorsLibrary,
-                pageBuilder: (context, state) => const MaterialPage(
-                  child: CollaboratorsPage(index: 1),
+                pageBuilder: (context, state) => MaterialPage(
+                  child: BlocListener<AppUserBloc, AppUserState>(
+                    listener: (context, state) {
+                      if (state.status != AuthenticationStatus.authenticated) {
+                        GoRouter.of(context).go(Routes.login);
+                      }
+                    },
+                    child: const CollaboratorsPage(index: 1),
+                  ),
                 ),
               ),
             ],
