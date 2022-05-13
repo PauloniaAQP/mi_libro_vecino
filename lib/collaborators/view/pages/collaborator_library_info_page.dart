@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mi_libro_vecino/collaborators/components/collaborators_library_form.dart';
-import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
+import 'package:mi_libro_vecino/collaborators/cubit/collaborator_cubit.dart';
 
 class CollaboratorLibraryInfoPage extends StatelessWidget {
   const CollaboratorLibraryInfoPage({
@@ -19,16 +20,23 @@ class CollaboratorLibraryInfoPage extends StatelessWidget {
             Expanded(
               child: AspectRatio(
                 aspectRatio: 1 / 1,
-                child: Container(
-                  height: 232,
-                  width: 232,
-                  decoration: BoxDecoration(
-                    image: const DecorationImage(
-                      image: AssetImage(Assets.testImg),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                child: BlocBuilder<CollaboratorCubit, CollaboratorState>(
+                  builder: (context, state) {
+                    return Container(
+                      height: 232,
+                      width: 232,
+                      decoration: BoxDecoration(
+                        image: (state.libraryImage == null)
+                            ? null
+                            : DecorationImage(
+                                image: MemoryImage(state.libraryImage!),
+                                fit: BoxFit.cover,
+                              ),
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),

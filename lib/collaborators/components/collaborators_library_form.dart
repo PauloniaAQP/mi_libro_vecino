@@ -1,15 +1,18 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:mi_libro_vecino/authentication/components/location_map.dart';
 import 'package:mi_libro_vecino/collaborators/cubit/collaborator_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
-import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dropdown_button.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
+import 'package:mi_libro_vecino_api/services/geo_service.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
+import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class CollaboratorsLibraryForm extends StatelessWidget {
@@ -20,6 +23,7 @@ class CollaboratorsLibraryForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    Timer? _debounce;
     return SingleChildScrollView(
       child: BlocBuilder<CollaboratorCubit, CollaboratorState>(
         builder: (context, state) {
@@ -163,32 +167,39 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                         color: PColors.gray1,
                       ),
                 ),
-                ReactiveTextField<String>(
-                  formControlName: CollaboratorState.addressController,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    suffixIcon: (state.libraryInfoForm.value[
-                                CollaboratorState.mapAddressController] !=
-                            '')
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : Icon(
-                            Icons.check,
-                            color: Theme.of(context).colorScheme.primary,
+                FutureBuilder<String?>(
+                  future: GeoService.getAddress(state.location),
+                  builder: (context, snapshot) {
+                    state.libraryInfoForm
+                            .control(CollaboratorState.addressController)
+                            .value =
+                        snapshot.connectionState == ConnectionState.done
+                            ? snapshot.data ?? ''
+                            : '';
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            snapshot.connectionState == ConnectionState.done
+                                ? snapshot.data ??
+                                    l10n.messageValidationToUnknownAddress
+                                : l10n.messageValidationToLoadingAddress,
                           ),
-                    suffixIconConstraints: const BoxConstraints(
-                      minWidth: 20,
-                      minHeight: 20,
-                    ),
-                  ),
-                  readOnly: true,
-                  maxLines: 2,
-                  minLines: 1,
+                        ),
+                        SizedBox(
+                          width: 20,
+                          height: 20,
+                          child:
+                              (snapshot.connectionState == ConnectionState.done)
+                                  ? Icon(
+                                      Icons.check,
+                                      color: Theme.of(context).primaryColor,
+                                    )
+                                  : const CupertinoActivityIndicator(),
+                        )
+                      ],
+                    );
+                  },
                 ),
                 const SizedBox(height: 8),
                 Container(
@@ -197,31 +208,26 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                     maxHeight: MediaQuery.of(context).size.height * 0.5,
                     minHeight: 200,
                   ),
-                  child: FlutterMap(
-                    options: MapOptions(
-                      center: LatLng(51.5, -0.09),
-                      zoom: 10,
-                    ),
-                    layers: [
-                      TileLayerOptions(
-                        urlTemplate:
-                            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                        subdomains: ['a', 'b', 'c'],
-                      ),
-                      MarkerLayerOptions(
-                        markers: [
-                          Marker(
-                            width: 80,
-                            height: 80,
-                            point: LatLng(51.5, -0.09),
-                            builder: (ctx) => const Image(
-                              image: AssetImage(Assets.locationPinIcon),
-                              height: 79,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                  child: LocationMap(
+                    center: state.location,
+                    point: state.location,
+                    onPositionChanged: (mapPos, wasTaped) {
+                      if (mapPos.center == null) return;
+                      final center = Coordinates(
+                        mapPos.center!.latitude,
+                        mapPos.center!.longitude,
+                      );
+
+                      if (_debounce?.isActive ?? false) {
+                        _debounce?.cancel();
+                      }
+                      _debounce = Timer(
+                        const Duration(milliseconds: 700),
+                        () => context
+                            .read<CollaboratorCubit>()
+                            .setMapLocation(center),
+                      );
+                    },
                   ),
                 ),
                 Padding(

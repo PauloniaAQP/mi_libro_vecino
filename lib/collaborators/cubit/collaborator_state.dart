@@ -8,6 +8,11 @@ class CollaboratorState extends Equatable {
     required this.closingController,
     required this.libraryRolController,
     required this.services,
+    required this.location,
+    this.userImage,
+    this.libraryImage,
+    this.user,
+    this.library,
   });
 
   static const String fullnameController = 'fullname';
@@ -36,11 +41,22 @@ class CollaboratorState extends Equatable {
   final FormGroup personalInfoForm;
   final FormGroup libraryInfoForm;
 
+  final Coordinates location;
+  final Uint8List? libraryImage;
+  final Uint8List? userImage;
+  final UserModel? user;
+  final LibraryModel? library;
+
   @override
-  List<Object> get props => [services];
+  List<Object> get props => [location, services];
 
   CollaboratorState copyWith({
     Map<String, bool>? services,
+    Coordinates? location,
+    Uint8List? libraryImage,
+    Uint8List? userImage,
+    UserModel? user,
+    LibraryModel? library,
   }) {
     return CollaboratorState(
       libraryInfoForm: libraryInfoForm,
@@ -49,6 +65,11 @@ class CollaboratorState extends Equatable {
       libraryRolController: libraryRolController,
       services: services ?? this.services,
       personalInfoForm: personalInfoForm,
+      location: location ?? this.location,
+      libraryImage: libraryImage ?? this.libraryImage,
+      userImage: userImage ?? this.userImage,
+      user: user ?? this.user,
+      library: library ?? this.library,
     );
   }
 }
@@ -119,5 +140,57 @@ class CollaboratorInitial extends CollaboratorState {
               ],
             ),
           }),
+          location: Coordinates(0, 0),
+        );
+}
+
+class CollaboratorLoaded extends CollaboratorState {
+  const CollaboratorLoaded({
+    required FormGroup personalInfoForm,
+    required FormGroup libraryInfoForm,
+    required TextEditingController openingController,
+    required TextEditingController closingController,
+    required TextEditingController libraryRolController,
+    required Map<String, bool> services,
+    required Coordinates location,
+  }) : super(
+          personalInfoForm: personalInfoForm,
+          libraryInfoForm: libraryInfoForm,
+          openingController: openingController,
+          closingController: closingController,
+          libraryRolController: libraryRolController,
+          services: services,
+          location: location,
+        );
+}
+
+class CollaboratorError extends CollaboratorState {
+  const CollaboratorError({
+    required FormGroup personalInfoForm,
+    required FormGroup libraryInfoForm,
+    required TextEditingController openingController,
+    required TextEditingController closingController,
+    required TextEditingController libraryRolController,
+    required Map<String, bool> services,
+    required Coordinates location,
+  }) : super(
+          personalInfoForm: personalInfoForm,
+          libraryInfoForm: libraryInfoForm,
+          openingController: openingController,
+          closingController: closingController,
+          libraryRolController: libraryRolController,
+          services: services,
+          location: location,
+        );
+
+  CollaboratorError.fromState(CollaboratorState state)
+      : super(
+          personalInfoForm: state.personalInfoForm,
+          libraryInfoForm: state.libraryInfoForm,
+          openingController: state.openingController,
+          closingController: state.closingController,
+          libraryRolController: state.libraryRolController,
+          services: state.services,
+          location: state.location,
         );
 }
