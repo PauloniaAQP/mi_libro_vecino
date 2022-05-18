@@ -6,6 +6,7 @@ import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dialog.dart';
+import 'package:mi_libro_vecino/ui_utils/general_widgets/p_simple_dialog.dart';
 
 class BottomButtons extends StatelessWidget {
   const BottomButtons({
@@ -79,9 +80,18 @@ class BottomButtons extends StatelessWidget {
                   confirmLabel: l10n.adminPageDialogRemoveLibraryConfirm,
                   context: context,
                   onConfirm: () {
-                    context.read<AdminCubit>().removeLibrary(id).then(
-                          (value) => context.go(Routes.admin),
+                    context.read<AdminCubit>().removeLibrary(id).then((value) {
+                      if (value) {
+                        context.go(Routes.admin);
+                      } else {
+                        Navigator.of(context).pop();
+                        pSimpleDialog(
+                          title: 'Error',
+                          body: 'Algo salió mal, intenta de nuevo',
+                          context: context,
                         );
+                      }
+                    });
                   },
                   title: l10n.adminPageDialogRemoveLibraryTitle,
                 );
