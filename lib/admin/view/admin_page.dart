@@ -25,82 +25,79 @@ class AdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return FutureBuilder(
-      future: context.read<AdminCubit>().init(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return Stack(
-          children: [
-            Scaffold(
-              appBar: const AdminAppBar(),
-              body: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 34),
-                            child: Text(
-                              l10n.adminPageCollaborators,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline1!
-                                  .copyWith(fontSize: 28),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          SelectorButton(
-                            isSelected: 0 == index,
-                            onTap: () {
-                              const route =
-                                  '${Routes.admin}/${Routes.adminNewRequests}';
-                              GoRouter.of(context).go(route);
-                            },
-                            title: l10n.adminPageNewRequests,
-                          ),
-                          SelectorButton(
-                            isSelected: 1 == index,
-                            onTap: () {
-                              const route =
-                                  '${Routes.admin}/${Routes.adminLibraries}';
-                              GoRouter.of(context).go(route);
-                            },
-                            title: l10n.adminPageRegistered,
-                          ),
-                        ],
+    return Stack(
+      children: [
+        Scaffold(
+          appBar: const AdminAppBar(),
+          body: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 34),
+                        child: Text(
+                          l10n.adminPageCollaborators,
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline1!
+                              .copyWith(fontSize: 28),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                    ),
+                      SelectorButton(
+                        isSelected: 0 == index,
+                        onTap: () {
+                          const route =
+                              '${Routes.admin}/${Routes.adminNewRequests}';
+                          GoRouter.of(context).go(route);
+                        },
+                        title: l10n.adminPageNewRequests,
+                      ),
+                      SelectorButton(
+                        isSelected: 1 == index,
+                        onTap: () {
+                          const route =
+                              '${Routes.admin}/${Routes.adminLibraries}';
+                          GoRouter.of(context).go(route);
+                        },
+                        title: l10n.adminPageRegistered,
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    flex: 3,
-                    child: Builder(
-                      builder: (context) {
-                        if (id != null) {
-                          return AdminLibraryInformationPage(
-                            index: index,
-                            id: id ?? '',
-                          );
-                        }
-                        return LibrariesCardList(index: index);
-                      },
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-            const Align(
-              alignment: Alignment.topRight,
-              child: AdminExpandMenu(),
-            )
-          ],
-        );
-      },
+              Expanded(
+                flex: 3,
+                child: BlocBuilder<AdminCubit, AdminState>(
+                  builder: (context, state) {
+                    if (state.acceptedLibraries == null) {
+                      context.read<AdminCubit>().fillData();
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (id == null) {
+                      return LibrariesCardList(index: index);
+                    } else {
+                      return AdminLibraryInformationPage(
+                        index: index,
+                        id: id!,
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+        const Align(
+          alignment: Alignment.topRight,
+          child: AdminExpandMenu(),
+        )
+      ],
     );
   }
 }

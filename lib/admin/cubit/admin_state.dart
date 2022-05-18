@@ -4,20 +4,19 @@ class AdminState extends Equatable {
   const AdminState({
     this.isSearching = false,
     required this.textEditControler,
-    this.pendingLibraries = const [],
-    this.acceptedLibraries = const [],
-    this.user,
+    this.pendingLibraries,
+    this.acceptedLibraries,
   });
 
   final bool isSearching;
   final TextEditingController textEditControler;
 
-  final List<LibraryModel> pendingLibraries;
-  final List<LibraryModel> acceptedLibraries;
-  final UserModel? user;
+  final List<LibraryModel>? pendingLibraries;
+  final List<LibraryModel>? acceptedLibraries;
 
   @override
-  List<Object> get props => [isSearching];
+  List<Object> get props =>
+      [isSearching, pendingLibraries ?? false, acceptedLibraries ?? false];
 
   AdminState copyWith({
     bool? isSearching,
@@ -30,7 +29,6 @@ class AdminState extends Equatable {
       textEditControler: textEditControler,
       pendingLibraries: pendingLibraries ?? this.pendingLibraries,
       acceptedLibraries: acceptedLibraries ?? this.acceptedLibraries,
-      user: user ?? this.user,
     );
   }
 }

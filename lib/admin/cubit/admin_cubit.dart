@@ -28,27 +28,17 @@ class AdminCubit extends Cubit<AdminState> {
     }
   }
 
-  Future<void> init() async {
-    if (initDataCharged) return;
-
-    // TODO(oscarnar): Fix issues in library repository
-    // When gets pending libraries, we don't get accepted
-    // And is the same when gets accepted first
+  /// This function loads the data from the repository
+  /// If you want to force get data from database, you should
+  /// use [cache] parameter as false.
+  Future<void> fillData({bool cache = true}) async {
     try {
-      final user = await _userRepository
-          .getUserFromCredentials(AuthService.currentUser!);
-      final acceptedLibraries = await _libraryRepository.getAcceptedLibraries();
-      _libraryRepository.getPendingLibraries().listen((libraries) {
-        emit(
-          state.copyWith(
-            pendingLibraries: libraries,
-            user: user,
-          ),
-        );
+      _libraryRepository.getPendingLibraries(cache: cache).listen((libraries) {
+        emit(state.copyWith(pendingLibraries: libraries));
       });
-
-      emit(state.copyWith(acceptedLibraries: acceptedLibraries, user: user));
-      initDataCharged = true;
+      final acceptedLibraries =
+          await _libraryRepository.getAcceptedLibraries(cache: cache);
+      emit(state.copyWith(acceptedLibraries: acceptedLibraries));
     } catch (error, stracktrace) {
       PauloniaErrorService.sendError(error, stracktrace);
     }
@@ -77,19 +67,25 @@ class AdminCubit extends Cubit<AdminState> {
   Future<void> acceptLibrary(String id) async {
     final response = await _libraryRepository.acceptLibrary(id);
     if (response == true) {
-      initDataCharged = false;
       emit(state);
     } else {
       return;
     }
   }
 
-  Future<void> removeLibrary(String id) async {
-    await _libraryRepository.removeLibrary(id);
-
-    // TODO(oscarnar): User should be remove with the library?
-    initDataCharged = false;
-    emit(state);
+  Future<bool> removeLibrary(String id) async {
+    final library = await _libraryRepository.getFromId(id);
+    if (library == null) return false;
+    final userId = library.ownerId;
+    try {
+      await _libraryRepository.removeLibrary(id);
+      await _userRepository.removeUserById(userId);
+      await fillData();
+      return true;
+    } catch (error, stracktrace) {
+      PauloniaErrorService.sendError(error, stracktrace);
+      return false;
+    }
   }
 
   Future<void> signOut() async {
@@ -100,7 +96,6 @@ class AdminCubit extends Cubit<AdminState> {
     }
   }
 
-  bool initDataCharged = false;
   final UserRepository _userRepository = Get.find<UserRepository>();
   final LibraryRepository _libraryRepository = Get.find<LibraryRepository>();
 }

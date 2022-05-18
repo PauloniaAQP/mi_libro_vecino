@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/admin/cubit/admin_cubit.dart';
+import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
@@ -74,21 +75,22 @@ class _AdminExpandMenuState extends State<AdminExpandMenu>
           child: Column(
             children: [
               Flexible(
-                child: BlocBuilder<AdminCubit, AdminState>(
+                child: BlocBuilder<AppUserBloc, AppUserState>(
                   buildWhen: (previous, current) =>
-                      previous.user != current.user,
+                      previous.currentUser != current.currentUser,
                   builder: (context, state) {
                     return Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage: PCacheImage(state.user?.gsUrl ?? ''),
+                          backgroundImage:
+                              PCacheImage(state.currentUser?.gsUrl ?? ''),
                           radius: 20,
                           backgroundColor: Colors.black12,
                         ),
                         const SizedBox(width: 20),
                         Expanded(
                           child: Text(
-                            state.user?.name ?? '',
+                            state.currentUser?.name ?? '',
                             style: Theme.of(context).textTheme.button!.copyWith(
                                   color: PColors.black,
                                   fontSize: 14,

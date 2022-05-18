@@ -22,6 +22,7 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
     on<AuthenticationStatusChanged>((event, emit) async {
       try {
         if (event.status == AuthenticationStatus.unauthenticated) {
+          emit(const AppUserInitial());
           return;
         } else {
           final user = AuthService.currentUser;

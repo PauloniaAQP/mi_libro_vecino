@@ -23,9 +23,9 @@ class LibrariesCardList extends StatelessWidget {
       builder: (context, state) {
         List<LibraryModel> libraries;
         if (index == 0) {
-          libraries = state.pendingLibraries;
+          libraries = state.pendingLibraries ?? [];
         } else {
-          libraries = state.acceptedLibraries;
+          libraries = state.acceptedLibraries ?? [];
         }
         return Scaffold(
           appBar: AppBar(
