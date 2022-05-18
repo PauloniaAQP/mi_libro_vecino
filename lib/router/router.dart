@@ -66,6 +66,18 @@ abstract class AppRouter {
           ),
           GoRoute(
             path: Routes.login,
+            redirect: (_) {
+              if (AuthService.isLoggedIn()) {
+                AuthService.isAdmin(AuthService.currentUser!).then((value) {
+                  if (value) {
+                    return Routes.admin;
+                  } else {
+                    return Routes.collaborators;
+                  }
+                });
+              }
+              return null;
+            },
             pageBuilder: (context, state) {
               final isAdmin = state.queryParams['isAdmin'] == 'true';
               return MaterialPage(
@@ -114,8 +126,9 @@ abstract class AppRouter {
             redirect: (_) {
               if (AuthService.isLoggedIn()) {
                 return '${Routes.collaborators}/${Routes.collaboratorsPersonal}';
+              } else {
+                return Routes.login;
               }
-              return Routes.login;
             },
             routes: [
               // TODO(oscanar): Handle the case when the user is not logged in
@@ -158,7 +171,18 @@ abstract class AppRouter {
             pageBuilder: (context, state) => const MaterialPage(
               child: AdminPage(),
             ),
-            redirect: (_) => '${Routes.admin}/${Routes.adminNewRequests}',
+            redirect: (_) {
+              if (AuthService.isLoggedIn()) {
+                AuthService.isAdmin(AuthService.currentUser!).then((value) {
+                  if (value) {
+                    return '${Routes.admin}/${Routes.adminNewRequests}';
+                  } else {
+                    return Routes.collaborators;
+                  }
+                });
+              }
+              return Routes.login;
+            },
             routes: [
               GoRoute(
                 path: Routes.adminNewRequests,
