@@ -92,14 +92,7 @@ class LoginPageState extends State<LoginPage>
                             if (value == null) {
                               return;
                             } else {
-                              if (value == status.LoginState.success) {
-                                if (widget.isAdmin) {
-                                  GoRouter.of(context).go(Routes.admin);
-                                } else {
-                                  GoRouter.of(context)
-                                      .go(Routes.adminLibraries);
-                                }
-                              } else {
+                              if (value != status.LoginState.success) {
                                 showDialog<void>(
                                   context: context,
                                   builder: (context) => AlertDialog(

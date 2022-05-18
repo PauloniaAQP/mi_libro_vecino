@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino_api/models/library_model.dart';
-import 'package:mi_libro_vecino_api/models/user_model.dart';
 import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
@@ -86,7 +85,6 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
           libraryImage: libraryImage,
           userImage: userImage,
           library: library,
-          user: user,
         ),
       );
     } catch (error, stacktrace) {
@@ -103,8 +101,10 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
   Future<void> signOut() async {
     try {
       await AuthService.signOut();
+      emit(CollaboratorInitial());
     } catch (error, stacktrace) {
-      emit(CollaboratorError.fromState(state));
+      final newState = CollaboratorInitial();
+      emit(CollaboratorError.fromState(newState));
       PauloniaErrorService.sendError(error, stacktrace);
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/collaborators/cubit/collaborator_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
@@ -49,23 +50,25 @@ class CollaboratorsAppBar extends StatelessWidget
                 context: context,
                 onConfirm: () {
                   context.read<CollaboratorCubit>().signOut().then((_) {
+                    Navigator.of(context).pop();
                     context.go(Routes.login);
                   });
                 },
                 title: l10n.collaboratorsPageDialogLeaveTitle,
               );
             },
-            child: BlocBuilder<CollaboratorCubit, CollaboratorState>(
+            child: BlocBuilder<AppUserBloc, AppUserState>(
               builder: (context, state) {
                 return Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: PCacheImage(state.user?.gsUrl ?? ''),
+                      backgroundImage:
+                          PCacheImage(state.currentUser?.gsUrl ?? ''),
                       radius: 20,
                     ),
                     const SizedBox(width: 20),
                     Text(
-                      state.user?.name ?? '',
+                      state.currentUser?.name ?? '',
                       style: Theme.of(context).textTheme.button!.copyWith(
                             color: PColors.black,
                             fontSize: 14,

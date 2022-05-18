@@ -24,66 +24,63 @@ class CollaboratorsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return FutureBuilder(
-      future: context.read<CollaboratorCubit>().fillData(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          context.go(Routes.login);
-        }
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-        return Scaffold(
-          appBar: const CollaboratorsAppBar(),
-          body: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 34),
-                        child: Text(
-                          l10n.collaboratorsPageTitle,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline1!
-                              .copyWith(fontSize: 28),
-                        ),
-                      ),
-                      SelectorButton(
-                        isSelected: 0 == index,
-                        onTap: () {
-                          const route =
-                              '${Routes.collaborators}/${Routes.collaboratorsPersonal}';
-                          GoRouter.of(context).go(route);
-                        },
-                        title: l10n.collaboratorsPagePersonalInfo,
-                      ),
-                      SelectorButton(
-                        isSelected: 1 == index,
-                        onTap: () {
-                          const route =
-                              '${Routes.collaborators}/${Routes.collaboratorsLibrary}';
-                          GoRouter.of(context).go(route);
-                        },
-                        title: '${l10n.collaboratorsPageRoleInfo}biblioteca',
-                      ),
-                    ],
+    return Scaffold(
+      appBar: const CollaboratorsAppBar(),
+      body: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 34),
+                    child: Text(
+                      l10n.collaboratorsPageTitle,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline1!
+                          .copyWith(fontSize: 28),
+                    ),
                   ),
-                ),
+                  SelectorButton(
+                    isSelected: 0 == index,
+                    onTap: () {
+                      const route =
+                          '${Routes.collaborators}/${Routes.collaboratorsPersonal}';
+                      GoRouter.of(context).go(route);
+                    },
+                    title: l10n.collaboratorsPagePersonalInfo,
+                  ),
+                  SelectorButton(
+                    isSelected: 1 == index,
+                    onTap: () {
+                      const route =
+                          '${Routes.collaborators}/${Routes.collaboratorsLibrary}';
+                      GoRouter.of(context).go(route);
+                    },
+                    title: '${l10n.collaboratorsPageRoleInfo}biblioteca',
+                  ),
+                ],
               ),
-              Expanded(
-                flex: 3,
-                child: pages[index],
-              )
-            ],
+            ),
           ),
-        );
-      },
+          Expanded(
+            flex: 3,
+            child: BlocBuilder<CollaboratorCubit, CollaboratorState>(
+              builder: (context, state) {
+                if (state.library == null) {
+                  context.read<CollaboratorCubit>().fillData();
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return pages[index];
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 }

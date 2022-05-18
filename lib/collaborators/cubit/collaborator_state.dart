@@ -11,7 +11,6 @@ class CollaboratorState extends Equatable {
     required this.location,
     this.userImage,
     this.libraryImage,
-    this.user,
     this.library,
   });
 
@@ -44,7 +43,6 @@ class CollaboratorState extends Equatable {
   final Coordinates location;
   final Uint8List? libraryImage;
   final Uint8List? userImage;
-  final UserModel? user;
   final LibraryModel? library;
 
   @override
@@ -55,7 +53,6 @@ class CollaboratorState extends Equatable {
     Coordinates? location,
     Uint8List? libraryImage,
     Uint8List? userImage,
-    UserModel? user,
     LibraryModel? library,
   }) {
     return CollaboratorState(
@@ -68,7 +65,6 @@ class CollaboratorState extends Equatable {
       location: location ?? this.location,
       libraryImage: libraryImage ?? this.libraryImage,
       userImage: userImage ?? this.userImage,
-      user: user ?? this.user,
       library: library ?? this.library,
     );
   }

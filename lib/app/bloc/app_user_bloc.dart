@@ -22,7 +22,10 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
     on<AuthenticationStatusChanged>((event, emit) async {
       try {
         if (event.status == AuthenticationStatus.unauthenticated) {
-          emit(const AppUserInitial());
+          if (state.currentUser != null) {
+            emit(const AppUserInitial());
+            await checkLocation();
+          }
           return;
         } else {
           final user = AuthService.currentUser;
@@ -75,7 +78,7 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
     try {
       late Coordinates location;
       if (PUtils.isOnTest()) {
-        location = Coordinates(-16.3958409, -71.5342607);
+        location = Coordinates(0, 0);
       } else {
         location = await GeoService.determineCoordinates();
       }
