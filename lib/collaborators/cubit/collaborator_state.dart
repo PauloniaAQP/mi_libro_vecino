@@ -46,7 +46,7 @@ class CollaboratorState extends Equatable {
   final LibraryModel? library;
 
   @override
-  List<Object> get props => [location, services];
+  List<Object> get props => [location, services, library ?? false];
 
   CollaboratorState copyWith({
     Map<String, bool>? services,
@@ -102,9 +102,7 @@ class CollaboratorInitial extends CollaboratorState {
                 Validators.required,
               ],
             ),
-            CollaboratorState.websiteController: FormControl<String>(
-              validators: [],
-            ),
+            CollaboratorState.websiteController: FormControl<String>(),
             CollaboratorState.descriptionController: FormControl<String>(
               validators: [
                 Validators.required,
@@ -125,16 +123,7 @@ class CollaboratorInitial extends CollaboratorState {
                 Validators.required,
               ],
             ),
-            CollaboratorState.mapAddressController: FormControl<String>(
-              validators: [
-                Validators.required,
-              ],
-            ),
-            CollaboratorState.libraryLabelsController: FormControl<String>(
-              validators: [
-                Validators.required,
-              ],
-            ),
+            CollaboratorState.libraryLabelsController: FormControl<String>(),
           }),
           location: Coordinates(0, 0),
         );

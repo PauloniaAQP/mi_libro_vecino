@@ -173,13 +173,7 @@ abstract class AppRouter {
             ),
             redirect: (_) {
               if (AuthService.isLoggedIn()) {
-                AuthService.isAdmin(AuthService.currentUser!).then((value) {
-                  if (value) {
-                    return '${Routes.admin}/${Routes.adminNewRequests}';
-                  } else {
-                    return Routes.collaborators;
-                  }
-                });
+                return '${Routes.admin}/${Routes.adminNewRequests}';
               }
               return Routes.login;
             },

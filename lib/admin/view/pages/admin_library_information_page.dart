@@ -12,7 +12,8 @@ import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/category_chip.dart';
 import 'package:mi_libro_vecino_api/models/library_model.dart';
 import 'package:mi_libro_vecino_api/models/user_model.dart';
-import 'package:mi_libro_vecino_api/services/geo_service.dart';
+import 'package:mi_libro_vecino_api/services/geo_service.dart'
+    if (dart.library.io) 'package:mi_libro_vecino_api/services/test_geo_service.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:paulonia_cache_image/paulonia_cache_image.dart';

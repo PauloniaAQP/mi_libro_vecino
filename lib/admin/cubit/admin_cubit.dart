@@ -36,8 +36,10 @@ class AdminCubit extends Cubit<AdminState> {
       _libraryRepository.getPendingLibraries(cache: cache).listen((libraries) {
         emit(state.copyWith(pendingLibraries: libraries));
       });
-      final acceptedLibraries =
-          await _libraryRepository.getAcceptedLibraries(cache: cache);
+      final acceptedLibraries = await _libraryRepository.getAcceptedLibraries(
+        cache: cache,
+        resetPagination: true,
+      );
       emit(state.copyWith(acceptedLibraries: acceptedLibraries));
     } catch (error, stracktrace) {
       PauloniaErrorService.sendError(error, stracktrace);
@@ -67,7 +69,8 @@ class AdminCubit extends Cubit<AdminState> {
   Future<void> acceptLibrary(String id) async {
     final response = await _libraryRepository.acceptLibrary(id);
     if (response == true) {
-      emit(state);
+      unawaited(fillData(cache: false));
+      return;
     } else {
       return;
     }

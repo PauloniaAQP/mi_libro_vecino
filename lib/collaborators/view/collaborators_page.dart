@@ -68,6 +68,8 @@ class CollaboratorsPage extends StatelessWidget {
           Expanded(
             flex: 3,
             child: BlocBuilder<CollaboratorCubit, CollaboratorState>(
+              buildWhen: (previous, current) =>
+                  previous.library != current.library,
               builder: (context, state) {
                 if (state.library == null) {
                   context.read<CollaboratorCubit>().fillData();
