@@ -8,9 +8,12 @@ import 'package:mi_libro_vecino/collaborators/cubit/collaborator_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
+import 'package:mi_libro_vecino/ui_utils/general_widgets/category_chip.dart';
+import 'package:mi_libro_vecino/ui_utils/general_widgets/future_with_loading.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dropdown_button.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
-import 'package:mi_libro_vecino_api/services/geo_service.dart';
+import 'package:mi_libro_vecino_api/services/geo_service.dart'
+    if (dart.library.io) 'package:mi_libro_vecino_api/services/test_geo_service.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -35,36 +38,36 @@ class CollaboratorsLibraryForm extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 PTextField(
-                  label: context.l10n.registerPageLibraryNameLabel,
-                  hintText: context.l10n.registerPageLibraryNameHintText,
+                  label: l10n.registerPageLibraryNameLabel,
+                  hintText: l10n.registerPageLibraryNameHintText,
                   formControlName: CollaboratorState.libraryNameController,
                   validationMessages: {
                     ValidationMessage.required:
-                        context.l10n.registerPageLibraryNameErrorTextRequired,
+                        l10n.registerPageLibraryNameErrorTextRequired,
                   },
                 ),
                 PTextField(
-                  label: context.l10n.registerPageLibraryWebLabel,
-                  hintText: context.l10n.registerPageLibraryWebHintText,
+                  label: l10n.registerPageLibraryWebLabel,
+                  hintText: l10n.registerPageLibraryWebHintText,
                   formControlName: CollaboratorState.websiteController,
                   keyboardType: TextInputType.url,
                 ),
                 PTextField(
-                  label: context.l10n.registerPageLibraryDescriptionLabel,
-                  hintText: context.l10n.registerPageLibraryDescriptionHintText,
+                  label: l10n.registerPageLibraryDescriptionLabel,
+                  hintText: l10n.registerPageLibraryDescriptionHintText,
                   formControlName: CollaboratorState.descriptionController,
                   keyboardType: TextInputType.number,
                   validationMessages: {
                     ValidationMessage.required:
-                        context.l10n.registerPageLibraryDescriptionErrorText,
+                        l10n.registerPageLibraryDescriptionErrorText,
                   },
                 ),
                 Row(
                   children: [
                     Expanded(
                       child: PTextField(
-                        label: context.l10n.registerPageLibraryOpeningTimeLabel,
-                        hintText: context.l10n.registerPageLibraryTimeHintText,
+                        label: l10n.registerPageLibraryOpeningTimeLabel,
+                        hintText: l10n.registerPageLibraryTimeHintText,
                         formControlName: CollaboratorState.openTimeController,
                         keyboardType: TextInputType.number,
                         suffixIcon: Row(
@@ -88,16 +91,16 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                           ],
                         ),
                         validationMessages: {
-                          ValidationMessage.required: context
-                              .l10n.registerPageLibraryTimeErrorTextRequired,
+                          ValidationMessage.required:
+                              l10n.registerPageLibraryTimeErrorTextRequired,
                         },
                       ),
                     ),
                     const SizedBox(width: 30),
                     Expanded(
                       child: PTextField(
-                        label: context.l10n.registerPageLibraryClosingTimeLabel,
-                        hintText: context.l10n.registerPageLibraryTimeHintText,
+                        label: l10n.registerPageLibraryClosingTimeLabel,
+                        hintText: l10n.registerPageLibraryTimeHintText,
                         formControlName: CollaboratorState.closeTimeController,
                         keyboardType: TextInputType.number,
                         suffixIcon: Row(
@@ -121,8 +124,8 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                           ],
                         ),
                         validationMessages: {
-                          ValidationMessage.required: context
-                              .l10n.registerPageLibraryTimeErrorTextRequired,
+                          ValidationMessage.required:
+                              l10n.registerPageLibraryTimeErrorTextRequired,
                         },
                       ),
                     ),
@@ -230,6 +233,45 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                     },
                   ),
                 ),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 12,
+                  ),
+                  child: Text(
+                    l10n.registerPageServicesTitle,
+                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: PColors.black,
+                        ),
+                  ),
+                ),
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  children: List.generate(
+                    state.services.keys.length,
+                    (index) {
+                      return CategoryChip(
+                        label: state.services.keys.elementAt(index),
+                        isSelected: state.services.values.elementAt(index),
+                        onTap: () {
+                          BlocProvider.of<CollaboratorCubit>(context)
+                              .updateServices(
+                            key: state.services.keys.elementAt(index),
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+                PTextField(
+                  formControlName: CollaboratorState.libraryLabelsController,
+                  hintText: context.l10n.registerPageCategoriesLabelsHintText,
+                  label: context.l10n.registerPageCategoriesLabels,
+                ),
+                const SizedBox(height: 70),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 30),
                   child: Center(
@@ -237,7 +279,14 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                       height: 56,
                       width: 400,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          futureWithLoading(
+                            context
+                                .read<CollaboratorCubit>()
+                                .onTapSaveLibrary(),
+                            context,
+                          );
+                        },
                         child: Text(
                           l10n.collaboratorsPageSaveButton,
                           textAlign: TextAlign.center,

@@ -19,6 +19,15 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
   AppUserBloc() : super(const AppUserInitial()) {
     _userRepository = Get.find<UserRepository>();
     on<AppUserEvent>((event, emit) {});
+    on<UpdateUser>((event, emit) async {
+      final user = AuthService.currentUser;
+      if (user == null) {
+        PauloniaErrorService.sendErrorWithoutStacktrace(state);
+        return;
+      }
+      final userModel = await _userRepository.getUserFromCredentials(user);
+      emit(state.copyWith(currentUser: userModel));
+    });
     on<AuthenticationStatusChanged>((event, emit) async {
       try {
         if (event.status == AuthenticationStatus.unauthenticated) {

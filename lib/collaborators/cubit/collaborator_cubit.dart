@@ -9,6 +9,7 @@ import 'package:mi_libro_vecino_api/models/library_model.dart';
 import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
+import 'package:mi_libro_vecino_api/services/geo_service.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:paulonia_error_service/paulonia_error_service.dart';
@@ -73,10 +74,15 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
       state.personalInfoForm
           .control(CollaboratorState.phoneNumberController)
           .value = user.phone;
+      state.libraryInfoForm
+          .control(CollaboratorState.libraryLabelsController)
+          .value = convertTagsToString(library.tags);
       final libraryImage =
           await (await downloadFileFromGsurl(library.gsUrl)).readAsBytes();
       final userImage =
           await (await downloadFileFromGsurl(user.gsUrl)).readAsBytes();
+
+      final services = _getServices(library.services, state.services);
 
       wasFilled = true;
       emit(
@@ -85,6 +91,7 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
           libraryImage: libraryImage,
           userImage: userImage,
           library: library,
+          services: services,
         ),
       );
     } catch (error, stacktrace) {
@@ -96,7 +103,112 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
     emit(state.copyWith(location: coordinates));
   }
 
-  void fillUserData() {}
+  /// For this function we need to make a deep copy of
+  /// the services map in order to bloc can differentiate
+  /// both states and rebuild the view
+  void updateServices({required String key}) {
+    final map = Map<String, bool>.from(state.services)
+      ..update(key, (value) => !value);
+    emit(
+      state.copyWith(
+        services: map,
+      ),
+    );
+  }
+
+  String convertTagsToString(List<String> tags) {
+    return tags.join(',');
+  }
+
+  Future<void> onTapSaveUser() async {
+    state.personalInfoForm.markAllAsTouched();
+    if (state.personalInfoForm.invalid) {
+      return;
+    }
+    try {
+      final oldUser = await _userRepository
+          .getUserFromCredentials(AuthService.currentUser!);
+      if (oldUser == null) return;
+
+      await _userRepository.updateUser(
+        oldUser,
+        name: state.personalInfoForm
+            .control(CollaboratorState.fullnameController)
+            .value
+            .toString(),
+        phone: state.personalInfoForm
+            .control(CollaboratorState.phoneNumberController)
+            .value
+            .toString(),
+        // photo: state.personPhoto,
+      );
+    } catch (error, stacktrace) {
+      PauloniaErrorService.sendError(error, stacktrace);
+    }
+  }
+
+  Future<void> onTapSaveLibrary() async {
+    state.libraryInfoForm.markAllAsTouched();
+    if (state.libraryInfoForm.invalid) {
+      return;
+    }
+    try {
+      final libraryValuesMap = state.libraryInfoForm.value;
+
+      final ubigeoModel =
+          await GeoService.getUbigeoFromCoordinates(state.location);
+      if (ubigeoModel == null) {
+        return;
+      }
+
+      if (state.library == null) return;
+
+      final newLibraryModel = await _libraryRepository.updateLibrary(
+        state.library!,
+        ownerId: state.library?.ownerId,
+        name: libraryValuesMap[CollaboratorState.libraryNameController]
+            .toString(),
+        type: LibraryType.values[int.parse(state.libraryRolController.text)],
+        openingHour: fromStringToTimeOfDay(
+          libraryValuesMap[CollaboratorState.openTimeController].toString(),
+        ),
+        closingHour: fromStringToTimeOfDay(
+          libraryValuesMap[CollaboratorState.closeTimeController].toString(),
+        ),
+        address:
+            libraryValuesMap[CollaboratorState.addressController].toString(),
+        location: state.location,
+        services: state.services.keys
+            .where((key) => state.services[key] == true)
+            .toList(),
+        tags: libraryValuesMap[CollaboratorState.libraryLabelsController]
+            .toString()
+            .split(','),
+
+        // TODO(oscarnar): get search keys
+        searchKeys: libraryValuesMap[CollaboratorState.libraryLabelsController]
+            .toString()
+            .split(','),
+
+        departmentId: ubigeoModel.departmentId,
+        provinceId: ubigeoModel.provinceId,
+        districtId: ubigeoModel.districtId,
+        description: libraryValuesMap[CollaboratorState.descriptionController]
+            .toString(),
+        website:
+            libraryValuesMap[CollaboratorState.websiteController].toString(),
+        // photo: state.libraryPhoto,
+      );
+      if (newLibraryModel == null) {
+        return;
+      } else {
+        emit(state.copyWith(library: newLibraryModel));
+        return;
+      }
+    } catch (error, stacktrace) {
+      PauloniaErrorService.sendError(error, stacktrace);
+    }
+  }
 
   Future<void> signOut() async {
     try {
@@ -107,6 +219,16 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
       emit(CollaboratorError.fromState(newState));
       PauloniaErrorService.sendError(error, stacktrace);
     }
+  }
+
+  Map<String, bool> _getServices(
+    List<String> services,
+    Map<String, bool> servicesMap,
+  ) {
+    for (final service in services) {
+      servicesMap[service] = true;
+    }
+    return servicesMap;
   }
 
   bool isAuthenticated() => AuthService.isLoggedIn();

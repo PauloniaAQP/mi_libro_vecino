@@ -24,3 +24,10 @@ class LocationChanged extends AppUserEvent {
   @override
   List<Object> get props => [location];
 }
+
+class UpdateUser extends AppUserEvent {
+  const UpdateUser();
+
+  @override
+  List<Object> get props => [];
+}
