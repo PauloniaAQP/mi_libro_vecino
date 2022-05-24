@@ -9,6 +9,7 @@ import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/future_with_loading.dart';
+import 'package:mi_libro_vecino_api/services/auth_service.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/user_enums.dart'
     as status;
 
@@ -92,7 +93,19 @@ class LoginPageState extends State<LoginPage>
                             if (value == null) {
                               return;
                             } else {
-                              if (value != status.LoginState.success) {
+                              if (value == status.LoginState.success) {
+                                AuthService.isAdmin(AuthService.currentUser!)
+                                    .then((value) {
+                                  context.read<LoginCubit>().cleanPassword();
+                                  if (value) {
+                                    context.go(Routes.admin);
+                                    return;
+                                  } else {
+                                    context.go(Routes.collaborators);
+                                    return;
+                                  }
+                                });
+                              } else {
                                 showDialog<void>(
                                   context: context,
                                   builder: (context) => AlertDialog(

@@ -25,14 +25,16 @@ class LoginCubit extends Cubit<LoginState> {
         isAdmin: isAdmin,
       );
       if (user != null) {
-        final newLoginForm = state.loginForm;
-        newLoginForm.control(LoginState.passwordController).value = '';
-        emit(LoginSuccess(loginForm: newLoginForm));
+        emit(LoginSuccess(loginForm: state.loginForm));
         return status.LoginState.success;
       }
       return status.LoginState.unknownError;
     } catch (e) {
       return e as status.LoginState;
     }
+  }
+
+  void cleanPassword() {
+    state.loginForm.control(LoginState.passwordController).value = '';
   }
 }
