@@ -52,9 +52,21 @@ class BottomButtons extends StatelessWidget {
                       confirmLabel: confirmLabel,
                       context: context,
                       onConfirm: () {
-                        context.read<AdminCubit>().acceptLibrary(id).then(
-                              (value) => context.go(Routes.admin),
+                        Navigator.of(context).pop();
+                        context
+                            .read<AdminCubit>()
+                            .removeLibrary(id)
+                            .then((value) {
+                          if (value) {
+                            context.go(Routes.admin);
+                          } else {
+                            pSimpleDialog(
+                              title: 'Error',
+                              body: 'Algo salió mal, intenta de nuevo',
+                              context: context,
                             );
+                          }
+                        });
                       },
                       title: l10n.adminPageDialogRejectRequestTitle,
                     );
@@ -80,11 +92,11 @@ class BottomButtons extends StatelessWidget {
                   confirmLabel: l10n.adminPageDialogRemoveLibraryConfirm,
                   context: context,
                   onConfirm: () {
+                    Navigator.of(context).pop();
                     context.read<AdminCubit>().removeLibrary(id).then((value) {
                       if (value) {
-                        context.go(Routes.admin);
+                        context.go('${Routes.admin}/${Routes.adminLibraries}');
                       } else {
-                        Navigator.of(context).pop();
                         pSimpleDialog(
                           title: 'Error',
                           body: 'Algo salió mal, intenta de nuevo',
