@@ -26,7 +26,8 @@ class _LibrariesListState extends State<LibrariesList> {
     super.initState();
     _controller.addListener(() async {
       if (_controller.position.pixels >= _controller.position.maxScrollExtent &&
-          !_isLoadingPagination) {
+          !_isLoadingPagination &&
+          !context.read<LibrariesCubit>().isAllLibraries) {
         setState(() {
           _isLoadingPagination = true;
         });

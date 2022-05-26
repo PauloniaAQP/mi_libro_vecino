@@ -39,10 +39,34 @@ class AdminCubit extends Cubit<AdminState> {
       final acceptedLibraries = await _libraryRepository.getAcceptedLibraries(
         cache: cache,
         resetPagination: true,
+        limit: _pageSize,
       );
+      if (acceptedLibraries.length < _pageSize) {
+        isAllLibraries = true;
+      }
       emit(state.copyWith(acceptedLibraries: acceptedLibraries));
     } catch (error, stracktrace) {
       PauloniaErrorService.sendError(error, stracktrace);
+    }
+  }
+
+  /// Id [isAllLibraries] is true, it means that all libraries
+  /// from repository are already loaded.
+  Future<void> loadMoreLibraries({bool cache = true}) async {
+    if (isAllLibraries) {
+      return;
+    }
+    try {
+      final newAcceptedLibraries = await _libraryRepository
+          .getAcceptedLibraries(cache: cache, limit: _pageSize);
+      state.acceptedLibraries?.addAll(newAcceptedLibraries);
+      if (newAcceptedLibraries.length < _pageSize) {
+        isAllLibraries = true;
+      }
+      emit(state.copyWith(acceptedLibraries: state.acceptedLibraries));
+    } catch (error, stacktrace) {
+      PauloniaErrorService.sendError(error, stacktrace);
+      return;
     }
   }
 
@@ -83,7 +107,10 @@ class AdminCubit extends Cubit<AdminState> {
     try {
       await _libraryRepository.removeLibrary(id);
       await _userRepository.removeUserById(userId);
-      await fillData();
+
+      // TODO(oscanar): remove user from firebase with userId
+      // await AuthService.removeUser();
+      unawaited(fillData());
       return true;
     } catch (error, stracktrace) {
       PauloniaErrorService.sendError(error, stracktrace);
@@ -101,4 +128,6 @@ class AdminCubit extends Cubit<AdminState> {
 
   final UserRepository _userRepository = Get.find<UserRepository>();
   final LibraryRepository _libraryRepository = Get.find<LibraryRepository>();
+  bool isAllLibraries = false;
+  final _pageSize = 7;
 }
