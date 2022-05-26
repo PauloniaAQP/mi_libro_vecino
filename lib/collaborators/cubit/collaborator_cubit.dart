@@ -117,7 +117,7 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
   }
 
   String convertTagsToString(List<String> tags) {
-    return tags.join(',');
+    return tags.join(', ');
   }
 
   Future<void> onTapSaveUser() async {

@@ -268,8 +268,8 @@ class CollaboratorsLibraryForm extends StatelessWidget {
                 ),
                 PTextField(
                   formControlName: CollaboratorState.libraryLabelsController,
-                  hintText: context.l10n.registerPageCategoriesLabelsHintText,
-                  label: context.l10n.registerPageCategoriesLabels,
+                  hintText: l10n.registerPageCategoriesLabelsHintText,
+                  label: l10n.registerPageCategoriesLabels,
                 ),
                 const SizedBox(height: 70),
                 Padding(

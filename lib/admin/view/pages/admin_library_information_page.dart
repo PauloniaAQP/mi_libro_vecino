@@ -289,9 +289,7 @@ class _AdminLibraryInformationPageState
                               ),
                               InfoField(
                                 label: l10n.adminPagePersonalLabels,
-
-                                // TODO(oscarnar): Fix tags in all app
-                                text: '',
+                                text: library?.tags.join(', ') ?? '',
                                 maxLines: 3,
                               ),
                               const SizedBox(height: 70),
