@@ -66,36 +66,10 @@ abstract class AppRouter {
           ),
           GoRoute(
             path: Routes.login,
-            redirect: (_) {
-              if (AuthService.isLoggedIn()) {
-                AuthService.isAdmin(AuthService.currentUser!).then((value) {
-                  if (value) {
-                    return Routes.admin;
-                  } else {
-                    return Routes.collaborators;
-                  }
-                });
-              }
-              return null;
-            },
             pageBuilder: (context, state) {
               final isAdmin = state.queryParams['isAdmin'] == 'true';
               return MaterialPage(
-                // TODO(oscanar): Check if it's correct, when I'm logged in
-                // and then I return to login, the page take some time to
-                // redirect to correct page.
-                child: BlocListener<AppUserBloc, AppUserState>(
-                  listener: (context, state) {
-                    if (state is AppUserAuthenticated) {
-                      if (state.isAdmin) {
-                        GoRouter.of(context).go(Routes.admin);
-                      } else {
-                        GoRouter.of(context).go(Routes.collaborators);
-                      }
-                    }
-                  },
-                  child: LoginPage(isAdmin: isAdmin),
-                ),
+                child: LoginPage(isAdmin: isAdmin),
               );
             },
           ),
@@ -113,15 +87,8 @@ abstract class AppRouter {
           ),
           GoRoute(
             path: Routes.collaborators,
-            pageBuilder: (context, state) => MaterialPage(
-              child: BlocListener<AppUserBloc, AppUserState>(
-                listener: (context, state) {
-                  if (state.status != AuthenticationStatus.authenticated) {
-                    GoRouter.of(context).go(Routes.login);
-                  }
-                },
-                child: const CollaboratorsPage(),
-              ),
+            pageBuilder: (context, state) => const MaterialPage(
+              child: CollaboratorsPage(),
             ),
             redirect: (_) {
               if (AuthService.isLoggedIn()) {
@@ -131,13 +98,10 @@ abstract class AppRouter {
               }
             },
             routes: [
-              // TODO(oscanar): Handle the case when the user is not logged in
               GoRoute(
                 path: Routes.collaboratorsPersonal,
                 redirect: (_) {
-                  if (!AuthService.isLoggedIn()) {
-                    return Routes.login;
-                  }
+                  if (!AuthService.isLoggedIn()) return Routes.login;
                   return null;
                 },
                 pageBuilder: (context, state) => MaterialPage(
@@ -153,6 +117,10 @@ abstract class AppRouter {
               ),
               GoRoute(
                 path: Routes.collaboratorsLibrary,
+                redirect: (_) {
+                  if (!AuthService.isLoggedIn()) return Routes.login;
+                  return null;
+                },
                 pageBuilder: (context, state) => MaterialPage(
                   child: BlocListener<AppUserBloc, AppUserState>(
                     listener: (context, state) {
@@ -180,6 +148,10 @@ abstract class AppRouter {
             routes: [
               GoRoute(
                 path: Routes.adminNewRequests,
+                redirect: (_) {
+                  if (!AuthService.isLoggedIn()) return Routes.login;
+                  return null;
+                },
                 pageBuilder: (context, state) {
                   final libraryIdQuery = state.queryParams['id'];
                   return MaterialPage(
@@ -189,6 +161,10 @@ abstract class AppRouter {
               ),
               GoRoute(
                 path: Routes.adminLibraries,
+                redirect: (_) {
+                  if (!AuthService.isLoggedIn()) return Routes.login;
+                  return null;
+                },
                 pageBuilder: (context, state) {
                   final libraryIdQuery = state.queryParams['id'];
                   return MaterialPage(

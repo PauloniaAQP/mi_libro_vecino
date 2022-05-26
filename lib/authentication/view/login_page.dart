@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/authentication/components/login_form.dart';
 import 'package:mi_libro_vecino/authentication/cubit/login_cubit.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/quotes_page.dart';
@@ -26,6 +28,21 @@ class LoginPage extends StatefulWidget {
 
 class LoginPageState extends State<LoginPage>
     with AutomaticKeepAliveClientMixin {
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance?.addPostFrameCallback((_) {
+      if (context.read<AppUserBloc>().state.status ==
+          AuthenticationStatus.authenticated) {
+        if (context.read<AppUserBloc>().state.isAdmin) {
+          GoRouter.of(context).go(Routes.admin);
+        } else {
+          GoRouter.of(context).go(Routes.collaborators);
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
