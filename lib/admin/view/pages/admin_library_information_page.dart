@@ -17,6 +17,7 @@ import 'package:mi_libro_vecino_api/services/geo_service.dart'
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:paulonia_cache_image/paulonia_cache_image.dart';
+import 'package:paulonia_utils/paulonia_utils.dart';
 
 class AdminLibraryInformationPage extends StatefulWidget {
   const AdminLibraryInformationPage({
@@ -61,6 +62,9 @@ class _AdminLibraryInformationPageState
       padding: EdgeInsets.symmetric(horizontal: _width),
       child: Scaffold(
         appBar: AppBar(
+          key: const Key(
+            'admin_info_page_app_bar',
+          ),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
 
           // TODO(oscarnar): For future, now pop() behavior is different
@@ -108,10 +112,12 @@ class _AdminLibraryInformationPageState
                               height: 232,
                               width: 232,
                               decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: PCacheImage(user?.gsUrl ?? ''),
-                                  fit: BoxFit.cover,
-                                ),
+                                image: PUtils.isOnTest()
+                                    ? null
+                                    : DecorationImage(
+                                        image: PCacheImage(user?.gsUrl ?? ''),
+                                        fit: BoxFit.cover,
+                                      ),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),

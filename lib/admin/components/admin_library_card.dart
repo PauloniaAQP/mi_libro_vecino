@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:paulonia_cache_image/paulonia_cache_image.dart';
+import 'package:paulonia_utils/paulonia_utils.dart';
 
 class AdminLibraryCard extends StatelessWidget {
   const AdminLibraryCard({
@@ -41,10 +42,12 @@ class AdminLibraryCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.black12,
                     borderRadius: BorderRadius.circular(14),
-                    image: DecorationImage(
-                      image: PCacheImage(gsUrl),
-                      fit: BoxFit.cover,
-                    ),
+                    image: PUtils.isOnTest()
+                        ? null
+                        : DecorationImage(
+                            image: PCacheImage(gsUrl),
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
               ),

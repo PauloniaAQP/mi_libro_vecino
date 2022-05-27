@@ -9,10 +9,12 @@ import 'package:mi_libro_vecino_api/models/library_model.dart';
 import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
-import 'package:mi_libro_vecino_api/services/geo_service.dart';
+import 'package:mi_libro_vecino_api/services/geo_service.dart'
+    if (dart.library.io) 'package:mi_libro_vecino_api/services/test_geo_service.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:paulonia_error_service/paulonia_error_service.dart';
+import 'package:paulonia_utils/paulonia_utils.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 part 'collaborator_state.dart';
@@ -33,6 +35,9 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
   /// If user is not logged in, this emit an error to then
   /// be redirected to the login page
   Future<void> fillData({bool force = false}) async {
+    if (PUtils.isOnTest()) {
+      return;
+    }
     if (force) wasFilled = false;
     if (wasFilled) return;
 
@@ -94,8 +99,10 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
           services: services,
         ),
       );
+      return;
     } catch (error, stacktrace) {
       PauloniaErrorService.sendError(error, stacktrace);
+      return;
     }
   }
 

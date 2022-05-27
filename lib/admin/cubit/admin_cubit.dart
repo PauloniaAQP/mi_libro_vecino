@@ -10,6 +10,7 @@ import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
 import 'package:paulonia_error_service/paulonia_error_service.dart';
+import 'package:paulonia_utils/paulonia_utils.dart';
 
 part 'admin_state.dart';
 
@@ -32,6 +33,10 @@ class AdminCubit extends Cubit<AdminState> {
   /// If you want to force get data from database, you should
   /// use [cache] parameter as false.
   Future<void> fillData({bool cache = true}) async {
+    if (PUtils.isOnTest()) {
+      emit(state.copyWith(pendingLibraries: [], acceptedLibraries: []));
+      return;
+    }
     try {
       _libraryRepository.getPendingLibraries(cache: cache).listen((libraries) {
         emit(state.copyWith(pendingLibraries: libraries));

@@ -48,6 +48,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Scaffold(
+      key: const Key('collaborators_page_scaffold'),
       appBar: const CollaboratorsAppBar(),
       body: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +94,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
             child: BlocBuilder<CollaboratorCubit, CollaboratorState>(
               buildWhen: (previous, current) =>
                   previous.library != current.library,
-              builder: (context, state) {
+              builder: (_, state) {
                 if (state.library == null) {
                   context.read<CollaboratorCubit>().fillData();
                   return const Center(

@@ -7,6 +7,7 @@ import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:paulonia_cache_image/paulonia_cache_image.dart';
+import 'package:paulonia_utils/paulonia_utils.dart';
 
 class AdminExpandMenu extends StatefulWidget {
   const AdminExpandMenu({
@@ -82,8 +83,9 @@ class _AdminExpandMenuState extends State<AdminExpandMenu>
                     return Row(
                       children: [
                         CircleAvatar(
-                          backgroundImage:
-                              PCacheImage(state.currentUser?.gsUrl ?? ''),
+                          backgroundImage: PUtils.isOnTest()
+                              ? null
+                              : PCacheImage(state.currentUser?.gsUrl ?? ''),
                           radius: 20,
                           backgroundColor: Colors.black12,
                         ),

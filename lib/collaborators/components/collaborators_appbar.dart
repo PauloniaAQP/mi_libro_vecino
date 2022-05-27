@@ -9,6 +9,7 @@ import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dialog.dart';
 import 'package:paulonia_cache_image/paulonia_cache_image.dart';
+import 'package:paulonia_utils/paulonia_utils.dart';
 
 class CollaboratorsAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -62,8 +63,9 @@ class CollaboratorsAppBar extends StatelessWidget
                 return Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage:
-                          PCacheImage(state.currentUser?.gsUrl ?? ''),
+                      backgroundImage: PUtils.isOnTest()
+                          ? null
+                          : PCacheImage(state.currentUser?.gsUrl ?? ''),
                       radius: 20,
                     ),
                     const SizedBox(width: 20),

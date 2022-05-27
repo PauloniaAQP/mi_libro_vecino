@@ -11,6 +11,7 @@ import 'package:mi_libro_vecino_api/models/library_model.dart';
 import 'package:mi_libro_vecino_api/models/user_model.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:paulonia_cache_image/paulonia_cache_image.dart';
+import 'package:paulonia_utils/paulonia_utils.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class InfomationLibrary extends StatelessWidget {
@@ -47,10 +48,12 @@ class InfomationLibrary extends StatelessWidget {
                     height: 280,
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: PCacheImage(library!.gsUrl),
-                        fit: BoxFit.cover,
-                      ),
+                      image: PUtils.isOnTest()
+                          ? null
+                          : DecorationImage(
+                              image: PCacheImage(library!.gsUrl),
+                              fit: BoxFit.cover,
+                            ),
                     ),
                   ),
                   Padding(
@@ -311,11 +314,14 @@ class InfomationLibrary extends StatelessWidget {
                               height: 93,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
-                                  image:
-                                      PCacheImage(snapshot.data?.gsUrl ?? ''),
-                                  fit: BoxFit.cover,
-                                ),
+                                image: PUtils.isOnTest()
+                                    ? null
+                                    : DecorationImage(
+                                        image: PCacheImage(
+                                          snapshot.data?.gsUrl ?? '',
+                                        ),
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
                             ),
                             const SizedBox(width: 17),

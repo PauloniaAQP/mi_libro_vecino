@@ -18,15 +18,29 @@ import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class CollaboratorsLibraryForm extends StatelessWidget {
+class CollaboratorsLibraryForm extends StatefulWidget {
   const CollaboratorsLibraryForm({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<CollaboratorsLibraryForm> createState() =>
+      _CollaboratorsLibraryFormState();
+}
+
+class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
+  Timer? _debounce;
+
+  @override
+  void dispose() {
+    _debounce?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    Timer? _debounce;
+
     return SingleChildScrollView(
       child: BlocBuilder<CollaboratorCubit, CollaboratorState>(
         builder: (context, state) {
