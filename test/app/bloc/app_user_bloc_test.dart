@@ -16,7 +16,7 @@ void main() {
 
     setUp(() async {
       await Firebase.initializeApp();
-      coordinates = utils.Coordinates(-16.3958409, -71.5342607);
+      coordinates = utils.Coordinates(0, 0);
       Get.put(UserRepository(), permanent: true);
     });
 

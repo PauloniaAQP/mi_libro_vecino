@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
-import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
+import 'package:paulonia_cache_image/paulonia_cache_image.dart';
+import 'package:paulonia_utils/paulonia_utils.dart';
 
 class AdminLibraryCard extends StatelessWidget {
   const AdminLibraryCard({
@@ -12,10 +12,12 @@ class AdminLibraryCard extends StatelessWidget {
     required this.labels,
     required this.onContact,
     required this.onTap,
+    required this.gsUrl,
   }) : super(key: key);
 
   final String title;
   final String name;
+  final String gsUrl;
   final List<String> labels;
   final VoidCallback onContact;
   final VoidCallback onTap;
@@ -38,12 +40,14 @@ class AdminLibraryCard extends StatelessWidget {
                 child: Container(
                   width: 300,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Colors.black12,
                     borderRadius: BorderRadius.circular(14),
-                    image: const DecorationImage(
-                      image: AssetImage(Assets.testImg),
-                      fit: BoxFit.cover,
-                    ),
+                    image: PUtils.isOnTest()
+                        ? null
+                        : DecorationImage(
+                            image: PCacheImage(gsUrl),
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
               ),

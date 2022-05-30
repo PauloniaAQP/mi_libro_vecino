@@ -30,6 +30,7 @@ class LibrariesCubit extends Cubit<LibrariesState> {
         resetPagination: true,
         limit: pageSize,
       );
+      if (libraries.length < pageSize) isAllLibraries = true;
       emit(LibrariesLoaded(libraries));
     } catch (e, stacktrace) {
       PauloniaErrorService.sendError(e, stacktrace);
@@ -88,5 +89,5 @@ class LibrariesCubit extends Cubit<LibrariesState> {
   final LibraryRepository _libraryRepository = Get.find<LibraryRepository>();
   final UserRepository _userRepository = Get.find<UserRepository>();
   bool isAllLibraries = false;
-  final int pageSize = 7;
+  int pageSize = 7;
 }

@@ -64,6 +64,12 @@ $ open coverage/index.html
 
 ---
 
+## Acounts for test
+In order to test admin functionality use the following account:
+
+user : admin@test.com  
+password: 123456789
+
 ## How to contribute
 
 If you want to take the time to make this project better, please read [the contributing guides](https://github.com/PauloniaAQP/mi_libro_vecino/blob/dev/CONTRIBUTING.md) first. Then, you can open an new issue, of a pull request.

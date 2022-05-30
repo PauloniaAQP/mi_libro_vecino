@@ -4,12 +4,12 @@ import 'package:mi_libro_vecino/ui_utils/colors.dart';
 class CategoryChip extends StatelessWidget {
   const CategoryChip({
     Key? key,
-    required this.onTap,
+    this.onTap,
     required this.label,
     required this.isSelected,
   }) : super(key: key);
 
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String label;
   final bool isSelected;
 
@@ -23,8 +23,7 @@ class CategoryChip extends StatelessWidget {
       child: RawMaterialButton(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         onPressed: onTap,
-        fillColor:
-            isSelected ? const Color(0xFF2183DF) : PColors.gray3,
+        fillColor: isSelected ? const Color(0xFF2183DF) : PColors.gray3,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),

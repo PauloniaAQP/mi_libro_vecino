@@ -80,16 +80,15 @@ class RegisterCubit extends Cubit<RegisterState> {
   }
 
   Future<void> onTapRegisterAndContinue() async {
+    state.registerForm.markAllAsTouched();
+    state.personInfoForm.markAllAsTouched();
+    state.libraryInfoForm.markAllAsTouched();
+    if (!state.registerForm.valid &&
+        !state.personInfoForm.valid &&
+        !state.libraryInfoForm.valid) {
+      return;
+    }
     try {
-      state.registerForm.markAllAsTouched();
-      state.personInfoForm.markAllAsTouched();
-      state.libraryInfoForm.markAllAsTouched();
-      if (!state.registerForm.valid &&
-          !state.personInfoForm.valid &&
-          !state.libraryInfoForm.valid) {
-        return;
-      }
-
       final userName = state.personInfoForm
           .control(RegisterState.fullnameController)
           .value
@@ -112,12 +111,14 @@ class RegisterCubit extends Cubit<RegisterState> {
           user = await AuthService.emailPasswordSignIn(userEmail, userPassword);
         } catch (error, stacktrace) {
           PauloniaErrorService.sendError(error, stacktrace);
-          emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+          final newState = RegisterInitial();
+          emit(newState.copyWith(status: RegisterStatus.error));
           return;
         }
       }
       if (user == null) {
-        emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+        final newState = RegisterInitial();
+        emit(newState.copyWith(status: RegisterStatus.error));
         return;
       }
 
@@ -134,7 +135,8 @@ class RegisterCubit extends Cubit<RegisterState> {
 
       if (userModel == null) {
         await AuthService.removeUser(user);
-        emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+        final newState = RegisterInitial();
+        emit(newState.copyWith(status: RegisterStatus.error));
         return;
       }
       final libraryValuesMap = state.libraryInfoForm.value;
@@ -144,7 +146,8 @@ class RegisterCubit extends Cubit<RegisterState> {
       if (ubigeoModel == null) {
         await _userRepository.removeUserById(userModel.id);
         await AuthService.removeUser(user);
-        emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+        final newState = RegisterInitial();
+        emit(newState.copyWith(status: RegisterStatus.error));
         return;
       }
 
@@ -154,7 +157,8 @@ class RegisterCubit extends Cubit<RegisterState> {
         if (userLogged == null) {
           await _userRepository.removeUserById(userModel.id);
           await AuthService.removeUser(user);
-          emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+          final newState = RegisterInitial();
+          emit(newState.copyWith(status: RegisterStatus.error));
           return;
         }
       }
@@ -174,7 +178,9 @@ class RegisterCubit extends Cubit<RegisterState> {
         services: state.services.keys
             .where((key) => state.services[key] == true)
             .toList(),
-        tags: state.libraryCategories,
+        tags: libraryValuesMap[RegisterState.libraryLabelsController]
+            .toString()
+            .split(','),
 
         // TODO(oscarnar): get search keys
         searchKeys: state.libraryCategories,
@@ -190,14 +196,19 @@ class RegisterCubit extends Cubit<RegisterState> {
       if (libraryModel == null) {
         await AuthService.removeUser(user);
         await _userRepository.removeUserById(userModel.id);
-        emit(RegisterInitial()..copyWith(status: RegisterStatus.error));
+        final newState = RegisterInitial();
+        emit(newState.copyWith(status: RegisterStatus.error));
         return;
       } else {
-        emit(RegisterInitial()..copyWith(status: RegisterStatus.success));
+        final newState = RegisterInitial();
+        await AuthService.signOut();
+        emit(newState.copyWith(status: RegisterStatus.success));
         return;
       }
     } catch (error, stacktrace) {
       PauloniaErrorService.sendError(error, stacktrace);
+      final newState = RegisterInitial();
+      emit(newState.copyWith(status: RegisterStatus.error));
     }
   }
 

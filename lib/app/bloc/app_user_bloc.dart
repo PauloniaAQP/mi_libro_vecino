@@ -19,9 +19,22 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
   AppUserBloc() : super(const AppUserInitial()) {
     _userRepository = Get.find<UserRepository>();
     on<AppUserEvent>((event, emit) {});
+    on<UpdateUser>((event, emit) async {
+      final user = AuthService.currentUser;
+      if (user == null) {
+        PauloniaErrorService.sendErrorWithoutStacktrace(state);
+        return;
+      }
+      final userModel = await _userRepository.getUserFromCredentials(user);
+      emit(state.copyWith(currentUser: userModel));
+    });
     on<AuthenticationStatusChanged>((event, emit) async {
       try {
         if (event.status == AuthenticationStatus.unauthenticated) {
+          if (state.currentUser != null) {
+            emit(const AppUserInitial());
+            await checkLocation();
+          }
           return;
         } else {
           final user = AuthService.currentUser;
@@ -74,7 +87,7 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
     try {
       late Coordinates location;
       if (PUtils.isOnTest()) {
-        location = Coordinates(-16.3958409, -71.5342607);
+        location = Coordinates(0, 0);
       } else {
         location = await GeoService.determineCoordinates();
       }
