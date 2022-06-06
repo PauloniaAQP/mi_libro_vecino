@@ -34,7 +34,7 @@ class LoginCubit extends Cubit<LoginState> {
     }
   }
 
-  void cleanPassword() {
-    state.loginForm.control(LoginState.passwordController).value = '';
+  void cleanData() {
+    emit(LoginInitial());
   }
 }
