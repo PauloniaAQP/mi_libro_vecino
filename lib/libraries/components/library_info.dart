@@ -63,8 +63,11 @@ class InfomationLibrary extends StatelessWidget {
                       child: Row(
                         children: List.generate(
                           library!.services.length,
-                          (index) => Chip(
-                            label: Text(library!.services[index]),
+                          (index) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: Chip(
+                              label: Text(library!.services[index]),
+                            ),
                           ),
                         ),
                       ),

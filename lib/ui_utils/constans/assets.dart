@@ -14,8 +14,10 @@ class Assets {
   static const String phoneIcon = 'assets/icons/phone.png';
   static const String facebookLogo = 'assets/images/facebook.png';
   static const String waitingImg = 'assets/images/waiting_book.png';
-  static const String errorRegisterImg = 'assets/images/register_error_book.png';
+  static const String errorRegisterImg =
+      'assets/images/register_error_book.png';
   static const String searchImg = 'assets/images/search_book.png';
+  static const String searchIcon = 'assets/icons/search.png';
 
   // Image for tests
   static const testImg = 'assets/images/test_images/library.jpeg';

@@ -33,11 +33,14 @@ class CollaboratorsAppBar extends StatelessWidget
       toolbarHeight: 80,
       centerTitle: true,
       leadingWidth: 100,
-      leading: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30),
-        child: Image(
-          image: AssetImage(Assets.logo),
-          height: 40,
+      leading: InkWell(
+        onTap: () => context.go(Routes.search),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30),
+          child: Image(
+            image: AssetImage(Assets.logo),
+            height: 40,
+          ),
         ),
       ),
       actions: [

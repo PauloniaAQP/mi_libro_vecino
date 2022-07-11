@@ -48,6 +48,8 @@ class LocationsMap extends StatelessWidget {
                       )
                     : null,
                 zoom: 15,
+                maxZoom: 18.25,
+                minZoom: 5,
               ),
               layers: [
                 TileLayerOptions(

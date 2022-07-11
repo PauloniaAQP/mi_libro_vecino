@@ -22,6 +22,10 @@ class LibraryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 1,
+      clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: InkWell(
         key: const Key('libraryCardInkwellKey'),
         onTap: onTap,
@@ -72,8 +76,12 @@ class LibraryCard extends StatelessWidget {
                         child: Row(
                           children: List.generate(
                             labels.length,
-                            (index) => Chip(
-                              label: Text(labels[index]),
+                            (index) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: Chip(
+                                label: Text(labels[index]),
+                              ),
                             ),
                           ),
                         ),

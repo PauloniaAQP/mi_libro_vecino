@@ -5,9 +5,9 @@
         "description": "Text shown in the AppBar of the Counter Page"
     },
     "searchPageImLibraryButton": "Soy colaborador",
-    "searchPageFollowButton": "Siguenos",
+    "searchPageFollowButton": "Síguenos",
     "searchPageBeforeTitle": "Amet minim mollit non deserunt est sit aliqua.",
-    "searchPageTitle": "¿Donde quieres buscar librerías?",
+    "searchPageTitle": "¡Toma un libro te lo presto!",
     "searchPageAfterTitle": "Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation veniam consequat sunt nostrud amet.",
     "searchPageFootpage": "Copyright 2021 Mi Libro Vecino. Todos los derechos reservados",
     "searchPageAdminButton": "Admin",
