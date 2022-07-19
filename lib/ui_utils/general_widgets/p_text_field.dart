@@ -14,6 +14,7 @@ class PTextField extends StatelessWidget {
     this.readOnly = false,
     this.suffixIcon,
     this.mouseCursor,
+    this.maxLines = 1,
   }) : super(key: key);
 
   final String label;
@@ -25,6 +26,7 @@ class PTextField extends StatelessWidget {
   final bool readOnly;
   final Widget? suffixIcon;
   final MouseCursor? mouseCursor;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,7 @@ class PTextField extends StatelessWidget {
           obscuringCharacter: '*',
           readOnly: readOnly,
           mouseCursor: mouseCursor,
+          maxLines: maxLines,
           decoration: InputDecoration(
             hintText: hintText,
             filled: true,

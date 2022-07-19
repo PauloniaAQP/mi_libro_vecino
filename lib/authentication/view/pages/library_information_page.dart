@@ -70,6 +70,7 @@ class LibraryInformationPage extends StatelessWidget {
                               .l10n.registerPageLibraryDescriptionHintText,
                           formControlName: RegisterState.descriptionController,
                           keyboardType: TextInputType.number,
+                          maxLines: 4,
                           validationMessages: {
                             ValidationMessage.required: context
                                 .l10n.registerPageLibraryDescriptionErrorText,
