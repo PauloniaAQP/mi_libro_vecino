@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
+import 'package:mi_libro_vecino/ui_utils/general_widgets/one_line_labels_list.dart';
 import 'package:paulonia_cache_image/paulonia_cache_image.dart';
 import 'package:paulonia_utils/paulonia_utils.dart';
 
@@ -70,23 +71,7 @@ class LibraryCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 18),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: List.generate(
-                            labels.length,
-                            (index) => Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5),
-                              child: Chip(
-                                label: Text(labels[index]),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    OneLineLabelsList(labelsList: labels),
                   ],
                 ),
               ),

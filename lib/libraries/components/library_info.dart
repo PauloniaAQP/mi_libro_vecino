@@ -34,6 +34,7 @@ class InfomationLibrary extends StatelessWidget {
     }
     final openHourString = ApiUtils.timeOfDayToString(library!.openingHour);
     final closeHourString = ApiUtils.timeOfDayToString(library!.closingHour);
+    final libraryLabels = (library?.services ?? []) + (library?.tags ?? []);
     return Scaffold(
       body: Column(
         children: [
@@ -58,16 +59,14 @@ class InfomationLibrary extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: List.generate(
-                          library!.services.length,
-                          (index) => Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: Chip(
-                              label: Text(library!.services[index]),
-                            ),
+                    child: Wrap(
+                      runSpacing: 12,
+                      children: List.generate(
+                        library?.services.length ?? 0,
+                        (index) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          child: Chip(
+                            label: Text(library?.services[index] ?? ''),
                           ),
                         ),
                       ),
@@ -261,7 +260,7 @@ class InfomationLibrary extends StatelessWidget {
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
-                          library!.services.join(', '),
+                          library?.tags.join(', ') ?? '',
                           style: Theme.of(context).textTheme.caption!.copyWith(
                                 color: PColors.gray1,
                                 fontSize: 16,
