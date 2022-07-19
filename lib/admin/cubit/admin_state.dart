@@ -6,6 +6,8 @@ class AdminState extends Equatable {
     required this.textEditControler,
     this.pendingLibraries,
     this.acceptedLibraries,
+    this.acceptedOwners,
+    this.pendingOwners,
   });
 
   final bool isSearching;
@@ -13,6 +15,8 @@ class AdminState extends Equatable {
 
   final List<LibraryModel>? pendingLibraries;
   final List<LibraryModel>? acceptedLibraries;
+  final List<UserModel>? pendingOwners;
+  final List<UserModel>? acceptedOwners;
 
   @override
   List<Object> get props =>
@@ -22,6 +26,8 @@ class AdminState extends Equatable {
     bool? isSearching,
     List<LibraryModel>? pendingLibraries,
     List<LibraryModel>? acceptedLibraries,
+    List<UserModel>? pendingOwners,
+    List<UserModel>? acceptedOwners,
     UserModel? user,
   }) {
     return AdminState(
@@ -29,6 +35,8 @@ class AdminState extends Equatable {
       textEditControler: textEditControler,
       pendingLibraries: pendingLibraries ?? this.pendingLibraries,
       acceptedLibraries: acceptedLibraries ?? this.acceptedLibraries,
+      pendingOwners: pendingOwners ?? this.pendingOwners,
+      acceptedOwners: acceptedOwners ?? this.acceptedOwners,
     );
   }
 }
