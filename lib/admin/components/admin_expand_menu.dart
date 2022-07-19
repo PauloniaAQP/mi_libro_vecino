@@ -85,7 +85,10 @@ class _AdminExpandMenuState extends State<AdminExpandMenu>
                         CircleAvatar(
                           backgroundImage: PUtils.isOnTest()
                               ? null
-                              : PCacheImage(state.currentUser?.gsUrl ?? ''),
+                              : PCacheImage(
+                                  state.currentUser?.gsUrl ?? '',
+                                  enableInMemory: true,
+                                ),
                           radius: 20,
                           backgroundColor: Colors.black12,
                         ),
@@ -124,7 +127,7 @@ class _AdminExpandMenuState extends State<AdminExpandMenu>
                     elevation: 0,
                     onPressed: () {
                       context.read<AdminCubit>().signOut().then((_) {
-                        context.go(Routes.login);
+                        context.go(Routes.search);
                       });
                     },
                     child: Text(

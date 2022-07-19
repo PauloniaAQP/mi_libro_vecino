@@ -53,9 +53,13 @@ class CollaboratorsAppBar extends StatelessWidget
                 confirmLabel: l10n.collaboratorsPageDialogLeaveConfirm,
                 context: context,
                 onConfirm: () {
+                  Navigator.of(context).pop();
                   context.read<CollaboratorCubit>().signOut().then((_) {
-                    Navigator.of(context).pop();
-                    context.go(Routes.login);
+                    /// Here we make a delayed because last pop() needs
+                    /// a little time to finish and paint the screen
+                    Future<void>.delayed(const Duration(milliseconds: 100), () {
+                      context.go(Routes.search);
+                    });
                   });
                 },
                 title: l10n.collaboratorsPageDialogLeaveTitle,
@@ -68,7 +72,10 @@ class CollaboratorsAppBar extends StatelessWidget
                     CircleAvatar(
                       backgroundImage: PUtils.isOnTest()
                           ? null
-                          : PCacheImage(state.currentUser?.gsUrl ?? ''),
+                          : PCacheImage(
+                              state.currentUser?.gsUrl ?? '',
+                              enableInMemory: true,
+                            ),
                       radius: 20,
                     ),
                     const SizedBox(width: 20),

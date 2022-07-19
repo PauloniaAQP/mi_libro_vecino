@@ -106,15 +106,8 @@ abstract class AppRouter {
                   if (!AuthService.isLoggedIn()) return Routes.login;
                   return null;
                 },
-                pageBuilder: (context, state) => MaterialPage(
-                  child: BlocListener<AppUserBloc, AppUserState>(
-                    listener: (context, state) {
-                      if (state.status != AuthenticationStatus.authenticated) {
-                        GoRouter.of(context).go(Routes.login);
-                      }
-                    },
-                    child: const CollaboratorsPage(),
-                  ),
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: CollaboratorsPage(),
                 ),
               ),
               GoRoute(
@@ -123,15 +116,8 @@ abstract class AppRouter {
                   if (!AuthService.isLoggedIn()) return Routes.login;
                   return null;
                 },
-                pageBuilder: (context, state) => MaterialPage(
-                  child: BlocListener<AppUserBloc, AppUserState>(
-                    listener: (context, state) {
-                      if (state.status != AuthenticationStatus.authenticated) {
-                        GoRouter.of(context).go(Routes.login);
-                      }
-                    },
-                    child: const CollaboratorsPage(index: 1),
-                  ),
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: CollaboratorsPage(index: 1),
                 ),
               ),
             ],
