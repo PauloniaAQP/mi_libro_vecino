@@ -25,7 +25,9 @@ class LocationMap extends StatelessWidget {
         FlutterMap(
           options: MapOptions(
             center: LatLng(center.latitude, center.longitude),
-            zoom: 16.75,
+            zoom: 15,
+            maxZoom: 18.25,
+            minZoom: 5,
             onPositionChanged: onPositionChanged,
           ),
           layers: [
