@@ -13,7 +13,7 @@ void main() {
       );
       expect(
         find.text(
-          'Siguenos',
+          'Síguenos',
         ),
         findsOneWidget,
       );
