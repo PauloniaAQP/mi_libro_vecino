@@ -11,6 +11,7 @@ import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
+import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/user_enums.dart'
     as status;
 
@@ -64,7 +65,13 @@ class LoginPageState extends State<LoginPage>
               if (state.isAdmin) {
                 GoRouter.of(context).go(Routes.admin);
               } else {
-                GoRouter.of(context).go(Routes.collaborators);
+                if (state.currentLibrary?.state == LibraryState.inReview) {
+                  AuthService.signOut().then((_) {
+                    GoRouter.of(context).go(Routes.waiting);
+                  });
+                } else {
+                  GoRouter.of(context).go(Routes.collaborators);
+                }
               }
             }
           },

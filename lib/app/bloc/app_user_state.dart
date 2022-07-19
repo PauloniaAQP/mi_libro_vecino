@@ -5,12 +5,14 @@ class AppUserState extends Equatable {
     required this.status,
     this.currentLocation,
     this.currentUser,
+    this.currentLibrary,
     this.isAdmin = false,
   });
 
   final AuthenticationStatus status;
   final Coordinates? currentLocation;
   final UserModel? currentUser;
+  final LibraryModel? currentLibrary;
   final bool isAdmin;
 
   @override
@@ -20,11 +22,13 @@ class AppUserState extends Equatable {
     AuthenticationStatus? status,
     Coordinates? currentLocation,
     UserModel? currentUser,
+    LibraryModel? currentLibrary,
   }) {
     return AppUserState(
       status: status ?? this.status,
       currentLocation: currentLocation ?? this.currentLocation,
       currentUser: currentUser ?? this.currentUser,
+      currentLibrary: currentLibrary ?? this.currentLibrary,
     );
   }
 }
@@ -36,14 +40,17 @@ class AppUserInitial extends AppUserState {
 class AppUserAuthenticated extends AppUserState {
   const AppUserAuthenticated({
     required this.user,
+    this.library,
     bool isAdmin = false,
   }) : super(
           status: AuthenticationStatus.authenticated,
           currentUser: user,
           isAdmin: isAdmin,
+          currentLibrary: library,
         );
 
   final UserModel user;
+  final LibraryModel? library;
 
   @override
   List<Object> get props => [user.id];

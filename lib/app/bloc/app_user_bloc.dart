@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
+import 'package:mi_libro_vecino_api/models/library_model.dart';
 import 'package:mi_libro_vecino_api/models/user_model.dart';
+import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
 import 'package:mi_libro_vecino_api/services/geo_service.dart'
@@ -18,6 +20,7 @@ part 'app_user_state.dart';
 class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
   AppUserBloc() : super(const AppUserInitial()) {
     _userRepository = Get.find<UserRepository>();
+    _libraryRepository = Get.find<LibraryRepository>();
     on<AppUserEvent>((event, emit) {});
     on<UpdateUser>((event, emit) async {
       final user = AuthService.currentUser;
@@ -45,7 +48,15 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
           final isAdmin = await AuthService.isAdmin(user);
           final userModel = await _userRepository.getUserFromCredentials(user);
           if (userModel != null) {
-            emit(AppUserAuthenticated(user: userModel, isAdmin: isAdmin));
+            final libraryModel =
+                await _libraryRepository.getLibraryByOwnerId(userModel.id);
+            emit(
+              AppUserAuthenticated(
+                user: userModel,
+                isAdmin: isAdmin,
+                library: libraryModel,
+              ),
+            );
           } else {
             await AuthService.signOut();
           }
@@ -98,4 +109,5 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
   }
 
   late final UserRepository _userRepository;
+  late final LibraryRepository _libraryRepository;
 }
