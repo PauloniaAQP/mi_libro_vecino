@@ -52,20 +52,24 @@ class BottomButtons extends StatelessWidget {
                       confirmLabel: confirmLabel,
                       context: context,
                       onConfirm: () {
-                        Navigator.of(context).pop();
                         context
                             .read<AdminCubit>()
-                            .removeLibrary(id)
+                            .rejectLibrary(id)
                             .then((value) {
-                          if (value) {
-                            context.go(Routes.admin);
-                          } else {
-                            pSimpleDialog(
-                              title: 'Error',
-                              body: 'Algo salió mal, intenta de nuevo',
-                              context: context,
-                            );
-                          }
+                          Navigator.pop(context);
+                          Future.delayed(const Duration(milliseconds: 100), () {
+                            if (value) {
+                              context.go(
+                                '${Routes.admin}/${Routes.adminNewRequests}',
+                              );
+                            } else {
+                              pSimpleDialog(
+                                title: 'Error',
+                                body: 'Algo salió mal, intenta de nuevo',
+                                context: context,
+                              );
+                            }
+                          });
                         });
                       },
                       title: l10n.adminPageDialogRejectRequestTitle,
@@ -92,8 +96,8 @@ class BottomButtons extends StatelessWidget {
                   confirmLabel: l10n.adminPageDialogRemoveLibraryConfirm,
                   context: context,
                   onConfirm: () {
-                    Navigator.of(context).pop();
                     context.read<AdminCubit>().removeLibrary(id).then((value) {
+                      Navigator.pop(context);
                       if (value) {
                         context.go('${Routes.admin}/${Routes.adminLibraries}');
                       } else {

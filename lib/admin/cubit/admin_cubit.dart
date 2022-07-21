@@ -105,17 +105,43 @@ class AdminCubit extends Cubit<AdminState> {
     }
   }
 
+  /// This function is used to delete library from repository.
+  /// It also deletes the user owner of the library.
+  ///
+  /// This functions disable an acount permanently.
   Future<bool> removeLibrary(String id) async {
+    final libraryModel = await _libraryRepository.getFromId(id);
+    if (libraryModel == null) return false;
+    final userId = libraryModel.ownerId;
+    try {
+      await _libraryRepository.removeLibrary(id);
+      await _userRepository.removeUserById(userId);
+      state.acceptedLibraries?.removeWhere((library) => library.id == id);
+      state.acceptedOwners?.removeWhere((user) => user.id == userId);
+      // TODO(oscanar): remove user from firebase with userId
+      // await AuthService.removeUser();
+      return true;
+    } catch (error, stracktrace) {
+      PauloniaErrorService.sendError(error, stracktrace);
+      return false;
+    }
+  }
+
+  /// If some library is rejected, the user won't be able to enter the app.
+  /// This function will remove only the library from the database.
+  ///
+  /// If you want to remove the user and library,
+  /// you should use [removeLibrary] function.
+  Future<bool> rejectLibrary(String id) async {
     final library = await _libraryRepository.getFromId(id);
     if (library == null) return false;
     final userId = library.ownerId;
     try {
       await _libraryRepository.removeLibrary(id);
-      await _userRepository.removeUserById(userId);
-
+      state.pendingLibraries?.removeWhere((library) => library.id == id);
+      state.pendingOwners?.removeWhere((user) => user.id == userId);
       // TODO(oscanar): remove user from firebase with userId
       // await AuthService.removeUser();
-      unawaited(fillData());
       return true;
     } catch (error, stracktrace) {
       PauloniaErrorService.sendError(error, stracktrace);
