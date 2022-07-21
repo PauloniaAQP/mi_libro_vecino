@@ -12,21 +12,34 @@ import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
-import 'package:mi_libro_vecino_api/utils/constants/enums/user_enums.dart'
-    as status;
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({
+    Key? key,
+    this.isAdmin = false,
+  }) : super(key: key);
+  final bool isAdmin;
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LoginCubit(),
+      child: LoginView(isAdmin: isAdmin),
+    );
+  }
+}
+
+class LoginView extends StatefulWidget {
+  const LoginView({
     Key? key,
     this.isAdmin = false,
   }) : super(key: key);
 
   final bool isAdmin;
   @override
-  LoginPageState createState() => LoginPageState();
+  LoginViewState createState() => LoginViewState();
 }
 
-class LoginPageState extends State<LoginPage>
+class LoginViewState extends State<LoginView>
     with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
@@ -57,20 +70,31 @@ class LoginPageState extends State<LoginPage>
             if (state.status == AuthenticationStatus.authenticated) {
               /// Here we close the loaging dialog only if login is successful
               /// This code is here because we need to close the loading dialog
-              /// just before the user is redirected to the next page
+              /// just before the user is redirected to the next page (quickly)
               if (context.read<LoginCubit>().state is LoginSuccess) {
                 Navigator.of(context).pop();
               }
-              context.read<LoginCubit>().cleanData();
+              if (state is AppUserDisabled) {
+                if (state.wasRejected) {
+                  GoRouter.of(context).go(Routes.errorRegister);
+                  return;
+                } else {
+                  GoRouter.of(context).go(Routes.disabledAccount);
+                  return;
+                }
+              }
               if (state.isAdmin) {
                 GoRouter.of(context).go(Routes.admin);
+                return;
               } else {
                 if (state.currentLibrary?.state == LibraryState.inReview) {
                   AuthService.signOut().then((_) {
                     GoRouter.of(context).go(Routes.waiting);
                   });
+                  return;
                 } else {
                   GoRouter.of(context).go(Routes.collaborators);
+                  return;
                 }
               }
             }
@@ -78,6 +102,26 @@ class LoginPageState extends State<LoginPage>
         ),
         BlocListener<LoginCubit, LoginState>(
           listener: (context, state) {
+            if (state is LoginError) {
+              Navigator.of(context).pop();
+              showDialog<void>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Error de autenticación'),
+                  content: Text(
+                    getStringLoginStatus(state.loginStatus, l10n),
+                  ),
+                  actions: <Widget>[
+                    ElevatedButton(
+                      child: Text(context.l10n.accept),
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }
             if (state is LoginLoading) {
               showDialog<void>(
                 context: context,
@@ -154,37 +198,7 @@ class LoginPageState extends State<LoginPage>
                           onPressed: () {
                             context
                                 .read<LoginCubit>()
-                                .login(isAdmin: widget.isAdmin)
-                                .then((value) {
-                              if (value == null) {
-                                return;
-                              } else {
-                                if (value == status.LoginState.success) {
-                                  // context.read<LoginCubit>().cleanData();
-                                  return;
-                                } else {
-                                  Navigator.of(context).pop();
-                                  showDialog<void>(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title:
-                                          const Text('Error de autenticación'),
-                                      content: Text(
-                                        getStringLoginStatus(value, l10n),
-                                      ),
-                                      actions: <Widget>[
-                                        ElevatedButton(
-                                          child: Text(context.l10n.accept),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              }
-                            });
+                                .login(isAdmin: widget.isAdmin);
                           },
                           child: Text(
                             l10n.loginPageLoginButton,

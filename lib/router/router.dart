@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/admin/view/admin_page.dart';
-import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/authentication/view/login_page.dart';
+import 'package:mi_libro_vecino/authentication/view/pages/disabled_account_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/email_register_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/personal_name_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/register_error_page.dart';
@@ -85,6 +84,12 @@ abstract class AppRouter {
             path: Routes.errorRegister,
             pageBuilder: (context, state) => const MaterialPage(
               child: RegisterErrorPage(),
+            ),
+          ),
+          GoRoute(
+            path: Routes.disabledAccount,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: DisabledAcountPage(),
             ),
           ),
           GoRoute(

@@ -50,14 +50,19 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
           if (userModel != null) {
             final libraryModel =
                 await _libraryRepository.getLibraryByOwnerId(userModel.id);
-            emit(
-              AppUserAuthenticated(
-                user: userModel,
-                isAdmin: isAdmin,
-                library: libraryModel,
-              ),
-            );
+            if (libraryModel == null && !isAdmin) {
+              emit(const AppUserDisabled(wasRejected: true));
+            } else {
+              emit(
+                AppUserAuthenticated(
+                  user: userModel,
+                  isAdmin: isAdmin,
+                  library: libraryModel,
+                ),
+              );
+            }
           } else {
+            emit(const AppUserDisabled());
             await AuthService.signOut();
           }
         }

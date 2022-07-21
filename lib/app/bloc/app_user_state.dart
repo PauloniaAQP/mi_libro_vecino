@@ -55,3 +55,14 @@ class AppUserAuthenticated extends AppUserState {
   @override
   List<Object> get props => [user.id];
 }
+
+class AppUserDisabled extends AppUserState {
+  const AppUserDisabled({
+    this.wasRejected = false,
+  }) : super(status: AuthenticationStatus.authenticated);
+
+  final bool wasRejected;
+
+  @override
+  List<Object> get props => [wasRejected];
+}
