@@ -44,7 +44,8 @@ class CollaboratorsAppBar extends StatelessWidget
         ),
       ),
       actions: [
-        Padding(
+        Container(
+          constraints: const BoxConstraints(maxWidth: 234),
           padding: const EdgeInsets.only(right: 20),
           child: InkWell(
             onTap: () {
@@ -68,6 +69,7 @@ class CollaboratorsAppBar extends StatelessWidget
             child: BlocBuilder<AppUserBloc, AppUserState>(
               builder: (context, state) {
                 return Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     CircleAvatar(
                       backgroundImage: PUtils.isOnTest()
@@ -85,6 +87,7 @@ class CollaboratorsAppBar extends StatelessWidget
                             color: PColors.black,
                             fontSize: 14,
                           ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(width: 20),
                     const Icon(
