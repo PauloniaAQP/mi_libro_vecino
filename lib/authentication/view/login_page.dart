@@ -83,18 +83,20 @@ class LoginViewState extends State<LoginView>
                   return;
                 }
               }
-              if (state.isAdmin) {
-                GoRouter.of(context).go(Routes.admin);
-                return;
-              } else {
-                if (state.currentLibrary?.state == LibraryState.inReview) {
-                  AuthService.signOut().then((_) {
-                    GoRouter.of(context).go(Routes.waiting);
-                  });
+              if (state is AppUserAuthenticated) {
+                if (state.isAdmin) {
+                  GoRouter.of(context).go(Routes.admin);
                   return;
                 } else {
-                  GoRouter.of(context).go(Routes.collaborators);
-                  return;
+                  if (state.currentLibrary?.state == LibraryState.inReview) {
+                    AuthService.signOut().then((_) {
+                      GoRouter.of(context).go(Routes.waiting);
+                    });
+                    return;
+                  } else {
+                    GoRouter.of(context).go(Routes.collaborators);
+                    return;
+                  }
                 }
               }
             }

@@ -34,10 +34,8 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
     on<AuthenticationStatusChanged>((event, emit) async {
       try {
         if (event.status == AuthenticationStatus.unauthenticated) {
-          if (state.currentUser != null) {
-            emit(const AppUserInitial());
-            await checkLocation();
-          }
+          emit(const AppUserInitial());
+          await checkLocation();
           return;
         } else {
           final user = AuthService.currentUser;
@@ -52,6 +50,7 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
                 await _libraryRepository.getLibraryByOwnerId(userModel.id);
             if (libraryModel == null && !isAdmin) {
               emit(const AppUserDisabled(wasRejected: true));
+              await AuthService.signOut();
             } else {
               emit(
                 AppUserAuthenticated(
