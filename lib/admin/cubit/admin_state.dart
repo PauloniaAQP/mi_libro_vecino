@@ -6,37 +6,37 @@ class AdminState extends Equatable {
     required this.textEditControler,
     this.pendingLibraries,
     this.acceptedLibraries,
-    this.acceptedOwners,
-    this.pendingOwners,
+    this.searchLibraries,
   });
 
   final bool isSearching;
   final TextEditingController textEditControler;
+  final List<LibraryModel>? searchLibraries;
 
   final List<LibraryModel>? pendingLibraries;
   final List<LibraryModel>? acceptedLibraries;
-  final List<UserModel>? pendingOwners;
-  final List<UserModel>? acceptedOwners;
 
   @override
-  List<Object> get props =>
-      [isSearching, pendingLibraries ?? false, acceptedLibraries ?? false];
+  List<Object> get props => [
+        isSearching,
+        pendingLibraries ?? false,
+        acceptedLibraries ?? false,
+        searchLibraries ?? false,
+      ];
 
   AdminState copyWith({
     bool? isSearching,
     List<LibraryModel>? pendingLibraries,
     List<LibraryModel>? acceptedLibraries,
-    List<UserModel>? pendingOwners,
-    List<UserModel>? acceptedOwners,
     UserModel? user,
+    List<LibraryModel>? searchLibraries,
   }) {
     return AdminState(
       isSearching: isSearching ?? this.isSearching,
       textEditControler: textEditControler,
       pendingLibraries: pendingLibraries ?? this.pendingLibraries,
       acceptedLibraries: acceptedLibraries ?? this.acceptedLibraries,
-      pendingOwners: pendingOwners ?? this.pendingOwners,
-      acceptedOwners: acceptedOwners ?? this.acceptedOwners,
+      searchLibraries: searchLibraries ?? this.searchLibraries,
     );
   }
 }

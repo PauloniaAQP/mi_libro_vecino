@@ -43,8 +43,7 @@ class AdminSearchWidget extends StatelessWidget {
                             fontSizeDelta: 2,
                           ),
                       onChanged: (value) {
-                        BlocProvider.of<AdminCubit>(context)
-                            .onSearchQueryChanged(value);
+                        context.read<AdminCubit>().onSearchQueryChanged(value);
                       },
                     ),
                   ),
@@ -54,6 +53,7 @@ class AdminSearchWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 height: 61,
                 child: FloatingActionButton(
+                  elevation: 0,
                   onPressed: () {
                     state.textEditControler.clear();
                     if (state.isSearching) {

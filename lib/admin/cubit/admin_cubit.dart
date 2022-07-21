@@ -23,9 +23,16 @@ class AdminCubit extends Cubit<AdminState> {
 
   void onSearchQueryChanged(String query) {
     if (query == '') {
-      emit(state.copyWith(isSearching: false));
+      onTapClearSearch();
     } else {
-      emit(state.copyWith(isSearching: true));
+      final librariesResult = state.acceptedLibraries?.where((library) {
+            return library.name.toLowerCase().contains(query.toLowerCase());
+          }).toList() ??
+          [];
+
+      emit(
+        state.copyWith(isSearching: true, searchLibraries: librariesResult),
+      );
     }
   }
 
@@ -117,7 +124,6 @@ class AdminCubit extends Cubit<AdminState> {
       await _libraryRepository.removeLibrary(id);
       await _userRepository.removeUserById(userId);
       state.acceptedLibraries?.removeWhere((library) => library.id == id);
-      state.acceptedOwners?.removeWhere((user) => user.id == userId);
       // TODO(oscanar): remove user from firebase with userId
       // await AuthService.removeUser();
       return true;
@@ -139,7 +145,6 @@ class AdminCubit extends Cubit<AdminState> {
     try {
       await _libraryRepository.removeLibrary(id);
       state.pendingLibraries?.removeWhere((library) => library.id == id);
-      state.pendingOwners?.removeWhere((user) => user.id == userId);
       // TODO(oscanar): remove user from firebase with userId
       // await AuthService.removeUser();
       return true;

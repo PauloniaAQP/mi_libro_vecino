@@ -55,7 +55,11 @@ class _LibrariesCardListState extends State<LibrariesCardList> {
         if (widget.index == 0) {
           libraries = state.pendingLibraries ?? [];
         } else {
-          libraries = state.acceptedLibraries ?? [];
+          if (state.isSearching) {
+            libraries = state.searchLibraries ?? [];
+          } else {
+            libraries = state.acceptedLibraries ?? [];
+          }
         }
         return Scaffold(
           appBar: AppBar(
