@@ -17,8 +17,20 @@ import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/future_with_loading.dart';
 
-class RegisterPage extends StatefulWidget {
+class RegisterPage extends StatelessWidget {
   const RegisterPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => RegisterCubit(),
+      child: const _RegisterPageView(),
+    );
+  }
+}
+
+class _RegisterPageView extends StatefulWidget {
+  const _RegisterPageView({Key? key}) : super(key: key);
 
   static const pages = [
     EmailRegisterPage(),
@@ -32,10 +44,10 @@ class RegisterPage extends StatefulWidget {
   ];
 
   @override
-  RegisterPageState createState() => RegisterPageState();
+  _RegisterPageViewState createState() => _RegisterPageViewState();
 }
 
-class RegisterPageState extends State<RegisterPage>
+class _RegisterPageViewState extends State<_RegisterPageView>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
@@ -74,7 +86,7 @@ class RegisterPageState extends State<RegisterPage>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                child: RegisterPage.pages[state.index],
+                                child: _RegisterPageView.pages[state.index],
                               ),
                               Visibility(
                                 visible: state.index > 0 && state.index < 6,
@@ -83,7 +95,7 @@ class RegisterPageState extends State<RegisterPage>
                                   /// page and last are not shown in the dot
                                   /// navigation
                                   index: state.index - 1,
-                                  length: RegisterPage.pages.length - 3,
+                                  length: _RegisterPageView.pages.length - 3,
                                   onTapBack: () {
                                     context.read<RegisterCubit>().backPage();
                                   },

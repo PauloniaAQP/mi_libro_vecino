@@ -34,7 +34,6 @@ class InfomationLibrary extends StatelessWidget {
     }
     final openHourString = ApiUtils.timeOfDayToString(library!.openingHour);
     final closeHourString = ApiUtils.timeOfDayToString(library!.closingHour);
-    final libraryLabels = (library?.services ?? []) + (library?.tags ?? []);
     return Scaffold(
       body: Column(
         children: [
