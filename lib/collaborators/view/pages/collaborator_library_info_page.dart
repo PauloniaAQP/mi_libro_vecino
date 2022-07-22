@@ -13,7 +13,7 @@ class CollaboratorLibraryInfoPage extends StatelessWidget {
     final _width = MediaQuery.of(context).size.width * 0.05;
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.fromLTRB(_width, 106, _width, 0),
+        padding: EdgeInsets.fromLTRB(_width, 106, 0, 0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -40,12 +40,15 @@ class CollaboratorLibraryInfoPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: _width),
-            const Expanded(
+            Expanded(
               flex: 2,
-              child: CollaboratorsLibraryForm(),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(_width, 0, _width * 3, 0),
+                  child: const CollaboratorsLibraryForm(),
+                ),
+              ),
             ),
-            SizedBox(width: _width * 2),
           ],
         ),
       ),
