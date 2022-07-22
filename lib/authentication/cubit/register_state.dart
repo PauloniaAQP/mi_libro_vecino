@@ -25,6 +25,7 @@ class RegisterState extends Equatable {
     required this.libraryRolController,
     this.status = RegisterStatus.initial,
     this.location,
+    this.isScheduleValid,
   });
 
   final int index;
@@ -35,6 +36,7 @@ class RegisterState extends Equatable {
   final XFile? libraryPhoto;
   final Uint8List? libraryPhotoBytes;
   final String? address;
+  final bool? isScheduleValid;
 
   static const String addressController = 'address';
   static const String descriptionController = 'description';
@@ -69,7 +71,8 @@ class RegisterState extends Equatable {
   final Coordinates? location;
 
   @override
-  List<Object> get props => [services, index, location ?? true, status];
+  List<Object> get props =>
+      [services, index, location ?? true, status, isScheduleValid ?? true];
 
   RegisterState copyWith({
     XFile? personPhoto,
@@ -84,6 +87,7 @@ class RegisterState extends Equatable {
     Map<String, bool>? services,
     RegisterStatus? status,
     Coordinates? location,
+    bool? isScheduleValid,
   }) {
     return RegisterState(
       personPhoto: personPhoto ?? this.personPhoto,
@@ -102,6 +106,7 @@ class RegisterState extends Equatable {
       services: services ?? this.services,
       status: status ?? this.status,
       location: location ?? this.location,
+      isScheduleValid: isScheduleValid ?? this.isScheduleValid,
     );
   }
 }
