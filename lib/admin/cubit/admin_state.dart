@@ -21,7 +21,7 @@ class AdminState extends Equatable {
         isSearching,
         pendingLibraries ?? false,
         acceptedLibraries ?? false,
-        searchLibraries ?? false,
+        searchLibraries ?? <LibraryModel>[],
       ];
 
   AdminState copyWith({

@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
@@ -24,13 +25,11 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: registerCubit,
-          child: const RegisterPage(),
+          child: const RegisterPageView(),
         ),
       );
       expect(
-        find.text(
-          'SUBIR UNA FOTO',
-        ),
+        find.byKey(const Key('pick_image_key')),
         findsOneWidget,
       );
     });

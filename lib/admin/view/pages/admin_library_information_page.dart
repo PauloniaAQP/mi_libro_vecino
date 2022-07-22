@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -44,15 +46,23 @@ class _AdminLibraryInformationPageState
   bool isLoading = true;
 
   Future<void> getModels(BuildContext context) async {
-    await context.read<AdminCubit>().getLibrary(widget.id).then((value) async {
-      library = value;
+    try {
       await context
           .read<AdminCubit>()
-          .getUser(value?.ownerId ?? '')
-          .then((value) {
-        user = value;
+          .getLibrary(widget.id)
+          .then((value) async {
+        library = value;
+        await context
+            .read<AdminCubit>()
+            .getUser(value?.ownerId ?? '')
+            .then((value) {
+          user = value;
+        });
       });
-    });
+    } catch (e) {
+      log('Usuario no encontrado');
+    }
+
     isLoading = false;
     setState(() {});
   }
