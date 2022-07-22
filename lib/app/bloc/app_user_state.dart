@@ -34,7 +34,11 @@ class AppUserState extends Equatable {
 }
 
 class AppUserInitial extends AppUserState {
-  const AppUserInitial() : super(status: AuthenticationStatus.unauthenticated);
+  AppUserInitial()
+      : super(
+          status: AuthenticationStatus.unauthenticated,
+          currentLocation: Coordinates(-16.4006143, -71.5348195),
+        );
 }
 
 class AppUserAuthenticated extends AppUserState {

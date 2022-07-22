@@ -18,7 +18,7 @@ part 'app_user_event.dart';
 part 'app_user_state.dart';
 
 class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
-  AppUserBloc() : super(const AppUserInitial()) {
+  AppUserBloc() : super(AppUserInitial()) {
     _userRepository = Get.find<UserRepository>();
     _libraryRepository = Get.find<LibraryRepository>();
     on<AppUserEvent>((event, emit) {});
@@ -34,7 +34,7 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
     on<AuthenticationStatusChanged>((event, emit) async {
       try {
         if (event.status == AuthenticationStatus.unauthenticated) {
-          emit(const AppUserInitial());
+          emit(AppUserInitial());
           await checkLocation();
           return;
         } else {
