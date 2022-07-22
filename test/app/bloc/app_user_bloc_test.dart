@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
 import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
+import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart' as utils;
@@ -16,8 +17,10 @@ void main() {
 
     setUp(() async {
       await Firebase.initializeApp();
-      coordinates = utils.Coordinates(0, 0);
-      Get.put(UserRepository(), permanent: true);
+      coordinates = utils.Coordinates(-16.4006143, -71.5348195);
+      Get
+        ..put(UserRepository(), permanent: true)
+        ..put(LibraryRepository(), permanent: true);
     });
 
     test('Initial state index is 0', () {
@@ -32,6 +35,9 @@ void main() {
       build: () => AppUserBloc(),
       act: (bloc) => null,
       expect: () => [
+        AppUserInitial().copyWith(currentLocation: coordinates),
+        // This is for the first time the authentication suscription is called
+        AppUserInitial(),
         AppUserInitial().copyWith(currentLocation: coordinates),
       ],
     );

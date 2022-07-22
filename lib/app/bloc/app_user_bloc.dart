@@ -102,7 +102,7 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
     try {
       late Coordinates location;
       if (PUtils.isOnTest()) {
-        location = Coordinates(0, 0);
+        location = Coordinates(-16.4006143, -71.5348195);
       } else {
         location = await GeoService.determineCoordinates();
       }

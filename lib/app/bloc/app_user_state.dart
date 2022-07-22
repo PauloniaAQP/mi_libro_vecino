@@ -16,7 +16,8 @@ class AppUserState extends Equatable {
   final bool isAdmin;
 
   @override
-  List<Object> get props => [status, currentLocation ?? Coordinates(0, 0)];
+  List<Object> get props =>
+      [status, currentLocation ?? Coordinates(-16.4006143, -71.5348195)];
 
   AppUserState copyWith({
     AuthenticationStatus? status,
