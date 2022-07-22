@@ -18,7 +18,7 @@ abstract class AppRouter {
   static GoRouter get router => GoRouter(
         initialLocation: Routes.search,
 
-        /// TODO(oscarnar): Check handle error route and redirect to default
+        // TODO(oscarnar): Check handle error route and redirect to default
         routes: [
           GoRoute(
             path: Routes.search,

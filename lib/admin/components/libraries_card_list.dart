@@ -97,30 +97,16 @@ class _LibrariesCardListState extends State<LibrariesCardList> {
                     children: [
                       ...List.generate(libraries.length, (index) {
                         return FutureBuilder<UserModel?>(
-                            future: context
-                                .read<AdminCubit>()
-                                .getUser(libraries[index].ownerId),
-                            builder: (context, async) {
-                              if (async.connectionState ==
-                                      ConnectionState.done &&
-                                  async.hasData) {
-                                return AdminLibraryCard(
-                                  labels: libraries[index].services +
-                                      libraries[index].tags,
-                                  subtitle: async.data?.name ?? '',
-                                  title: libraries[index].name,
-                                  gsUrl: libraries[index].gsUrl,
-                                  onTap: () {
-                                    final route = '''
-${GoRouter.of(context).location}?id=${libraries[index].id}''';
-                                    GoRouter.of(context).go(route);
-                                  },
-                                );
-                              }
+                          future: context
+                              .read<AdminCubit>()
+                              .getUser(libraries[index].ownerId),
+                          builder: (context, async) {
+                            if (async.connectionState == ConnectionState.done &&
+                                async.hasData) {
                               return AdminLibraryCard(
                                 labels: libraries[index].services +
                                     libraries[index].tags,
-                                subtitle: '',
+                                subtitle: async.data?.name ?? '',
                                 title: libraries[index].name,
                                 gsUrl: libraries[index].gsUrl,
                                 onTap: () {
@@ -129,7 +115,21 @@ ${GoRouter.of(context).location}?id=${libraries[index].id}''';
                                   GoRouter.of(context).go(route);
                                 },
                               );
-                            });
+                            }
+                            return AdminLibraryCard(
+                              labels: libraries[index].services +
+                                  libraries[index].tags,
+                              subtitle: '',
+                              title: libraries[index].name,
+                              gsUrl: libraries[index].gsUrl,
+                              onTap: () {
+                                final route = '''
+${GoRouter.of(context).location}?id=${libraries[index].id}''';
+                                GoRouter.of(context).go(route);
+                              },
+                            );
+                          },
+                        );
                       }),
                       if (_isLoadingPagination && widget.index == 1)
                         const Center(

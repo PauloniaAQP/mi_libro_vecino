@@ -32,7 +32,7 @@ void main() {
     testWidgets('renders libraries list Page', (tester) async {
       const state = LibrariesInitial();
       const searchState = SearchInitial();
-      const appUserState = AppUserInitial();
+      final appUserState = AppUserInitial();
       when(() => librariesCubit.state).thenReturn(state);
       when(() => searchCubit.state).thenReturn(searchState);
       when(() => appUserBloc.state).thenReturn(appUserState);

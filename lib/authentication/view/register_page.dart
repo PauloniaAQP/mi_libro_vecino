@@ -44,10 +44,10 @@ class RegisterPageView extends StatefulWidget {
   ];
 
   @override
-  _RegisterPageViewState createState() => _RegisterPageViewState();
+  RegisterPageViewState createState() => RegisterPageViewState();
 }
 
-class _RegisterPageViewState extends State<RegisterPageView>
+class RegisterPageViewState extends State<RegisterPageView>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {

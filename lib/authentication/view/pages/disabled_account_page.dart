@@ -56,7 +56,7 @@ class DisabledAcountPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                'Puedes volver a registrarse o contáctate con el administrado para recibir ayuda.',
+                '''Puedes volver a registrarse o contáctate con el administrado para recibir ayuda.''',
                 style: Theme.of(context).textTheme.button!.copyWith(
                       fontWeight: FontWeight.w500,
                       fontSize: 18,

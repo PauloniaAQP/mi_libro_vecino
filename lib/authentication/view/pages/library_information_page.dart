@@ -154,7 +154,7 @@ class LibraryInformationPage extends StatelessWidget {
                         Visibility(
                           visible: !(state.isScheduleValid ?? true),
                           child: const Text(
-                            'El horario ingresado no es valido, asegurese que el horario de apertura sea menor al horario de cierre',
+                            '''El horario ingresado no es valido, asegurese que el horario de apertura sea menor al horario de cierre''',
                             style: TextStyle(color: PColors.red, fontSize: 12),
                           ),
                         ),

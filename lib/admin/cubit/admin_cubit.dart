@@ -141,7 +141,6 @@ class AdminCubit extends Cubit<AdminState> {
   Future<bool> rejectLibrary(String id) async {
     final library = await _libraryRepository.getFromId(id);
     if (library == null) return false;
-    final userId = library.ownerId;
     try {
       await _libraryRepository.removeLibrary(id);
       state.pendingLibraries?.removeWhere((library) => library.id == id);

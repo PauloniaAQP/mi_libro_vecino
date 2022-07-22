@@ -32,7 +32,7 @@ void main() {
       build: () => AppUserBloc(),
       act: (bloc) => null,
       expect: () => [
-        const AppUserInitial().copyWith(currentLocation: coordinates),
+        AppUserInitial().copyWith(currentLocation: coordinates),
       ],
     );
   });
