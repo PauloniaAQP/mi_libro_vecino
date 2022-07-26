@@ -22,7 +22,7 @@ abstract class AppRouter {
           return MaterialPage(
             child: Builder(
               builder: (context) {
-                SchedulerBinding.instance.addPostFrameCallback((_) {
+                SchedulerBinding.instance?.addPostFrameCallback((_) {
                   context.go(Routes.search);
                 });
                 return const SearchPage();
