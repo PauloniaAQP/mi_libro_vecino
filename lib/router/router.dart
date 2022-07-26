@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/admin/view/admin_page.dart';
 import 'package:mi_libro_vecino/authentication/view/login_page.dart';
@@ -17,8 +18,18 @@ import 'package:mi_libro_vecino_api/services/auth_service.dart';
 abstract class AppRouter {
   static GoRouter get router => GoRouter(
         initialLocation: Routes.search,
-
-        // TODO(oscarnar): Check handle error route and redirect to default
+        errorPageBuilder: (_, state) {
+          return MaterialPage(
+            child: Builder(
+              builder: (context) {
+                SchedulerBinding.instance.addPostFrameCallback((_) {
+                  context.go(Routes.search);
+                });
+                return const SearchPage();
+              },
+            ),
+          );
+        },
         routes: [
           GoRoute(
             path: Routes.search,
