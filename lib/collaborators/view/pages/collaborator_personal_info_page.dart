@@ -22,6 +22,8 @@ class CollaboratorPersonalInfoPage extends StatelessWidget {
               child: AspectRatio(
                 aspectRatio: 1 / 1,
                 child: BlocBuilder<CollaboratorCubit, CollaboratorState>(
+                  buildWhen: (previous, current) =>
+                      previous.userImage != current.userImage,
                   builder: (context, state) {
                     return Container(
                       height: 232,

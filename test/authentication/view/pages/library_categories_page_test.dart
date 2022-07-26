@@ -24,7 +24,7 @@ void main() {
       await tester.pumpApp(
         BlocProvider.value(
           value: registerCubit,
-          child: const RegisterPage(),
+          child: const RegisterPageView(),
         ),
       );
       expect(

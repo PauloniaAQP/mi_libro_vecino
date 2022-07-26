@@ -16,10 +16,13 @@ class LibrariesAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       leadingWidth: 120,
       backgroundColor: PColors.white,
-      leading: const Padding(
-        padding: EdgeInsets.symmetric(vertical: 22),
-        child: Image(
-          image: AssetImage(Assets.logo),
+      leading: InkWell(
+        onTap: () => context.go(Routes.search),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 22),
+          child: Image(
+            image: AssetImage(Assets.logo),
+          ),
         ),
       ),
       actions: [

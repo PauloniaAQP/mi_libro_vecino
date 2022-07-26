@@ -28,7 +28,7 @@ void main() {
 
     testWidgets('renders Collaborators info Page', (tester) async {
       final collaboratorState = CollaboratorInitial();
-      const appUserState = AppUserInitial();
+      final appUserState = AppUserInitial();
       when(() => collaboratorCubit.state).thenReturn(collaboratorState);
       when(() => appUserBloc.state).thenReturn(appUserState);
       when(() => collaboratorCubit.fillData()).thenAnswer((_) async {
@@ -53,7 +53,7 @@ void main() {
 
     testWidgets('renders Collaborators lirbary Page', (tester) async {
       final collaboratorState = CollaboratorInitial();
-      const appUserState = AppUserInitial();
+      final appUserState = AppUserInitial();
       when(() => collaboratorCubit.state).thenReturn(collaboratorState);
       when(() => appUserBloc.state).thenReturn(appUserState);
       when(() => collaboratorCubit.fillData()).thenAnswer((_) async {

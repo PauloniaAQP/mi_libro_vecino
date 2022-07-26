@@ -11,8 +11,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:mi_libro_vecino/admin/cubit/admin_cubit.dart';
 import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
-import 'package:mi_libro_vecino/authentication/cubit/login_cubit.dart';
-import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/collaborators/cubit/collaborator_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/libraries/cubit/libraries_cubit.dart';
@@ -44,13 +42,7 @@ class App extends StatelessWidget {
           create: (context) => SearchCubit(ubigeoService),
         ),
         BlocProvider(
-          create: (context) => RegisterCubit(),
-        ),
-        BlocProvider(
           create: (context) => LibrariesCubit(),
-        ),
-        BlocProvider(
-          create: (context) => LoginCubit(),
         ),
         BlocProvider(
           create: (context) => CollaboratorCubit(),

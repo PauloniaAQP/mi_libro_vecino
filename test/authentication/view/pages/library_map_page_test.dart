@@ -26,7 +26,7 @@ void main() {
 
     testWidgets('renders library location Page', (tester) async {
       final registerState = RegisterInitial();
-      const appUserState = AppUserInitial();
+      final appUserState = AppUserInitial();
       when(() => registerCubit.state)
           .thenReturn(registerState.copyWith(index: 5));
       when(() => appUserBloc.state).thenReturn(

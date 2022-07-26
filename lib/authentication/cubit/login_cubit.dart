@@ -27,10 +27,23 @@ class LoginCubit extends Cubit<LoginState> {
       if (user != null) {
         emit(LoginSuccess(loginForm: state.loginForm));
         return status.LoginState.success;
+      } else {
+        emit(
+          LoginError(
+            loginForm: state.loginForm,
+            loginStatus: status.LoginState.unknownError,
+          ),
+        );
+        return status.LoginState.unknownError;
       }
-      return status.LoginState.unknownError;
     } catch (e) {
-      return e as status.LoginState;
+      emit(
+        LoginError(
+          loginForm: state.loginForm,
+          loginStatus: e as status.LoginState,
+        ),
+      );
+      return e;
     }
   }
 

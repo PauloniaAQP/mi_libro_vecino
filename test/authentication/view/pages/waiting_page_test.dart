@@ -3,8 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
-import 'package:mi_libro_vecino/authentication/view/register_page.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:mi_libro_vecino/authentication/view/pages/waiting_page.dart';
 
 import '../../../helpers/pump_app.dart';
 
@@ -20,12 +19,10 @@ void main() {
     });
 
     testWidgets('renders waiting Page', (tester) async {
-      final state = RegisterInitial();
-      when(() => registerCubit.state).thenReturn(state.copyWith(index: 7));
       await tester.pumpApp(
         BlocProvider.value(
           value: registerCubit,
-          child: const RegisterPage(),
+          child: const WaitingPage(),
         ),
       );
       expect(

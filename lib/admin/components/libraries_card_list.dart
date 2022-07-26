@@ -7,6 +7,7 @@ import 'package:mi_libro_vecino/admin/cubit/admin_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino_api/models/library_model.dart';
+import 'package:mi_libro_vecino_api/models/user_model.dart';
 
 class LibrariesCardList extends StatefulWidget {
   const LibrariesCardList({
@@ -54,7 +55,11 @@ class _LibrariesCardListState extends State<LibrariesCardList> {
         if (widget.index == 0) {
           libraries = state.pendingLibraries ?? [];
         } else {
-          libraries = state.acceptedLibraries ?? [];
+          if (state.isSearching) {
+            libraries = state.searchLibraries ?? [];
+          } else {
+            libraries = state.acceptedLibraries ?? [];
+          }
         }
         return Scaffold(
           appBar: AppBar(
@@ -91,16 +96,38 @@ class _LibrariesCardListState extends State<LibrariesCardList> {
                     controller: _scrollController,
                     children: [
                       ...List.generate(libraries.length, (index) {
-                        return AdminLibraryCard(
-                          labels: libraries[index].services,
-                          name: libraries[index].description,
-                          onContact: () {},
-                          title: libraries[index].name,
-                          gsUrl: libraries[index].gsUrl,
-                          onTap: () {
-                            final route = '''
+                        return FutureBuilder<UserModel?>(
+                          future: context
+                              .read<AdminCubit>()
+                              .getUser(libraries[index].ownerId),
+                          builder: (context, async) {
+                            if (async.connectionState == ConnectionState.done &&
+                                async.hasData) {
+                              return AdminLibraryCard(
+                                labels: libraries[index].services +
+                                    libraries[index].tags,
+                                subtitle: async.data?.name ?? '',
+                                title: libraries[index].name,
+                                gsUrl: libraries[index].gsUrl,
+                                onTap: () {
+                                  final route = '''
 ${GoRouter.of(context).location}?id=${libraries[index].id}''';
-                            GoRouter.of(context).go(route);
+                                  GoRouter.of(context).go(route);
+                                },
+                              );
+                            }
+                            return AdminLibraryCard(
+                              labels: libraries[index].services +
+                                  libraries[index].tags,
+                              subtitle: '',
+                              title: libraries[index].name,
+                              gsUrl: libraries[index].gsUrl,
+                              onTap: () {
+                                final route = '''
+${GoRouter.of(context).location}?id=${libraries[index].id}''';
+                                GoRouter.of(context).go(route);
+                              },
+                            );
                           },
                         );
                       }),

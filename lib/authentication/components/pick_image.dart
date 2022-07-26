@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 
@@ -23,84 +24,71 @@ class PickImage extends StatelessWidget {
   final String unselectedPhotoIconPath;
   final String selectedPhotoIconPath;
 
-  BoxDecoration get _boxDecoration {
-    if (image == null) {
-      return BoxDecoration(
-        border: Border.all(
-          color: PColors.black,
-        ),
-        borderRadius: BorderRadius.circular(8),
-        color: const Color(0xffF9F9F9),
-      );
-    } else {
-      return BoxDecoration(
-        image: DecorationImage(
-          image: MemoryImage(image!),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: isLoading ? null : onTap,
-      child: (image != null)
-          ? Center(
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Image(
-                    image: MemoryImage(image!),
-                    colorBlendMode: BlendMode.multiply,
-                    color: PColors.gray2,
-                  ),
-                  Visibility(
-                    visible: isLoading,
-                    child: const Center(
-                      child: CircularProgressIndicator(),
+    return Container(
+      height: MediaQuery.of(context).size.shortestSide * 0.5,
+      width: MediaQuery.of(context).size.shortestSide * 0.5,
+      padding: const EdgeInsets.all(15),
+      child: InkWell(
+        onTap: isLoading ? null : onTap,
+        child: (image != null)
+            ? Center(
+                child: Stack(
+                  fit: StackFit.expand,
+                  alignment: Alignment.center,
+                  children: [
+                    Image(
+                      image: MemoryImage(image!),
+                      colorBlendMode: BlendMode.multiply,
+                      color: PColors.gray2,
+                      fit: BoxFit.cover,
                     ),
-                  ),
-                  Visibility(
-                    visible: !isLoading,
-                    child: ImageIcon(
-                      image: image,
-                      selectedPhotoIconPath: selectedPhotoIconPath,
-                      unselectedPhotoIconPath: unselectedPhotoIconPath,
-                      modifyLabel: modifyLabel,
-                      pickLabel: pickLabel,
+                    Visibility(
+                      visible: isLoading,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     ),
-                  )
-                ],
+                    Visibility(
+                      visible: !isLoading,
+                      child: ImageIcon(
+                        image: image,
+                        selectedPhotoIconPath: selectedPhotoIconPath,
+                        unselectedPhotoIconPath: unselectedPhotoIconPath,
+                        modifyLabel: modifyLabel,
+                        pickLabel: pickLabel,
+                      ),
+                    )
+                  ],
+                ),
+              )
+            : DottedBorder(
+                borderType: BorderType.RRect,
+                radius: const Radius.circular(8),
+                dashPattern: const [8, 8],
+                color: PColors.gray1,
+                padding: EdgeInsets.zero,
+                child: Center(
+                  child: Builder(
+                    builder: (context) {
+                      if (isLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return ImageIcon(
+                        image: image,
+                        selectedPhotoIconPath: selectedPhotoIconPath,
+                        unselectedPhotoIconPath: unselectedPhotoIconPath,
+                        modifyLabel: modifyLabel,
+                        pickLabel: pickLabel,
+                      );
+                    },
+                  ),
+                ),
               ),
-            )
-          : Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.all(15),
-              height: MediaQuery.of(context).size.height * 0.3,
-              width: MediaQuery.of(context).size.width * 0.3,
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.width * 0.4,
-              ),
-              decoration: _boxDecoration,
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              child: Builder(
-                builder: (context) {
-                  if (isLoading) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return ImageIcon(
-                    image: image,
-                    selectedPhotoIconPath: selectedPhotoIconPath,
-                    unselectedPhotoIconPath: unselectedPhotoIconPath,
-                    modifyLabel: modifyLabel,
-                    pickLabel: pickLabel,
-                  );
-                },
-              ),
-            ),
+      ),
     );
   }
 }
@@ -139,7 +127,7 @@ class ImageIcon extends StatelessWidget {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.subtitle1!.copyWith(
                   fontWeight: FontWeight.w600,
-                  color: image == null ? PColors.gray2 : PColors.white,
+                  color: image == null ? PColors.gray1 : PColors.white,
                 ),
             overflow: TextOverflow.ellipsis,
           ),

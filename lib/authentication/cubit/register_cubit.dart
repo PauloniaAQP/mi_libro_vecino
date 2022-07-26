@@ -179,8 +179,9 @@ class RegisterCubit extends Cubit<RegisterState> {
             .where((key) => state.services[key] == true)
             .toList(),
         tags: libraryValuesMap[RegisterState.libraryLabelsController]
-            .toString()
-            .split(','),
+                ?.toString()
+                .split(',') ??
+            [],
 
         // TODO(oscarnar): get search keys
         searchKeys: state.libraryCategories,
@@ -244,11 +245,36 @@ class RegisterCubit extends Cubit<RegisterState> {
         final closeValid = state.libraryInfoForm
                 .controls[RegisterState.closeTimeController]?.valid ??
             false;
+        var openTimeOfDay = fromStringToTimeOfDay(
+          state.libraryInfoForm
+              .control(RegisterState.openTimeController)
+              .value
+              .toString(),
+        );
+        var closeTimeOfDay = fromStringToTimeOfDay(
+          state.libraryInfoForm
+              .control(RegisterState.closeTimeController)
+              .value
+              .toString(),
+        );
+
+        /// Check if hour is PM to normalize it (24 hours)
+        if (state.openingController.text == '1') {
+          openTimeOfDay =
+              openTimeOfDay.replacing(hour: openTimeOfDay.hour + 12);
+        }
+        if (state.closingController.text == '1') {
+          closeTimeOfDay =
+              closeTimeOfDay.replacing(hour: closeTimeOfDay.hour + 12);
+        }
+        final isScheduleValid = closeTimeOfDay.difference(openTimeOfDay) > 0;
+        emit(state.copyWith(isScheduleValid: isScheduleValid));
         return nameValid &&
             websiteValid &&
             descriptionValid &&
             openValid &&
-            closeValid;
+            closeValid &&
+            isScheduleValid;
       case 4:
         return state.services.values.any((value) => value == true);
       case 5:
@@ -264,4 +290,12 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   UserRepository get _userRepository => Get.find();
   LibraryRepository get _libraryRepository => Get.find();
+}
+
+extension on TimeOfDay {
+  int difference(TimeOfDay other) {
+    final totalThis = hour * 60 + minute;
+    final totalOther = other.hour * 60 + other.minute;
+    return totalThis - totalOther;
+  }
 }

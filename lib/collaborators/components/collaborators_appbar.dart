@@ -33,15 +33,19 @@ class CollaboratorsAppBar extends StatelessWidget
       toolbarHeight: 80,
       centerTitle: true,
       leadingWidth: 100,
-      leading: const Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30),
-        child: Image(
-          image: AssetImage(Assets.logo),
-          height: 40,
+      leading: InkWell(
+        onTap: () => context.go(Routes.search),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30),
+          child: Image(
+            image: AssetImage(Assets.logo),
+            height: 40,
+          ),
         ),
       ),
       actions: [
-        Padding(
+        Container(
+          constraints: const BoxConstraints(maxWidth: 234),
           padding: const EdgeInsets.only(right: 20),
           child: InkWell(
             onTap: () {
@@ -50,9 +54,13 @@ class CollaboratorsAppBar extends StatelessWidget
                 confirmLabel: l10n.collaboratorsPageDialogLeaveConfirm,
                 context: context,
                 onConfirm: () {
+                  Navigator.of(context).pop();
                   context.read<CollaboratorCubit>().signOut().then((_) {
-                    Navigator.of(context).pop();
-                    context.go(Routes.login);
+                    /// Here we make a delayed because last pop() needs
+                    /// a little time to finish and paint the screen
+                    Future<void>.delayed(const Duration(milliseconds: 100), () {
+                      context.go(Routes.search);
+                    });
                   });
                 },
                 title: l10n.collaboratorsPageDialogLeaveTitle,
@@ -61,11 +69,15 @@ class CollaboratorsAppBar extends StatelessWidget
             child: BlocBuilder<AppUserBloc, AppUserState>(
               builder: (context, state) {
                 return Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     CircleAvatar(
                       backgroundImage: PUtils.isOnTest()
                           ? null
-                          : PCacheImage(state.currentUser?.gsUrl ?? ''),
+                          : PCacheImage(
+                              state.currentUser?.gsUrl ?? '',
+                              enableInMemory: true,
+                            ),
                       radius: 20,
                     ),
                     const SizedBox(width: 20),
@@ -75,6 +87,7 @@ class CollaboratorsAppBar extends StatelessWidget
                             color: PColors.black,
                             fontSize: 14,
                           ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(width: 20),
                     const Icon(

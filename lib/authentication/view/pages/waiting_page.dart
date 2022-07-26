@@ -88,7 +88,7 @@ class WaitingPage extends StatelessWidget {
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(PColors.white),
                     ),
-                    onPressed: () => context.go(Routes.login),
+                    onPressed: () => context.go(Routes.search),
                     child: Text(
                       l10n.registerPageBackToStartButton,
                       textAlign: TextAlign.center,

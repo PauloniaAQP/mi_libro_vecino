@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
@@ -61,6 +62,9 @@ class PersonalNamePage extends StatelessWidget {
                           ValidationMessage.number:
                               l10n.registerPagePersonalPhoneErrorTextNumber,
                         },
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                       ),
                       const SizedBox(height: 20),
                       Padding(

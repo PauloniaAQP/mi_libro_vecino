@@ -26,7 +26,7 @@ void main() {
 
     testWidgets('renders admin new requests Page', (tester) async {
       final state = AdminInitial();
-      const appUserState = AppUserInitial();
+      final appUserState = AppUserInitial();
       when(() => adminCubit.state).thenReturn(state);
       when(() => appUserBloc.state).thenReturn(appUserState);
       when(() => adminCubit.fillData()).thenAnswer((_) async {
@@ -51,7 +51,7 @@ void main() {
 
     testWidgets('renders admin old collaborators Page', (tester) async {
       final state = AdminInitial();
-      const appUserState = AppUserInitial();
+      final appUserState = AppUserInitial();
       when(() => adminCubit.state).thenReturn(state);
       when(() => appUserBloc.state).thenReturn(appUserState);
       when(() => adminCubit.fillData()).thenAnswer((_) async {

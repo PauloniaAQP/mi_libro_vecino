@@ -39,6 +39,7 @@ Future<void> pDialog({
                   body,
                   maxLines: 3,
                   style: Theme.of(context).textTheme.bodyText1,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 38),
                 SizedBox(

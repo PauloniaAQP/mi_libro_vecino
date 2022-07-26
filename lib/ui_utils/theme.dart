@@ -153,7 +153,8 @@ class PTheme {
 
   static ScrollbarThemeData get _scrollBarTheme {
     return ScrollbarThemeData(
-      thumbColor: MaterialStateProperty.all(PColors.gray3),
+      thumbColor:
+          MaterialStateProperty.all(const Color.fromARGB(141, 117, 117, 117)),
       isAlwaysShown: true,
     );
   }

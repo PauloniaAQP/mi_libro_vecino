@@ -5,6 +5,7 @@ import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/cubit/search_cubit.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
+import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
 
 class SearchWidget extends StatefulWidget {
@@ -53,6 +54,7 @@ class SearchWidgetState extends State<SearchWidget> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(30, 15, 0, 15),
                       child: Material(
+                        color: PColors.whiteBackground,
                         child: TextField(
                           controller: widget.textEditControler,
                           decoration: InputDecoration(
@@ -85,21 +87,24 @@ class SearchWidgetState extends State<SearchWidget> {
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     height: 61,
                     child: FloatingActionButton(
+                      elevation: 0,
                       onPressed: () {
                         widget.textEditControler.clear();
-
                         if (state.isSearching) {
                           BlocProvider.of<SearchCubit>(context)
                               .onSearchQueryChanged('');
                         }
                       },
                       backgroundColor: (state.isSearching) ? PColors.red : null,
-                      child: Icon(
-                        (state.isSearching)
-                            ? Icons.close
-                            : Icons.search_outlined,
-                        color: Colors.white,
-                      ),
+                      child: (state.isSearching)
+                          ? const Icon(
+                              Icons.close,
+                              color: Colors.white,
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Image.asset(Assets.searchIcon),
+                            ),
                     ),
                   ),
                 ],
@@ -109,8 +114,9 @@ class SearchWidgetState extends State<SearchWidget> {
                 const Divider(
                   color: PColors.gray1,
                   height: 0.1,
-                  endIndent: 15,
-                  indent: 15,
+                  endIndent: 20,
+                  indent: 20,
+                  thickness: 1,
                 ),
                 Flexible(
                   fit: FlexFit.tight,
