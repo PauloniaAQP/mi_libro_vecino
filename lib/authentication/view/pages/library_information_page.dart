@@ -70,6 +70,7 @@ class LibraryInformationPage extends StatelessWidget {
                               .l10n.registerPageLibraryDescriptionHintText,
                           formControlName: RegisterState.descriptionController,
                           keyboardType: TextInputType.number,
+                          maxLines: 4,
                           validationMessages: {
                             ValidationMessage.required: context
                                 .l10n.registerPageLibraryDescriptionErrorText,
@@ -149,6 +150,13 @@ class LibraryInformationPage extends StatelessWidget {
                               ),
                             ),
                           ],
+                        ),
+                        Visibility(
+                          visible: !(state.isScheduleValid ?? true),
+                          child: const Text(
+                            '''El horario ingresado no es valido, asegurese que el horario de apertura sea menor al horario de cierre''',
+                            style: TextStyle(color: PColors.red, fontSize: 12),
+                          ),
                         ),
                       ],
                     ),

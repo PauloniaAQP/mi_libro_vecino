@@ -8,6 +8,7 @@ abstract class Routes {
   static const libraries = '/libraries';
   static const waiting = '/waiting';
   static const errorRegister = '/error_register';
+  static const disabledAccount = '/disabled_account';
   static const collaborators = '/collaborators';
   static const collaboratorsPersonal = 'personal_info';
   static const collaboratorsLibrary = 'library_info';

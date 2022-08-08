@@ -17,7 +17,8 @@ class SelectorButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: SizedBox(
+      child: Container(
+        color: isSelected ? PColors.gray3 : Colors.transparent,
         width: double.infinity,
         height: 108,
         child: Row(

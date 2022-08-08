@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/admin/view/admin_page.dart';
-import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/authentication/view/login_page.dart';
+import 'package:mi_libro_vecino/authentication/view/pages/disabled_account_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/email_register_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/personal_name_page.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/register_error_page.dart';
@@ -18,6 +18,18 @@ import 'package:mi_libro_vecino_api/services/auth_service.dart';
 abstract class AppRouter {
   static GoRouter get router => GoRouter(
         initialLocation: Routes.search,
+        errorPageBuilder: (_, state) {
+          return MaterialPage(
+            child: Builder(
+              builder: (context) {
+                SchedulerBinding.instance?.addPostFrameCallback((_) {
+                  context.go(Routes.search);
+                });
+                return const SearchPage();
+              },
+            ),
+          );
+        },
         routes: [
           GoRoute(
             path: Routes.search,
@@ -86,6 +98,12 @@ abstract class AppRouter {
             ),
           ),
           GoRoute(
+            path: Routes.disabledAccount,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: DisabledAcountPage(),
+            ),
+          ),
+          GoRoute(
             path: Routes.collaborators,
             pageBuilder: (context, state) => const MaterialPage(
               child: CollaboratorsPage(),
@@ -104,15 +122,8 @@ abstract class AppRouter {
                   if (!AuthService.isLoggedIn()) return Routes.login;
                   return null;
                 },
-                pageBuilder: (context, state) => MaterialPage(
-                  child: BlocListener<AppUserBloc, AppUserState>(
-                    listener: (context, state) {
-                      if (state.status != AuthenticationStatus.authenticated) {
-                        GoRouter.of(context).go(Routes.login);
-                      }
-                    },
-                    child: const CollaboratorsPage(),
-                  ),
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: CollaboratorsPage(),
                 ),
               ),
               GoRoute(
@@ -121,15 +132,8 @@ abstract class AppRouter {
                   if (!AuthService.isLoggedIn()) return Routes.login;
                   return null;
                 },
-                pageBuilder: (context, state) => MaterialPage(
-                  child: BlocListener<AppUserBloc, AppUserState>(
-                    listener: (context, state) {
-                      if (state.status != AuthenticationStatus.authenticated) {
-                        GoRouter.of(context).go(Routes.login);
-                      }
-                    },
-                    child: const CollaboratorsPage(index: 1),
-                  ),
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: CollaboratorsPage(index: 1),
                 ),
               ),
             ],

@@ -41,279 +41,275 @@ class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return SingleChildScrollView(
-      child: BlocBuilder<CollaboratorCubit, CollaboratorState>(
-        builder: (context, state) {
-          return ReactiveForm(
-            key: const Key('collaborators_library_form'),
-            formGroup: state.libraryInfoForm,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                PTextField(
-                  label: l10n.registerPageLibraryNameLabel,
-                  hintText: l10n.registerPageLibraryNameHintText,
-                  formControlName: CollaboratorState.libraryNameController,
-                  validationMessages: {
-                    ValidationMessage.required:
-                        l10n.registerPageLibraryNameErrorTextRequired,
-                  },
-                ),
-                PTextField(
-                  label: l10n.registerPageLibraryWebLabel,
-                  hintText: l10n.registerPageLibraryWebHintText,
-                  formControlName: CollaboratorState.websiteController,
-                  keyboardType: TextInputType.url,
-                ),
-                PTextField(
-                  label: l10n.registerPageLibraryDescriptionLabel,
-                  hintText: l10n.registerPageLibraryDescriptionHintText,
-                  formControlName: CollaboratorState.descriptionController,
-                  keyboardType: TextInputType.number,
-                  validationMessages: {
-                    ValidationMessage.required:
-                        l10n.registerPageLibraryDescriptionErrorText,
-                  },
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: PTextField(
-                        label: l10n.registerPageLibraryOpeningTimeLabel,
-                        hintText: l10n.registerPageLibraryTimeHintText,
-                        formControlName: CollaboratorState.openTimeController,
-                        keyboardType: TextInputType.number,
-                        suffixIcon: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                              ),
-                              child: Container(
-                                height: 24,
-                                width: 1,
-                                color: PColors.gray2,
-                              ),
+    return BlocBuilder<CollaboratorCubit, CollaboratorState>(
+      builder: (context, state) {
+        return ReactiveForm(
+          key: const Key('collaborators_library_form'),
+          formGroup: state.libraryInfoForm,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              PTextField(
+                label: l10n.registerPageLibraryNameLabel,
+                hintText: l10n.registerPageLibraryNameHintText,
+                formControlName: CollaboratorState.libraryNameController,
+                validationMessages: {
+                  ValidationMessage.required:
+                      l10n.registerPageLibraryNameErrorTextRequired,
+                },
+              ),
+              PTextField(
+                label: l10n.registerPageLibraryWebLabel,
+                hintText: l10n.registerPageLibraryWebHintText,
+                formControlName: CollaboratorState.websiteController,
+                keyboardType: TextInputType.url,
+              ),
+              PTextField(
+                label: l10n.registerPageLibraryDescriptionLabel,
+                hintText: l10n.registerPageLibraryDescriptionHintText,
+                formControlName: CollaboratorState.descriptionController,
+                keyboardType: TextInputType.number,
+                validationMessages: {
+                  ValidationMessage.required:
+                      l10n.registerPageLibraryDescriptionErrorText,
+                },
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: PTextField(
+                      label: l10n.registerPageLibraryOpeningTimeLabel,
+                      hintText: l10n.registerPageLibraryTimeHintText,
+                      formControlName: CollaboratorState.openTimeController,
+                      keyboardType: TextInputType.number,
+                      suffixIcon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
                             ),
-                            PDropdownButton(
-                              valuesList: const ['AM', 'PM'],
-                              controller: state.openingController,
+                            child: Container(
+                              height: 24,
+                              width: 1,
+                              color: PColors.gray2,
                             ),
-                          ],
-                        ),
-                        validationMessages: {
-                          ValidationMessage.required:
-                              l10n.registerPageLibraryTimeErrorTextRequired,
-                        },
+                          ),
+                          PDropdownButton(
+                            valuesList: const ['AM', 'PM'],
+                            controller: state.openingController,
+                          ),
+                        ],
                       ),
+                      validationMessages: {
+                        ValidationMessage.required:
+                            l10n.registerPageLibraryTimeErrorTextRequired,
+                      },
                     ),
-                    const SizedBox(width: 30),
-                    Expanded(
-                      child: PTextField(
-                        label: l10n.registerPageLibraryClosingTimeLabel,
-                        hintText: l10n.registerPageLibraryTimeHintText,
-                        formControlName: CollaboratorState.closeTimeController,
-                        keyboardType: TextInputType.number,
-                        suffixIcon: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 10,
-                              ),
-                              child: Container(
-                                height: 24,
-                                width: 1,
-                                color: PColors.gray2,
-                              ),
+                  ),
+                  const SizedBox(width: 30),
+                  Expanded(
+                    child: PTextField(
+                      label: l10n.registerPageLibraryClosingTimeLabel,
+                      hintText: l10n.registerPageLibraryTimeHintText,
+                      formControlName: CollaboratorState.closeTimeController,
+                      keyboardType: TextInputType.number,
+                      suffixIcon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
                             ),
-                            PDropdownButton(
-                              valuesList: const ['AM', 'PM'],
-                              controller: state.closingController,
+                            child: Container(
+                              height: 24,
+                              width: 1,
+                              color: PColors.gray2,
                             ),
-                          ],
-                        ),
-                        validationMessages: {
-                          ValidationMessage.required:
-                              l10n.registerPageLibraryTimeErrorTextRequired,
-                        },
+                          ),
+                          PDropdownButton(
+                            valuesList: const ['AM', 'PM'],
+                            controller: state.closingController,
+                          ),
+                        ],
                       ),
+                      validationMessages: {
+                        ValidationMessage.required:
+                            l10n.registerPageLibraryTimeErrorTextRequired,
+                      },
                     ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: Text(
-                    context.l10n.registerPageLibraryRolLabel,
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 13,
-                          color: PColors.gray1,
-                        ),
                   ),
-                ),
-                PDropdownButton(
-                  valuesList: List.generate(
-                    LibraryType.values.length,
-                    (index) =>
-                        getStringRolByType(LibraryType.values[index], l10n),
-                  ),
-                  controller: state.libraryRolController,
-                  isExpanded: true,
-                ),
-                PTextField(
-                  label: l10n.registerPageLibraryAddressLabel,
-                  hintText: l10n.registerPageLibraryAddressHintText,
-                  formControlName: CollaboratorState.addressController,
-                  validationMessages: {
-                    ValidationMessage.required:
-                        l10n.registerPageLibraryAddressErrorTextRequired,
-                  },
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  l10n.registerPageLibraryMapLabel,
+                ],
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5),
+                child: Text(
+                  context.l10n.registerPageLibraryRolLabel,
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
                         fontWeight: FontWeight.w500,
                         fontSize: 13,
                         color: PColors.gray1,
                       ),
                 ),
-                FutureBuilder<String?>(
-                  future: GeoService.getAddress(state.location),
-                  builder: (context, snapshot) {
-                    state.libraryInfoForm
-                            .control(CollaboratorState.addressController)
-                            .value =
-                        snapshot.connectionState == ConnectionState.done
-                            ? snapshot.data ?? ''
-                            : '';
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            snapshot.connectionState == ConnectionState.done
-                                ? snapshot.data ??
-                                    l10n.messageValidationToUnknownAddress
-                                : l10n.messageValidationToLoadingAddress,
-                          ),
+              ),
+              PDropdownButton(
+                valuesList: List.generate(
+                  LibraryType.values.length,
+                  (index) =>
+                      getStringRolByType(LibraryType.values[index], l10n),
+                ),
+                controller: state.libraryRolController,
+                isExpanded: true,
+              ),
+              PTextField(
+                label: l10n.registerPageLibraryAddressLabel,
+                hintText: l10n.registerPageLibraryAddressHintText,
+                formControlName: CollaboratorState.addressController,
+                validationMessages: {
+                  ValidationMessage.required:
+                      l10n.registerPageLibraryAddressErrorTextRequired,
+                },
+              ),
+              const SizedBox(height: 5),
+              Text(
+                l10n.registerPageLibraryMapLabel,
+                style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                      color: PColors.gray1,
+                    ),
+              ),
+              FutureBuilder<String?>(
+                future: GeoService.getAddress(state.location),
+                builder: (context, snapshot) {
+                  state.libraryInfoForm
+                          .control(CollaboratorState.addressController)
+                          .value =
+                      snapshot.connectionState == ConnectionState.done
+                          ? snapshot.data ?? ''
+                          : '';
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          snapshot.connectionState == ConnectionState.done
+                              ? snapshot.data ??
+                                  l10n.messageValidationToUnknownAddress
+                              : l10n.messageValidationToLoadingAddress,
                         ),
-                        SizedBox(
-                          width: 20,
-                          height: 20,
-                          child:
-                              (snapshot.connectionState == ConnectionState.done)
-                                  ? Icon(
-                                      Icons.check,
-                                      color: Theme.of(context).primaryColor,
-                                    )
-                                  : const CupertinoActivityIndicator(),
-                        )
-                      ],
+                      ),
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                        child:
+                            (snapshot.connectionState == ConnectionState.done)
+                                ? Icon(
+                                    Icons.check,
+                                    color: Theme.of(context).primaryColor,
+                                  )
+                                : const CupertinoActivityIndicator(),
+                      )
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: 8),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.38,
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.5,
+                  minHeight: 200,
+                ),
+                child: LocationMap(
+                  center: state.location,
+                  point: state.location,
+                  onPositionChanged: (mapPos, wasTaped) {
+                    if (mapPos.center == null) return;
+                    final center = Coordinates(
+                      mapPos.center!.latitude,
+                      mapPos.center!.longitude,
+                    );
+
+                    if (_debounce?.isActive ?? false) {
+                      _debounce?.cancel();
+                    }
+                    _debounce = Timer(
+                      const Duration(milliseconds: 700),
+                      () => context
+                          .read<CollaboratorCubit>()
+                          .setMapLocation(center),
                     );
                   },
                 ),
-                const SizedBox(height: 8),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.38,
-                  constraints: BoxConstraints(
-                    maxHeight: MediaQuery.of(context).size.height * 0.5,
-                    minHeight: 200,
-                  ),
-                  child: LocationMap(
-                    center: state.location,
-                    point: state.location,
-                    onPositionChanged: (mapPos, wasTaped) {
-                      if (mapPos.center == null) return;
-                      final center = Coordinates(
-                        mapPos.center!.latitude,
-                        mapPos.center!.longitude,
-                      );
-
-                      if (_debounce?.isActive ?? false) {
-                        _debounce?.cancel();
-                      }
-                      _debounce = Timer(
-                        const Duration(milliseconds: 700),
-                        () => context
-                            .read<CollaboratorCubit>()
-                            .setMapLocation(center),
-                      );
-                    },
-                  ),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 12,
                 ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 12,
-                  ),
-                  child: Text(
-                    l10n.registerPageServicesTitle,
-                    style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          color: PColors.black,
-                        ),
-                  ),
+                child: Text(
+                  l10n.registerPageServicesTitle,
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                        color: PColors.black,
+                      ),
                 ),
-                Wrap(
-                  alignment: WrapAlignment.center,
-                  children: List.generate(
-                    state.services.keys.length,
-                    (index) {
-                      return CategoryChip(
-                        label: state.services.keys.elementAt(index),
-                        isSelected: state.services.values.elementAt(index),
-                        onTap: () {
-                          BlocProvider.of<CollaboratorCubit>(context)
-                              .updateServices(
-                            key: state.services.keys.elementAt(index),
-                          );
-                        },
-                      );
-                    },
-                  ),
+              ),
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: List.generate(
+                  state.services.keys.length,
+                  (index) {
+                    return CategoryChip(
+                      label: state.services.keys.elementAt(index),
+                      isSelected: state.services.values.elementAt(index),
+                      onTap: () {
+                        BlocProvider.of<CollaboratorCubit>(context)
+                            .updateServices(
+                          key: state.services.keys.elementAt(index),
+                        );
+                      },
+                    );
+                  },
                 ),
-                PTextField(
-                  formControlName: CollaboratorState.libraryLabelsController,
-                  hintText: l10n.registerPageCategoriesLabelsHintText,
-                  label: l10n.registerPageCategoriesLabels,
-                ),
-                const SizedBox(height: 70),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 30),
-                  child: Center(
-                    child: SizedBox(
-                      height: 56,
-                      width: 400,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          futureWithLoading(
-                            context
-                                .read<CollaboratorCubit>()
-                                .onTapSaveLibrary(),
-                            context,
-                          );
-                        },
-                        child: Text(
-                          l10n.collaboratorsPageSaveButton,
-                          textAlign: TextAlign.center,
-                        ),
+              ),
+              PTextField(
+                formControlName: CollaboratorState.libraryLabelsController,
+                hintText: l10n.registerPageCategoriesLabelsHintText,
+                label: l10n.registerPageCategoriesLabels,
+              ),
+              const SizedBox(height: 70),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                child: Center(
+                  child: SizedBox(
+                    height: 56,
+                    width: 400,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        futureWithLoading(
+                          context.read<CollaboratorCubit>().onTapSaveLibrary(),
+                          context,
+                        );
+                      },
+                      child: Text(
+                        l10n.collaboratorsPageSaveButton,
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
-          );
-        },
-      ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

@@ -58,7 +58,7 @@ void main() {
         ),
       );
       expect(
-        find.byIcon(Icons.search_outlined),
+        find.byType(FloatingActionButton),
         findsOneWidget,
       );
     });

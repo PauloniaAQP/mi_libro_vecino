@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
+import 'package:mi_libro_vecino_api/models/library_model.dart';
 import 'package:mi_libro_vecino_api/models/user_model.dart';
+import 'package:mi_libro_vecino_api/repositories/library_repository.dart';
 import 'package:mi_libro_vecino_api/repositories/user_repository.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
 import 'package:mi_libro_vecino_api/services/geo_service.dart'
@@ -16,8 +18,9 @@ part 'app_user_event.dart';
 part 'app_user_state.dart';
 
 class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
-  AppUserBloc() : super(const AppUserInitial()) {
+  AppUserBloc() : super(AppUserInitial()) {
     _userRepository = Get.find<UserRepository>();
+    _libraryRepository = Get.find<LibraryRepository>();
     on<AppUserEvent>((event, emit) {});
     on<UpdateUser>((event, emit) async {
       final user = AuthService.currentUser;
@@ -31,10 +34,8 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
     on<AuthenticationStatusChanged>((event, emit) async {
       try {
         if (event.status == AuthenticationStatus.unauthenticated) {
-          if (state.currentUser != null) {
-            emit(const AppUserInitial());
-            await checkLocation();
-          }
+          emit(AppUserInitial());
+          await checkLocation();
           return;
         } else {
           final user = AuthService.currentUser;
@@ -45,8 +46,22 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
           final isAdmin = await AuthService.isAdmin(user);
           final userModel = await _userRepository.getUserFromCredentials(user);
           if (userModel != null) {
-            emit(AppUserAuthenticated(user: userModel, isAdmin: isAdmin));
+            final libraryModel =
+                await _libraryRepository.getLibraryByOwnerId(userModel.id);
+            if (libraryModel == null && !isAdmin) {
+              emit(const AppUserDisabled(wasRejected: true));
+              await AuthService.signOut();
+            } else {
+              emit(
+                AppUserAuthenticated(
+                  user: userModel,
+                  isAdmin: isAdmin,
+                  library: libraryModel,
+                ),
+              );
+            }
           } else {
+            emit(const AppUserDisabled());
             await AuthService.signOut();
           }
         }
@@ -87,7 +102,7 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
     try {
       late Coordinates location;
       if (PUtils.isOnTest()) {
-        location = Coordinates(0, 0);
+        location = Coordinates(-16.4006143, -71.5348195);
       } else {
         location = await GeoService.determineCoordinates();
       }
@@ -98,4 +113,5 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
   }
 
   late final UserRepository _userRepository;
+  late final LibraryRepository _libraryRepository;
 }

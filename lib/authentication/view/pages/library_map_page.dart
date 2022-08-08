@@ -104,7 +104,7 @@ class _LibraryMapPageState extends State<LibraryMapPage> {
                               l10n.registerPageLibraryAddressErrorTextRequired,
                         },
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 20),
                       Text(
                         l10n.registerPageLibraryMapLabel,
                         style: Theme.of(context).textTheme.bodyText2!.copyWith(
@@ -113,6 +113,7 @@ class _LibraryMapPageState extends State<LibraryMapPage> {
                               color: PColors.gray1,
                             ),
                       ),
+                      const SizedBox(height: 10),
                       FutureBuilder<String?>(
                         future: GeoService.getAddress(state.location),
                         builder: (context, snapshot) {

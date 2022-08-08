@@ -29,7 +29,7 @@ void main() {
       );
       expect(
         find.byKey(
-          const Key('admin_info_page_app_bar'),
+          const Key('admin_info_page_scaffold'),
         ),
         findsOneWidget,
       );
@@ -46,7 +46,7 @@ void main() {
       );
       expect(
         find.byKey(
-          const Key('admin_info_page_app_bar'),
+          const Key('admin_info_page_scaffold'),
         ),
         findsOneWidget,
       );

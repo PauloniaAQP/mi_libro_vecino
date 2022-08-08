@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:mi_libro_vecino/admin/components/bottom_buttons.dart';
 import 'package:mi_libro_vecino/admin/components/info_field.dart';
 import 'package:mi_libro_vecino/admin/cubit/admin_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
+import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
@@ -39,17 +43,34 @@ class _AdminLibraryInformationPageState
   UserModel? user;
 
   LibraryModel? library;
+  bool isLoading = true;
 
   Future<void> getModels(BuildContext context) async {
-    await context.read<AdminCubit>().getLibrary(widget.id).then((value) async {
-      library = value;
+    try {
       await context
           .read<AdminCubit>()
-          .getUser(value?.ownerId ?? '')
-          .then((value) {
-        user = value;
+          .getLibrary(widget.id)
+          .then((value) async {
+        library = value;
+        await context
+            .read<AdminCubit>()
+            .getUser(value?.ownerId ?? '')
+            .then((value) {
+          user = value;
+        });
       });
-    });
+    } catch (e) {
+      log('Usuario no encontrado');
+    }
+
+    isLoading = false;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    getModels(context);
+    super.initState();
   }
 
   @override
@@ -61,34 +82,34 @@ class _AdminLibraryInformationPageState
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: _width),
       child: Scaffold(
+        key: const Key('admin_info_page_scaffold'),
         appBar: AppBar(
-          key: const Key(
-            'admin_info_page_app_bar',
-          ),
+          key: const Key('admin_info_page_app_bar'),
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
-          // TODO(oscarnar): For future, now pop() behavior is different
-          // from the default
-          // leading: IconButton(
-          //   splashRadius: 28,
-          //   onPressed: () {
-          //     GoRouter.of(context).pop();
-          //   },
-          //   icon: const Image(
-          //     image: AssetImage(Assets.backIcon),
-          //     color: PColors.black,
-          //   ),
-          // ),
+          leading: IconButton(
+            splashRadius: 28,
+            onPressed: () {
+              if (widget.index == 0) {
+                GoRouter.of(context).go(Routes.admin);
+              } else {
+                GoRouter.of(context)
+                    .go('${Routes.admin}/${Routes.adminLibraries}');
+              }
+            },
+            icon: const Image(
+              image: AssetImage(Assets.backIcon),
+              color: PColors.black,
+            ),
+          ),
         ),
-        body: FutureBuilder(
-          future: getModels(context),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
+        body: Builder(
+          builder: (context) {
+            if (isLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
-            if (library == null || user == null) {
+            if (library == null || user == null && !isLoading) {
               return const Center(
                 child: Text('No se encontró la biblioteca'),
               );
@@ -99,6 +120,11 @@ class _AdminLibraryInformationPageState
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      l10n.registerPagePersonalInformationTitle,
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                    const SizedBox(height: 30),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -142,6 +168,15 @@ class _AdminLibraryInformationPageState
                       ],
                     ),
                     const SizedBox(height: 90),
+                    Text(
+                      l10n.registerPageLibraryInformationTitle +
+                          getStringRolByType(
+                            library?.type ?? LibraryType.values[1],
+                            l10n,
+                          ),
+                      style: Theme.of(context).textTheme.headline2,
+                    ),
+                    const SizedBox(height: 30),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -180,6 +215,7 @@ class _AdminLibraryInformationPageState
                               InfoField(
                                 label: l10n.registerPageLibraryDescriptionLabel,
                                 text: library?.description ?? '',
+                                maxLines: 3,
                               ),
                               InfoField(
                                 label: l10n.libraryInfoTimetable,
@@ -233,6 +269,8 @@ class _AdminLibraryInformationPageState
                                       library?.location.longitude ?? 0,
                                     ),
                                     zoom: 15,
+                                    minZoom: 5,
+                                    maxZoom: 18.25,
                                     allowPanning: false,
                                     allowPanningOnScrollingParent: false,
                                   ),

@@ -68,15 +68,19 @@ class _LibrariesListState extends State<LibrariesList> {
                 children: [
                   ...List.generate(
                     state.libraries?.length ?? 0,
-                    (index) => LibraryCard(
-                      gsUrl: state.libraries?[index].gsUrl ?? '',
-                      subtitle: state.libraries?[index].address ?? '',
-                      title: state.libraries?[index].name ?? '',
-                      labels: state.libraries?[index].services ?? [],
-                      onTap: () => context.go(
-                        '''${GoRouter.of(context).location}&id=${state.libraries?[index].id}''',
-                      ),
-                    ),
+                    (index) {
+                      final labels = (state.libraries?[index].services ?? []) +
+                          (state.libraries?[index].tags ?? []);
+                      return LibraryCard(
+                        gsUrl: state.libraries?[index].gsUrl ?? '',
+                        subtitle: state.libraries?[index].address ?? '',
+                        title: state.libraries?[index].name ?? '',
+                        labels: labels,
+                        onTap: () => context.go(
+                          '''${GoRouter.of(context).location}&id=${state.libraries?[index].id}''',
+                        ),
+                      );
+                    },
                   ),
                   if (_isLoadingPagination)
                     const Center(

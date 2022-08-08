@@ -44,6 +44,9 @@ Future<XFile?> uiPickImage({ImageSource? imageSource}) async {
 
 TimeOfDay fromStringToTimeOfDay(String time) {
   final timeSplit = time.split(':');
+  if (timeSplit.length != 2) {
+    return const TimeOfDay(hour: 0, minute: 0);
+  }
   return TimeOfDay(
     hour: int.parse(timeSplit[0]),
     minute: int.parse(timeSplit[1]),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -14,6 +15,9 @@ class PTextField extends StatelessWidget {
     this.readOnly = false,
     this.suffixIcon,
     this.mouseCursor,
+    this.maxLines = 1,
+    this.inputFormatters,
+    this.maxLength,
   }) : super(key: key);
 
   final String label;
@@ -25,6 +29,9 @@ class PTextField extends StatelessWidget {
   final bool readOnly;
   final Widget? suffixIcon;
   final MouseCursor? mouseCursor;
+  final int maxLines;
+  final int? maxLength;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +52,15 @@ class PTextField extends StatelessWidget {
         ReactiveTextField<String>(
           formControlName: formControlName,
           validationMessages: (control) => validationMessages ?? {},
+          inputFormatters: inputFormatters,
           keyboardType: keyboardType,
           textCapitalization: TextCapitalization.words,
           obscureText: obscureText,
           obscuringCharacter: '*',
           readOnly: readOnly,
           mouseCursor: mouseCursor,
+          maxLines: maxLines,
+          maxLength: maxLength,
           decoration: InputDecoration(
             hintText: hintText,
             filled: true,

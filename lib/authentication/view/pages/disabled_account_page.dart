@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
-import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 
-class RegisterErrorPage extends StatelessWidget {
-  const RegisterErrorPage({Key? key}) : super(key: key);
+class DisabledAcountPage extends StatelessWidget {
+  const DisabledAcountPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +35,7 @@ class RegisterErrorPage extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.only(bottom: 20),
+          padding: const EdgeInsets.symmetric(vertical: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -48,7 +46,7 @@ class RegisterErrorPage extends StatelessWidget {
               ),
               const SizedBox(height: 50),
               Text(
-                l10n.registerPageErrorMessage,
+                'Cuenta inhabilitada',
                 style: Theme.of(context).textTheme.headline1!.copyWith(
                       color: PColors.white,
                     ),
@@ -58,7 +56,7 @@ class RegisterErrorPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                l10n.registerPageErrorMessageSubtitle,
+                '''Puedes volver a registrarse o contáctate con el administrado para recibir ayuda.''',
                 style: Theme.of(context).textTheme.button!.copyWith(
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
@@ -75,13 +73,14 @@ class RegisterErrorPage extends StatelessWidget {
                   height: 56,
                   width: 400,
                   child: ElevatedButton(
-                    key: const Key('register_error_page_button'),
+                    key: const Key('disabled_page_button'),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(PColors.white),
                     ),
-                    onPressed: () => context.go(Routes.search),
+                    // TODO(oscarnar): Add a button to go somewhere.
+                    onPressed: () {},
                     child: Text(
-                      l10n.registerPageBackToStartButton,
+                      'CONTACTAR',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.button!.copyWith(
                             color: Theme.of(context).colorScheme.primary,

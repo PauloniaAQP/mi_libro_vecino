@@ -19,12 +19,12 @@ void main() {
     });
 
     testWidgets('renders personal information Page', (tester) async {
-      final state = RegisterInitial();
-      when(() => registerCubit.state).thenReturn(state.copyWith(index: 1));
+      final state = RegisterInitial().copyWith(index: 1);
+      when(() => registerCubit.state).thenReturn(state);
       await tester.pumpApp(
         BlocProvider.value(
           value: registerCubit,
-          child: const RegisterPage(),
+          child: const RegisterPageView(),
         ),
       );
       expect(

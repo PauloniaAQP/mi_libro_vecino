@@ -35,7 +35,7 @@ abstract class PColors {
   static const Color blueVariant = Color(0xFF4078FF);
 
   /// Red
-  static const Color red = Color(0xFFE92D27);
+  static const Color red = Color(0xFFFD4D48);
 
   /// Green
   static const Color green = Color(0xFF2EAD86);

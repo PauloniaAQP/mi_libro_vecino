@@ -34,23 +34,21 @@ class InfoField extends StatelessWidget {
           ),
         ),
         Container(
-          color: const Color(0xFFF9F9F9),
-          height: 32 + (maxLines * 24),
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: const Color(0xFFF9F9F9),
+          ),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
-                child: Text(
-                  text,
-                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                        color: PColors.black,
-                      ),
-                  overflow: TextOverflow.ellipsis,
+                child: TextField(
+                  enabled: false,
                   maxLines: maxLines,
+                  minLines: 1,
+                  readOnly: true,
+                  controller: TextEditingController(text: text),
                 ),
               ),
               suffixIcon ?? const SizedBox(),

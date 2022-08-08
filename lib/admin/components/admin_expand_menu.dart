@@ -23,6 +23,7 @@ class AdminExpandMenu extends StatefulWidget {
 class _AdminExpandMenuState extends State<AdminExpandMenu>
     with SingleTickerProviderStateMixin {
   bool isExpanded = false;
+  late FocusNode focusNode;
   Tween<double> tween = Tween<double>(begin: 10, end: 60);
   late AnimationController animationController;
   late Animation<double> animation;
@@ -39,6 +40,7 @@ class _AdminExpandMenuState extends State<AdminExpandMenu>
       });
     super.initState();
     animationController.forward();
+    focusNode = FocusNode();
   }
 
   @override
@@ -52,7 +54,7 @@ class _AdminExpandMenuState extends State<AdminExpandMenu>
     final l10n = context.l10n;
     return AnimatedContainer(
       height: isExpanded ? AdminExpandMenu.maxHeight : 70,
-      width: 160,
+      width: 234,
       margin: const EdgeInsets.only(top: 15, right: 30),
       duration: const Duration(milliseconds: 600),
       curve: Curves.fastOutSlowIn,
@@ -62,13 +64,26 @@ class _AdminExpandMenuState extends State<AdminExpandMenu>
       child: Material(
         color: Theme.of(context).scaffoldBackgroundColor,
         child: InkWell(
+          splashColor: Colors.transparent,
           hoverColor: Theme.of(context).scaffoldBackgroundColor,
+          focusNode: focusNode,
+          focusColor: Colors.transparent,
+          onFocusChange: (value) {
+            if (!value) {
+              setState(() {
+                animationController.forward();
+                isExpanded = false;
+              });
+            }
+          },
           onTap: () {
             setState(() {
               isExpanded = !isExpanded;
               if (isExpanded) {
                 animationController.forward();
+                focusNode.requestFocus();
               } else {
+                focusNode.unfocus();
                 animationController.reverse();
               }
             });
@@ -85,7 +100,10 @@ class _AdminExpandMenuState extends State<AdminExpandMenu>
                         CircleAvatar(
                           backgroundImage: PUtils.isOnTest()
                               ? null
-                              : PCacheImage(state.currentUser?.gsUrl ?? ''),
+                              : PCacheImage(
+                                  state.currentUser?.gsUrl ?? '',
+                                  enableInMemory: true,
+                                ),
                           radius: 20,
                           backgroundColor: Colors.black12,
                         ),
@@ -124,7 +142,7 @@ class _AdminExpandMenuState extends State<AdminExpandMenu>
                     elevation: 0,
                     onPressed: () {
                       context.read<AdminCubit>().signOut().then((_) {
-                        context.go(Routes.login);
+                        context.go(Routes.search);
                       });
                     },
                     child: Text(
