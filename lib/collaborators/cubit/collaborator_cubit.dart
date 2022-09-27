@@ -89,6 +89,16 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
 
       final services = _getServices(library.services, state.services);
 
+      if (!wasFilled) {
+        print('update initial state');
+        initialState = state.copyWith(
+          location: library.location,
+          libraryImage: libraryImage,
+          userImage: userImage,
+          library: library,
+          services: services,
+        );
+      }
       wasFilled = true;
       emit(
         state.copyWith(
@@ -99,6 +109,7 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
           services: services,
         ),
       );
+
       return;
     } catch (error, stacktrace) {
       PauloniaErrorService.sendError(error, stacktrace);
@@ -108,6 +119,21 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
 
   void setMapLocation(Coordinates coordinates) {
     emit(state.copyWith(location: coordinates));
+  }
+
+  /// use the map inside forms to check if some value change
+  /// but be careful because you need make deep copies of the objects
+  /// map.fromMap() maybe works
+  bool isActiveSaveUserButton() {
+    print('intiial state');
+    print(initialState.personalInfoForm.value);
+    print('current state');
+    print(state.personalInfoForm.value);
+    return state.isEqualUser(initialState);
+  }
+
+  bool isActiveSaveLibraryButton() {
+    return state.isEqualLibrary(initialState);
   }
 
   /// For this function we need to make a deep copy of
@@ -242,4 +268,5 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
   final UserRepository _userRepository = Get.find<UserRepository>();
   final LibraryRepository _libraryRepository = Get.find<LibraryRepository>();
   bool wasFilled = false;
+  CollaboratorState initialState = CollaboratorInitial();
 }

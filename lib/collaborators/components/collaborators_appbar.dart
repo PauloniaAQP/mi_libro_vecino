@@ -35,6 +35,8 @@ class CollaboratorsAppBar extends StatelessWidget
       leadingWidth: 100,
       leading: InkWell(
         onTap: () => context.go(Routes.search),
+        hoverColor: Colors.transparent,
+        splashColor: Colors.transparent,
         child: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 30),
           child: Image(

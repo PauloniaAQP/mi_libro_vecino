@@ -48,6 +48,24 @@ class CollaboratorState extends Equatable {
   @override
   List<Object> get props => [location, services, library ?? false];
 
+  bool isEqualLibrary(CollaboratorState other) {
+    final mapOriginLib = libraryInfoForm.value;
+    final mapOtherLib = other.libraryInfoForm.value;
+    return other.location == location &&
+        other.services == services &&
+        libraryImage == other.libraryImage &&
+        mapOriginLib == mapOtherLib &&
+        libraryRolController == other.libraryRolController &&
+        openingController == other.openingController &&
+        closingController == other.closingController;
+  }
+
+  bool isEqualUser(CollaboratorState other) {
+    final mapOriginLib = personalInfoForm.value;
+    final mapOtherLib = other.personalInfoForm.value;
+    return userImage == other.userImage && mapOriginLib == mapOtherLib;
+  }
+
   CollaboratorState copyWith({
     Map<String, bool>? services,
     Coordinates? location,

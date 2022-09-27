@@ -33,6 +33,29 @@ class InfoField extends StatelessWidget {
                 ),
           ),
         ),
+        // TODO(oscarnar): Corregir el scroll bar para textos de una linea (scroll horizontal)
+        // Scrollbar(
+        //   scrollbarOrientation: ScrollbarOrientation.bottom,
+        //   // isAlwaysShown: maxLines == 1,
+        //   thickness: 6,
+        //   child: SingleChildScrollView(
+        //     scrollDirection: Axis.horizontal,
+        //     child: Row(
+        //       children: [
+        //         Container(
+        //           color: Colors.red,
+        //           height: 20,
+        //           width: 500,
+        //         ),
+        //         Container(
+        //           color: Colors.blue,
+        //           height: 20,
+        //           width: 500,
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -44,11 +67,21 @@ class InfoField extends StatelessWidget {
             children: [
               Expanded(
                 child: TextField(
-                  enabled: false,
+                  enabled: true,
                   maxLines: maxLines,
                   minLines: 1,
                   readOnly: true,
                   controller: TextEditingController(text: text),
+                  decoration: InputDecoration(
+                    hintText: hintText,
+                    hintStyle: Theme.of(context).textTheme.bodyText2!.copyWith(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 13,
+                          color: PColors.gray1,
+                        ),
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                  ),
                 ),
               ),
               suffixIcon ?? const SizedBox(),

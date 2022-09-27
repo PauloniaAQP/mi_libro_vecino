@@ -38,28 +38,39 @@ class PickImage extends StatelessWidget {
                   fit: StackFit.expand,
                   alignment: Alignment.center,
                   children: [
-                    Image(
-                      image: MemoryImage(image!),
-                      colorBlendMode: BlendMode.multiply,
-                      color: PColors.gray2,
-                      fit: BoxFit.cover,
-                    ),
-                    Visibility(
-                      visible: isLoading,
-                      child: const Center(
-                        child: CircularProgressIndicator(),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image(
+                        image: MemoryImage(image!),
+                        colorBlendMode: BlendMode.multiply,
+                        color: PColors.gray2,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    Visibility(
-                      visible: !isLoading,
-                      child: ImageIcon(
-                        image: image,
-                        selectedPhotoIconPath: selectedPhotoIconPath,
-                        unselectedPhotoIconPath: unselectedPhotoIconPath,
-                        modifyLabel: modifyLabel,
-                        pickLabel: pickLabel,
+                    Padding(
+                      padding: const EdgeInsets.all(1),
+                      child: DottedBorder(
+                        borderType: BorderType.RRect,
+                        radius: const Radius.circular(8),
+                        dashPattern: const [8, 8],
+                        color: PColors.gray4,
+                        padding: EdgeInsets.zero,
+                        child: Center(
+                          child: isLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : ImageIcon(
+                                  image: image,
+                                  selectedPhotoIconPath: selectedPhotoIconPath,
+                                  unselectedPhotoIconPath:
+                                      unselectedPhotoIconPath,
+                                  modifyLabel: modifyLabel,
+                                  pickLabel: pickLabel,
+                                ),
+                        ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               )

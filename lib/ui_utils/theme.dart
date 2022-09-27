@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/typography.dart';
@@ -29,7 +31,7 @@ class PTheme {
       error: PColors.red,
       onPrimary: PColors.whiteBackground,
       onSecondary: PColors.whiteBackground,
-      onSurface: PColors.white,
+      onSurface: PColors.whiteBackground,
       onBackground: PColors.whiteBackground,
       onError: PColors.red,
       brightness: Brightness.light,

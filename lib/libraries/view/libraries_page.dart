@@ -7,6 +7,7 @@ import 'package:mi_libro_vecino/libraries/components/library_info.dart';
 import 'package:mi_libro_vecino/libraries/components/locations_map.dart';
 import 'package:mi_libro_vecino/libraries/cubit/libraries_cubit.dart';
 import 'package:mi_libro_vecino/search/widgets/search_widget.dart';
+import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
 
 class LibrariesPage extends StatelessWidget {
