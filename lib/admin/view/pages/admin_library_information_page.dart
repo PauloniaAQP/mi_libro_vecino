@@ -104,7 +104,6 @@ class _AdminLibraryInformationPageState
         ),
         body: Builder(
           builder: (context) {
-            print(library?.description ??= '');
             if (isLoading) {
               return const Center(
                 child: CircularProgressIndicator(),

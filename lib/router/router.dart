@@ -15,170 +15,169 @@ import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/search.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
 
-// abstract class AppRouter {
-// static
-GoRouter get router => GoRouter(
-      initialLocation: Routes.search,
-      errorPageBuilder: (_, state) {
-        return MaterialPage(
-          child: Builder(
-            builder: (context) {
-              SchedulerBinding.instance?.addPostFrameCallback((_) {
-                context.go(Routes.search);
-              });
-              return const SearchPage();
+abstract class AppRouter {
+  static GoRouter get router => GoRouter(
+        initialLocation: Routes.search,
+        errorPageBuilder: (_, state) {
+          return MaterialPage(
+            child: Builder(
+              builder: (context) {
+                SchedulerBinding.instance?.addPostFrameCallback((_) {
+                  context.go(Routes.search);
+                });
+                return const SearchPage();
+              },
+            ),
+          );
+        },
+        routes: [
+          GoRoute(
+            path: Routes.search,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: SearchPage(),
+            ),
+          ),
+          GoRoute(
+            path: Routes.libraries,
+            pageBuilder: (context, state) {
+              final libraryIdQuery = state.queryParams['id'];
+              final searchQuery = state.queryParams['search'];
+              return MaterialPage(
+                child: LibrariesPage(
+                  libraryIdQuery: libraryIdQuery,
+                  searchQuery: searchQuery,
+                ),
+              );
             },
           ),
-        );
-      },
-      routes: [
-        GoRoute(
-          path: Routes.search,
-          pageBuilder: (context, state) => const MaterialPage(
-            child: SearchPage(),
-          ),
-        ),
-        GoRoute(
-          path: Routes.libraries,
-          pageBuilder: (context, state) {
-            final libraryIdQuery = state.queryParams['id'];
-            final searchQuery = state.queryParams['search'];
-            return MaterialPage(
-              child: LibrariesPage(
-                libraryIdQuery: libraryIdQuery,
-                searchQuery: searchQuery,
-              ),
-            );
-          },
-        ),
-        GoRoute(
-          path: Routes.register,
-          pageBuilder: (context, state) => const MaterialPage(
-            child: RegisterPage(),
-          ),
-          routes: [
-            GoRoute(
-              path: Routes.emailRegister,
-              pageBuilder: (context, state) => const MaterialPage(
-                child: EmailRegisterPage(),
-              ),
+          GoRoute(
+            path: Routes.register,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: RegisterPage(),
             ),
-            GoRoute(
-              path: Routes.personalName,
-              pageBuilder: (context, state) => const MaterialPage(
-                child: PersonalNamePage(),
+            routes: [
+              GoRoute(
+                path: Routes.emailRegister,
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: EmailRegisterPage(),
+                ),
               ),
-            ),
-            GoRoute(
-              path: Routes.personalPhoto,
-              pageBuilder: (context, state) => const MaterialPage(
-                child: PersonalNamePage(),
+              GoRoute(
+                path: Routes.personalName,
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: PersonalNamePage(),
+                ),
               ),
+              GoRoute(
+                path: Routes.personalPhoto,
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: PersonalNamePage(),
+                ),
+              ),
+            ],
+          ),
+          GoRoute(
+            path: Routes.login,
+            pageBuilder: (context, state) {
+              final isAdmin = state.queryParams['isAdmin'] == 'true';
+              return MaterialPage(
+                child: LoginPage(isAdmin: isAdmin),
+              );
+            },
+          ),
+          GoRoute(
+            path: Routes.waiting,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: WaitingPage(),
             ),
-          ],
-        ),
-        GoRoute(
-          path: Routes.login,
-          pageBuilder: (context, state) {
-            final isAdmin = state.queryParams['isAdmin'] == 'true';
-            return MaterialPage(
-              child: LoginPage(isAdmin: isAdmin),
-            );
-          },
-        ),
-        GoRoute(
-          path: Routes.waiting,
-          pageBuilder: (context, state) => const MaterialPage(
-            child: WaitingPage(),
           ),
-        ),
-        GoRoute(
-          path: Routes.errorRegister,
-          pageBuilder: (context, state) => const MaterialPage(
-            child: RegisterErrorPage(),
+          GoRoute(
+            path: Routes.errorRegister,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: RegisterErrorPage(),
+            ),
           ),
-        ),
-        GoRoute(
-          path: Routes.disabledAccount,
-          pageBuilder: (context, state) => const MaterialPage(
-            child: DisabledAcountPage(),
+          GoRoute(
+            path: Routes.disabledAccount,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: DisabledAcountPage(),
+            ),
           ),
-        ),
-        GoRoute(
-          path: Routes.collaborators,
-          pageBuilder: (context, state) => const MaterialPage(
-            child: CollaboratorsPage(),
+          GoRoute(
+            path: Routes.collaborators,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: CollaboratorsPage(),
+            ),
+            redirect: (_) {
+              if (AuthService.isLoggedIn()) {
+                return '${Routes.collaborators}/${Routes.collaboratorsPersonal}';
+              } else {
+                return Routes.login;
+              }
+            },
+            routes: [
+              GoRoute(
+                path: Routes.collaboratorsPersonal,
+                redirect: (_) {
+                  if (!AuthService.isLoggedIn()) return Routes.login;
+                  return null;
+                },
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: CollaboratorsPage(),
+                ),
+              ),
+              GoRoute(
+                path: Routes.collaboratorsLibrary,
+                redirect: (_) {
+                  if (!AuthService.isLoggedIn()) return Routes.login;
+                  return null;
+                },
+                pageBuilder: (context, state) => const MaterialPage(
+                  child: CollaboratorsPage(index: 1),
+                ),
+              ),
+            ],
           ),
-          redirect: (_) {
-            if (AuthService.isLoggedIn()) {
-              return '${Routes.collaborators}/${Routes.collaboratorsPersonal}';
-            } else {
+          GoRoute(
+            path: Routes.admin,
+            pageBuilder: (context, state) => const MaterialPage(
+              child: AdminPage(),
+            ),
+            redirect: (_) {
+              if (AuthService.isLoggedIn()) {
+                return '${Routes.admin}/${Routes.adminNewRequests}';
+              }
               return Routes.login;
-            }
-          },
-          routes: [
-            GoRoute(
-              path: Routes.collaboratorsPersonal,
-              redirect: (_) {
-                if (!AuthService.isLoggedIn()) return Routes.login;
-                return null;
-              },
-              pageBuilder: (context, state) => const MaterialPage(
-                child: CollaboratorsPage(),
+            },
+            routes: [
+              GoRoute(
+                path: Routes.adminNewRequests,
+                redirect: (_) {
+                  if (!AuthService.isLoggedIn()) return Routes.login;
+                  return null;
+                },
+                pageBuilder: (context, state) {
+                  final libraryIdQuery = state.queryParams['id'];
+                  return MaterialPage(
+                    child: AdminPage(id: libraryIdQuery),
+                  );
+                },
               ),
-            ),
-            GoRoute(
-              path: Routes.collaboratorsLibrary,
-              redirect: (_) {
-                if (!AuthService.isLoggedIn()) return Routes.login;
-                return null;
-              },
-              pageBuilder: (context, state) => const MaterialPage(
-                child: CollaboratorsPage(index: 1),
+              GoRoute(
+                path: Routes.adminLibraries,
+                redirect: (_) {
+                  if (!AuthService.isLoggedIn()) return Routes.login;
+                  return null;
+                },
+                pageBuilder: (context, state) {
+                  final libraryIdQuery = state.queryParams['id'];
+                  return MaterialPage(
+                    child: AdminPage(index: 1, id: libraryIdQuery),
+                  );
+                },
               ),
-            ),
-          ],
-        ),
-        GoRoute(
-          path: Routes.admin,
-          pageBuilder: (context, state) => const MaterialPage(
-            child: AdminPage(),
+            ],
           ),
-          redirect: (_) {
-            if (AuthService.isLoggedIn()) {
-              return '${Routes.admin}/${Routes.adminNewRequests}';
-            }
-            return Routes.login;
-          },
-          routes: [
-            GoRoute(
-              path: Routes.adminNewRequests,
-              redirect: (_) {
-                if (!AuthService.isLoggedIn()) return Routes.login;
-                return null;
-              },
-              pageBuilder: (context, state) {
-                final libraryIdQuery = state.queryParams['id'];
-                return MaterialPage(
-                  child: AdminPage(id: libraryIdQuery),
-                );
-              },
-            ),
-            GoRoute(
-              path: Routes.adminLibraries,
-              redirect: (_) {
-                if (!AuthService.isLoggedIn()) return Routes.login;
-                return null;
-              },
-              pageBuilder: (context, state) {
-                final libraryIdQuery = state.queryParams['id'];
-                return MaterialPage(
-                  child: AdminPage(index: 1, id: libraryIdQuery),
-                );
-              },
-            ),
-          ],
-        ),
-      ],
-    );
-// }
+        ],
+      );
+}

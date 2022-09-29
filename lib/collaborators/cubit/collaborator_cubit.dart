@@ -90,7 +90,6 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
       final services = _getServices(library.services, state.services);
 
       if (!wasFilled) {
-        print('update initial state');
         initialState = state.copyWith(
           location: library.location,
           libraryImage: libraryImage,
@@ -125,10 +124,6 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
   /// but be careful because you need make deep copies of the objects
   /// map.fromMap() maybe works
   bool isActiveSaveUserButton() {
-    print('intiial state');
-    print(initialState.personalInfoForm.value);
-    print('current state');
-    print(state.personalInfoForm.value);
     return state.isEqualUser(initialState);
   }
 

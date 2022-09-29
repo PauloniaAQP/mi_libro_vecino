@@ -64,19 +64,16 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-        theme: PTheme.standard,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: const Locale('es'),
-        supportedLocales: AppLocalizations.supportedLocales,
-
-        /// TODO: Before release, change this to AppRouter and make a static class
-        routeInformationParser: router
-            .routeInformationParser, //AppRouter.router.routeInformationParser,
-        routerDelegate: router.routerDelegate //.router.routerDelegate,
-        );
+      theme: PTheme.standard,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      locale: const Locale('es'),
+      supportedLocales: AppLocalizations.supportedLocales,
+      routeInformationParser: AppRouter.router.routeInformationParser,
+      routerDelegate: AppRouter.router.routerDelegate,
+    );
   }
 }
