@@ -73,7 +73,8 @@ class CollaboratorsPersonalForm extends StatelessWidget {
             width: 400,
             child: ElevatedButton(
               onPressed: () {
-                /// TODO: Validate if some change was made, if not, inactivate the button
+                // TODO(oscarnar): Validate if some change was made, if not,
+                // inactivate the button
                 futureWithLoading(
                   context.read<CollaboratorCubit>().onTapSaveUser().then(
                         (value) =>

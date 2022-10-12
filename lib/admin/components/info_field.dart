@@ -33,7 +33,8 @@ class InfoField extends StatelessWidget {
                 ),
           ),
         ),
-        // TODO(oscarnar): Corregir el scroll bar para textos de una linea (scroll horizontal)
+        // TODO(oscarnar): Corregir el scroll bar para textos de una linea
+        //  (scroll horizontal)
         // Scrollbar(
         //   scrollbarOrientation: ScrollbarOrientation.bottom,
         //   // isAlwaysShown: maxLines == 1,
