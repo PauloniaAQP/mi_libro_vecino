@@ -18,6 +18,8 @@ class LibrariesAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: PColors.white,
       leading: InkWell(
         onTap: () => context.go(Routes.search),
+        hoverColor: Colors.transparent,
+        splashColor: Colors.transparent,
         child: const Padding(
           padding: EdgeInsets.symmetric(vertical: 22),
           child: Image(
@@ -26,16 +28,18 @@ class LibrariesAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () {
-            context.go(Routes.login);
-          },
-          child: Text(
-            l10n.searchPageImLibraryButton,
-            style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
+        InkWell(
+          onTap: () => context.go(Routes.login),
+          hoverColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          child: Center(
+            child: Text(
+              l10n.searchPageImLibraryButton,
+              style: Theme.of(context).textTheme.subtitle1!.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+            ),
           ),
         ),
         Padding(

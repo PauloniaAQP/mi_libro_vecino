@@ -4,7 +4,7 @@ import 'package:mi_libro_vecino/ui_utils/general_widgets/one_line_labels_list.da
 import 'package:paulonia_cache_image/paulonia_cache_image.dart';
 import 'package:paulonia_utils/paulonia_utils.dart';
 
-class LibraryCard extends StatelessWidget {
+class LibraryCard extends StatefulWidget {
   const LibraryCard({
     Key? key,
     required this.gsUrl,
@@ -21,18 +21,37 @@ class LibraryCard extends StatelessWidget {
   final Function() onTap;
 
   @override
+  State<LibraryCard> createState() => _LibraryCardState();
+}
+
+class _LibraryCardState extends State<LibraryCard> {
+  bool _isHovering = false;
+  @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 1,
-      clipBehavior: Clip.antiAlias,
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    return Material(
+      color: Colors.transparent,
       child: InkWell(
         key: const Key('libraryCardInkwellKey'),
-        onTap: onTap,
+        onTap: widget.onTap,
+        onHover: (value) {
+          setState(() => _isHovering = value);
+        },
+        hoverColor: Colors.white,
         child: Container(
           height: 163,
           padding: const EdgeInsets.all(16),
+          margin: const EdgeInsets.fromLTRB(8, 8, 14, 8),
+          decoration: BoxDecoration(
+            color: PColors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(.5),
+                blurRadius: _isHovering ? 8.0 : 1.0,
+                spreadRadius: _isHovering ? 1.0 : 0.0,
+              )
+            ],
+          ),
           child: Row(
             children: [
               Container(
@@ -42,7 +61,8 @@ class LibraryCard extends StatelessWidget {
                   image: PUtils.isOnTest()
                       ? null
                       : DecorationImage(
-                          image: PCacheImage(gsUrl),
+                          image:
+                              PCacheImage(widget.gsUrl, enableInMemory: true),
                           fit: BoxFit.cover,
                         ),
                 ),
@@ -53,7 +73,7 @@ class LibraryCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title,
+                      widget.title,
                       style: Theme.of(context).textTheme.headline4!.copyWith(
                             fontWeight: FontWeight.w600,
                             color: PColors.black,
@@ -63,7 +83,7 @@ class LibraryCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 14),
                     Text(
-                      subtitle,
+                      widget.subtitle,
                       style: Theme.of(context).textTheme.subtitle1!.copyWith(
                             fontWeight: FontWeight.w500,
                             color: PColors.gray1,
@@ -71,7 +91,7 @@ class LibraryCard extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 18),
-                    OneLineLabelsList(labelsList: labels),
+                    OneLineLabelsList(labelsList: widget.labels),
                   ],
                 ),
               ),

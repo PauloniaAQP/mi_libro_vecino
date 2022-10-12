@@ -215,7 +215,7 @@ class _AdminLibraryInformationPageState
                               InfoField(
                                 label: l10n.registerPageLibraryDescriptionLabel,
                                 text: library?.description ?? '',
-                                maxLines: 3,
+                                maxLines: 5,
                               ),
                               InfoField(
                                 label: l10n.libraryInfoTimetable,

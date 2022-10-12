@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/collaborators/cubit/collaborator_cubit.dart';
@@ -54,6 +55,9 @@ class CollaboratorsPersonalForm extends StatelessWidget {
                           ValidationMessage.number:
                               l10n.registerPagePersonalPhoneErrorTextNumber,
                         },
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                       ),
                     ],
                   ),
@@ -69,6 +73,8 @@ class CollaboratorsPersonalForm extends StatelessWidget {
             width: 400,
             child: ElevatedButton(
               onPressed: () {
+                // TODO(oscarnar): Validate if some change was made, if not,
+                // inactivate the button
                 futureWithLoading(
                   context.read<CollaboratorCubit>().onTapSaveUser().then(
                         (value) =>
@@ -80,6 +86,11 @@ class CollaboratorsPersonalForm extends StatelessWidget {
               child: Text(
                 l10n.collaboratorsPageSaveButton,
                 textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

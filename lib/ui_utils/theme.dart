@@ -29,7 +29,7 @@ class PTheme {
       error: PColors.red,
       onPrimary: PColors.whiteBackground,
       onSecondary: PColors.whiteBackground,
-      onSurface: PColors.white,
+      onSurface: PColors.whiteBackground,
       onBackground: PColors.whiteBackground,
       onError: PColors.red,
       brightness: Brightness.light,
