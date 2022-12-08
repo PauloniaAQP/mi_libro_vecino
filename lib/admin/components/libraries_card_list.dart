@@ -112,7 +112,7 @@ class _LibrariesCardListState extends State<LibrariesCardList> {
                                 onTap: () {
                                   final route = '''
 ${GoRouter.of(context).location}?id=${libraries[index].id}''';
-                                  print(route);
+
                                   GoRouter.of(context).go(route);
                                 },
                               );

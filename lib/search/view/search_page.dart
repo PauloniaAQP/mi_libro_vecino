@@ -104,8 +104,10 @@ class SearchPage extends StatelessWidget {
                     alignment: AlignmentDirectional.bottomCenter,
                     children: [
                       ResponsiveBuilder(
-                        builder: (BuildContext context,
-                            SizingInformation sizingInformation) {
+                        builder: (
+                          BuildContext context,
+                          SizingInformation sizingInformation,
+                        ) {
                           return Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             mainAxisAlignment: MainAxisAlignment.center,

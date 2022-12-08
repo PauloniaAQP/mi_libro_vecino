@@ -111,13 +111,13 @@ class MapWidgets extends StatelessWidget {
 }
 
 class LibraryWidgets extends StatelessWidget {
-  const LibraryWidgets(
-      {Key? key,
-      required this.libraryIdQuery,
-      required this.searchQuery,
-      required this.currentLibrary,
-      required this.flex})
-      : super(key: key);
+  const LibraryWidgets({
+    Key? key,
+    required this.libraryIdQuery,
+    required this.searchQuery,
+    required this.currentLibrary,
+    required this.flex,
+  }) : super(key: key);
 
   final String? libraryIdQuery;
   final String? searchQuery;

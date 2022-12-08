@@ -27,8 +27,10 @@ class SelectorButton extends StatelessWidget {
             Expanded(
               child: Center(
                 child: ResponsiveBuilder(
-                  builder: (BuildContext context,
-                      SizingInformation sizingInformation) {
+                  builder: (
+                    BuildContext context,
+                    SizingInformation sizingInformation,
+                  ) {
                     return Text(
                       title,
                       style: Theme.of(context).textTheme.headline1!.copyWith(

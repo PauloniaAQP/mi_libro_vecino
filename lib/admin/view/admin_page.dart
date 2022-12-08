@@ -63,8 +63,10 @@ class _AdminPageState extends State<AdminPage> {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 34),
                         child: ResponsiveBuilder(
-                          builder: (BuildContext context,
-                              SizingInformation sizingInformation) {
+                          builder: (
+                            BuildContext context,
+                            SizingInformation sizingInformation,
+                          ) {
                             return Text(
                               l10n.adminPageCollaborators,
                               style: Theme.of(context)
