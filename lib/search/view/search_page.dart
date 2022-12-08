@@ -5,6 +5,9 @@ import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/widgets/search_widget.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
+import 'package:mi_libro_vecino/ui_utils/constans/globals.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -36,26 +39,49 @@ class SearchPage extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-            child: Container(
-              width: 158,
-              height: 40,
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(PColors.white),
-                ),
-                onPressed: () {},
-                child: Text(
-                  l10n.searchPageFollowButton,
-                  style: Theme.of(context).textTheme.subtitle1!.apply(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeightDelta: 1,
+            child: ResponsiveBuilder(
+              builder:
+                  (BuildContext context, SizingInformation sizingInformation) {
+                var newWidth = 158.0;
+
+                if (sizingInformation.deviceScreenType ==
+                    DeviceScreenType.mobile) {
+                  newWidth = 50;
+                }
+                return Container(
+                  width: newWidth,
+                  height: 40,
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(PColors.white),
+                    ),
+                    onPressed: () async {
+                      final uri = Uri.parse(Globals.webUrl);
+                      if (await canLaunchUrl(uri)) {
+                        await launchUrl(uri);
+                      }
+                    },
+                    child: ScreenTypeLayout(
+                      mobile: const Image(
+                        image: AssetImage(Assets.facebookLogo),
+                        color: Colors.blue,
+                        height: 35,
                       ),
-                ),
-              ),
+                      desktop: Text(
+                        l10n.searchPageFollowButton,
+                        style: Theme.of(context).textTheme.subtitle1!.apply(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeightDelta: 1,
+                            ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -77,38 +103,65 @@ class SearchPage extends StatelessWidget {
                   child: Stack(
                     alignment: AlignmentDirectional.bottomCenter,
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            flex: 9,
-                            child: Text(
-                              l10n.searchPageTitle.substring(0, 14),
-                              style:
-                                  Theme.of(context).textTheme.headline1!.apply(
-                                        color: PColors.white,
-                                        fontSizeDelta: 2,
-                                      ),
-                              textAlign: TextAlign.end,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          const SizedBox(width: 80),
-                          Expanded(
-                            flex: 8,
-                            child: Text(
-                              l10n.searchPageTitle.substring(14),
-                              style:
-                                  Theme.of(context).textTheme.headline1!.apply(
-                                        color: PColors.white,
-                                        fontSizeDelta: 2,
-                                      ),
-                              textAlign: TextAlign.start,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
+                      ResponsiveBuilder(
+                        builder: (BuildContext context,
+                            SizingInformation sizingInformation) {
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex: 9,
+                                child: Text(
+                                  l10n.searchPageTitle.substring(0, 14),
+                                  style: sizingInformation.deviceScreenType ==
+                                          DeviceScreenType.mobile
+                                      ? Theme.of(context)
+                                          .textTheme
+                                          .headline6!
+                                          .apply(
+                                            color: PColors.white,
+                                            fontSizeDelta: 2,
+                                          )
+                                      : Theme.of(context)
+                                          .textTheme
+                                          .headline1!
+                                          .apply(
+                                            color: PColors.white,
+                                            fontSizeDelta: 2,
+                                          ),
+                                  textAlign: TextAlign.end,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(width: 80),
+                              Expanded(
+                                flex: 8,
+                                child: Text(
+                                  l10n.searchPageTitle.substring(14),
+                                  style: sizingInformation.deviceScreenType ==
+                                          DeviceScreenType.mobile
+                                      ? Theme.of(context)
+                                          .textTheme
+                                          .headline6!
+                                          .apply(
+                                            color: PColors.white,
+                                            fontSizeDelta: 2,
+                                          )
+                                      : Theme.of(context)
+                                          .textTheme
+                                          .headline1!
+                                          .apply(
+                                            color: PColors.white,
+                                            fontSizeDelta: 2,
+                                          ),
+                                  textAlign: TextAlign.start,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                       Center(
                         child: Image.asset(

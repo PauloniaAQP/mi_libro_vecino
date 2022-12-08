@@ -80,21 +80,25 @@ class WaitingPage extends StatelessWidget {
               const SizedBox(height: 60),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  height: 56,
-                  width: 400,
-                  child: ElevatedButton(
-                    key: const Key('waiting_page_button'),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(PColors.white),
-                    ),
-                    onPressed: () => context.go(Routes.search),
-                    child: Text(
-                      l10n.registerPageBackToStartButton,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.button!.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: SizedBox(
+                    height: 56,
+                    width: 400,
+                    child: ElevatedButton(
+                      key: const Key('waiting_page_button'),
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(PColors.white),
+                      ),
+                      onPressed: () => context.go(Routes.search),
+                      child: Text(
+                        l10n.registerPageBackToStartButton,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.button!.copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                      ),
                     ),
                   ),
                 ),

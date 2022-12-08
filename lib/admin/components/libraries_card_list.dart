@@ -81,7 +81,7 @@ class _LibrariesCardListState extends State<LibrariesCardList> {
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(
-              horizontal: 67,
+              horizontal: 20,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,6 +112,7 @@ class _LibrariesCardListState extends State<LibrariesCardList> {
                                 onTap: () {
                                   final route = '''
 ${GoRouter.of(context).location}?id=${libraries[index].id}''';
+                                  print(route);
                                   GoRouter.of(context).go(route);
                                 },
                               );
