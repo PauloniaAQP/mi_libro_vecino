@@ -79,7 +79,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     );
   }
 
-  Future<void> onTapRegisterAndContinue() async {
+  Future<void> onRegisterAndContinue() async {
     state.registerForm.markAllAsTouched();
     state.personInfoForm.markAllAsTouched();
     state.libraryInfoForm.markAllAsTouched();

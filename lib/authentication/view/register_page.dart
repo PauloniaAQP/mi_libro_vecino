@@ -131,7 +131,7 @@ class RegisterPageViewState extends State<RegisterPageView>
                                             futureWithLoading(
                                               context
                                                   .read<RegisterCubit>()
-                                                  .onTapRegisterAndContinue(),
+                                                  .onRegisterAndContinue(),
                                               context,
                                             );
                                           },
@@ -194,7 +194,7 @@ class RegisterPageViewState extends State<RegisterPageView>
                                 Visibility(
                                   visible: state.index > 0 && state.index < 6,
                                   child: DotNavigation(
-                                    /// Index and length are -2 because the first
+                                    /// Index and length are 2 because the first
                                     /// page and last are not shown in the dot
                                     /// navigation
                                     index: state.index - 1,
@@ -238,7 +238,7 @@ class RegisterPageViewState extends State<RegisterPageView>
                                                 futureWithLoading(
                                                   context
                                                       .read<RegisterCubit>()
-                                                      .onTapRegisterAndContinue(),
+                                                      .onRegisterAndContinue(),
                                                   context,
                                                 );
                                               },
