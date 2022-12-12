@@ -1,16 +1,9 @@
 {
-  "hosting": {
-    "public": "build/web",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
+  "firestore": {
+    "rules": "./mi_libro_vecino_api/firebase_conf/firestore.rules",
+    "indexes": "./mi_libro_vecino_api/firebase_conf/firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "./mi_libro_vecino_api/firebase_conf/storage.rules"
   }
 }
