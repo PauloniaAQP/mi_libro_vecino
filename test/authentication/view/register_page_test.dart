@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
-import 'package:mi_libro_vecino/authentication/view/pages/quotes_page.dart';
 import 'package:mi_libro_vecino/authentication/view/register_page.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:responsive_builder/responsive_builder.dart';
