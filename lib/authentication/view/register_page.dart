@@ -56,105 +56,110 @@ class RegisterPageViewState extends State<RegisterPageView>
     final l10n = context.l10n;
     return Scaffold(
       body: ScreenTypeLayout(
-        mobile: Expanded(
-          child: BlocListener<RegisterCubit, RegisterState>(
-            listener: (context, state) {
-              if (state.status == RegisterStatus.error) {
-                context.go(Routes.errorRegister);
-              }
-              if (state.status == RegisterStatus.success) {
-                context.go(Routes.waiting);
-              }
-            },
-            child: BlocBuilder<RegisterCubit, RegisterState>(
-              builder: (context, state) {
-                return CustomScrollView(
-                  slivers: [
-                    SliverFillRemaining(
-                      fillOverscroll: true,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).size.height * 0.1,
-                          horizontal: 50,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: RegisterPageView.pages[state.index],
+        mobile: Column(
+          children: [
+            Expanded(
+              child: BlocListener<RegisterCubit, RegisterState>(
+                listener: (context, state) {
+                  if (state.status == RegisterStatus.error) {
+                    context.go(Routes.errorRegister);
+                  }
+                  if (state.status == RegisterStatus.success) {
+                    context.go(Routes.waiting);
+                  }
+                },
+                child: BlocBuilder<RegisterCubit, RegisterState>(
+                  builder: (context, state) {
+                    return CustomScrollView(
+                      slivers: [
+                        SliverFillRemaining(
+                          fillOverscroll: true,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              vertical:
+                                  MediaQuery.of(context).size.height * 0.1,
+                              horizontal: 50,
                             ),
-                            Visibility(
-                              visible: state.index > 0 && state.index < 6,
-                              child: DotNavigation(
-                                /// Index and length are -2 because the first
-                                /// page and last are not shown in the dot
-                                /// navigation
-                                index: state.index - 1,
-                                length: RegisterPageView.pages.length - 3,
-                                onTapBack: () {
-                                  context.read<RegisterCubit>().backPage();
-                                },
-                                onTapNext: () {
-                                  context.read<RegisterCubit>().nextPage();
-                                },
-                              ),
-                            ),
-                            Visibility(
-                              visible: state.index == 6,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(
-                                    height: 55,
-                                    width: 55,
-                                    child: IconButton(
-                                      onPressed: () {
-                                        context
-                                            .read<RegisterCubit>()
-                                            .backPage();
-                                      },
-                                      icon: Image.asset(
-                                        Assets.backIcon,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: RegisterPageView.pages[state.index],
+                                ),
+                                Visibility(
+                                  visible: state.index > 0 && state.index < 6,
+                                  child: DotNavigation(
+                                    /// Index and length are -2 because the first
+                                    /// page and last are not shown in the dot
+                                    /// navigation
+                                    index: state.index - 1,
+                                    length: RegisterPageView.pages.length - 3,
+                                    onTapBack: () {
+                                      context.read<RegisterCubit>().backPage();
+                                    },
+                                    onTapNext: () {
+                                      context.read<RegisterCubit>().nextPage();
+                                    },
                                   ),
-                                  Expanded(
-                                    child: Align(
-                                      alignment: Alignment.topRight,
-                                      child: SizedBox(
-                                        height: 56,
-                                        width: 200,
-                                        child: ElevatedButton(
+                                ),
+                                Visibility(
+                                  visible: state.index == 6,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      SizedBox(
+                                        height: 55,
+                                        width: 55,
+                                        child: IconButton(
                                           onPressed: () {
-                                            futureWithLoading(
-                                              context
-                                                  .read<RegisterCubit>()
-                                                  .onRegisterAndContinue(),
-                                              context,
-                                            );
+                                            context
+                                                .read<RegisterCubit>()
+                                                .backPage();
                                           },
-                                          child: Text(
-                                            l10n.registerPageRegisterButton,
-                                            overflow: TextOverflow.ellipsis,
+                                          icon: Image.asset(
+                                            Assets.backIcon,
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
                                       ),
-                                    ),
+                                      Expanded(
+                                        child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: SizedBox(
+                                            height: 56,
+                                            width: 200,
+                                            child: ElevatedButton(
+                                              onPressed: () {
+                                                futureWithLoading(
+                                                  context
+                                                      .read<RegisterCubit>()
+                                                      .onRegisterAndContinue(),
+                                                  context,
+                                                );
+                                              },
+                                              child: Text(
+                                                l10n.registerPageRegisterButton,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
-                );
-              },
+                      ],
+                    );
+                  },
+                ),
+              ),
             ),
-          ),
+          ],
         ),
         desktop: Row(
           children: [
