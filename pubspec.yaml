@@ -28,6 +28,7 @@ dependencies:
   paulonia_image_service: ^0.0.2
   paulonia_utils: ^0.3.0
   reactive_forms: ^10.6.8
+  responsive_builder: ^0.4.3
   url_launcher: ^6.1.0
 
 dev_dependencies:

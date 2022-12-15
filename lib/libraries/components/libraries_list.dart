@@ -88,7 +88,7 @@ class _LibrariesListState extends State<LibrariesList> {
                     ),
                 ],
               ),
-            )
+            ),
           ],
         );
       },

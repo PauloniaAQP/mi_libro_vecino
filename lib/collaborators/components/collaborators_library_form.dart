@@ -17,6 +17,7 @@ import 'package:mi_libro_vecino_api/services/geo_service.dart'
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:mi_libro_vecino_api/utils/utils.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class CollaboratorsLibraryForm extends StatefulWidget {
   const CollaboratorsLibraryForm({
@@ -75,10 +76,10 @@ class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
                       l10n.registerPageLibraryDescriptionErrorText,
                 },
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: PTextField(
+              ScreenTypeLayout(
+                mobile: Column(
+                  children: [
+                    PTextField(
                       label: l10n.registerPageLibraryOpeningTimeLabel,
                       hintText: l10n.registerPageLibraryTimeHintText,
                       formControlName: CollaboratorState.openTimeController,
@@ -89,7 +90,7 @@ class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
+                              horizontal: 4,
                             ),
                             child: Container(
                               height: 24,
@@ -108,10 +109,7 @@ class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
                             l10n.registerPageLibraryTimeErrorTextRequired,
                       },
                     ),
-                  ),
-                  const SizedBox(width: 30),
-                  Expanded(
-                    child: PTextField(
+                    PTextField(
                       label: l10n.registerPageLibraryClosingTimeLabel,
                       hintText: l10n.registerPageLibraryTimeHintText,
                       formControlName: CollaboratorState.closeTimeController,
@@ -122,7 +120,7 @@ class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
+                              horizontal: 4,
                             ),
                             child: Container(
                               height: 24,
@@ -141,8 +139,77 @@ class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
                             l10n.registerPageLibraryTimeErrorTextRequired,
                       },
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                desktop: Row(
+                  children: [
+                    Expanded(
+                      child: PTextField(
+                        label: l10n.registerPageLibraryOpeningTimeLabel,
+                        hintText: l10n.registerPageLibraryTimeHintText,
+                        formControlName: CollaboratorState.openTimeController,
+                        keyboardType: TextInputType.number,
+                        suffixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                              ),
+                              child: Container(
+                                height: 24,
+                                width: 1,
+                                color: PColors.gray2,
+                              ),
+                            ),
+                            PDropdownButton(
+                              valuesList: const ['AM', 'PM'],
+                              controller: state.openingController,
+                            ),
+                          ],
+                        ),
+                        validationMessages: {
+                          ValidationMessage.required:
+                              l10n.registerPageLibraryTimeErrorTextRequired,
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 30),
+                    Expanded(
+                      child: PTextField(
+                        label: l10n.registerPageLibraryClosingTimeLabel,
+                        hintText: l10n.registerPageLibraryTimeHintText,
+                        formControlName: CollaboratorState.closeTimeController,
+                        keyboardType: TextInputType.number,
+                        suffixIcon: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                              ),
+                              child: Container(
+                                height: 24,
+                                width: 1,
+                                color: PColors.gray2,
+                              ),
+                            ),
+                            PDropdownButton(
+                              valuesList: const ['AM', 'PM'],
+                              controller: state.closingController,
+                            ),
+                          ],
+                        ),
+                        validationMessages: {
+                          ValidationMessage.required:
+                              l10n.registerPageLibraryTimeErrorTextRequired,
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
               Padding(
