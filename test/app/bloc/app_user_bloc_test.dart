@@ -37,6 +37,7 @@ void main() {
       expect: () => [
         AppUserInitial().copyWith(currentLocation: coordinates),
         // This is for the first time the authentication suscription is called
+        const AppUserLoading(),
         AppUserInitial(),
         AppUserInitial().copyWith(currentLocation: coordinates),
       ],
