@@ -33,16 +33,6 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
-      if (context.read<AppUserBloc>().state.status ==
-          AuthenticationStatus.authenticated) {
-        if (context.read<AppUserBloc>().state.isAdmin) {
-          GoRouter.of(context).go(Routes.admin);
-        } else {
-          GoRouter.of(context).go(Routes.collaborators);
-        }
-      }
-    });
   }
 
   @override
