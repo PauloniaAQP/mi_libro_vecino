@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
@@ -62,19 +61,6 @@ class LoginViewState extends State<LoginView>
       passwordController: FormControl<String>(
         validators: [Validators.required, Validators.minLength(6)],
       ),
-    });
-
-    /// If the user is already logged in, we redirect to
-    /// the correct page, there are issues with the bloc listener
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
-      if (context.read<AppUserBloc>().state.status ==
-          AuthenticationStatus.authenticated) {
-        if (context.read<AppUserBloc>().state.isAdmin) {
-          GoRouter.of(context).go(Routes.admin);
-        } else {
-          GoRouter.of(context).go(Routes.collaborators);
-        }
-      }
     });
   }
 
