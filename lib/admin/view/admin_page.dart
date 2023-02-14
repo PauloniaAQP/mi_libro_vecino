@@ -12,6 +12,7 @@ import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/selector_button.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({
@@ -61,13 +62,26 @@ class _AdminPageState extends State<AdminPage> {
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 34),
-                        child: Text(
-                          l10n.adminPageCollaborators,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline1!
-                              .copyWith(fontSize: 28),
-                          textAlign: TextAlign.center,
+                        child: ResponsiveBuilder(
+                          builder: (
+                            BuildContext context,
+                            SizingInformation sizingInformation,
+                          ) {
+                            return Text(
+                              l10n.adminPageCollaborators,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline1!
+                                  .copyWith(
+                                    fontSize:
+                                        sizingInformation.deviceScreenType ==
+                                                DeviceScreenType.desktop
+                                            ? 28
+                                            : 16,
+                                  ),
+                              textAlign: TextAlign.center,
+                            );
+                          },
                         ),
                       ),
                       SelectorButton(

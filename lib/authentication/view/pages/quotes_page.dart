@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class QuotesPage extends StatelessWidget {
   const QuotesPage({
@@ -37,37 +38,59 @@ class QuotesPage extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 60),
-        child: Column(
-          children: [
-            Expanded(
-              flex: 5,
-              child: Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.03,
-                  ),
-                  child: const Image(
-                    image: AssetImage(Assets.registerTestImg),
+        child: ResponsiveBuilder(
+          builder: (BuildContext context, SizingInformation sizingInformation) {
+            return Flex(
+              direction:
+                  sizingInformation.deviceScreenType == DeviceScreenType.desktop
+                      ? Axis.vertical
+                      : Axis.horizontal,
+              children: [
+                Expanded(
+                  flex: sizingInformation.deviceScreenType ==
+                          DeviceScreenType.desktop
+                      ? 5
+                      : 1,
+                  child: Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.03,
+                        vertical: 8,
+                      ),
+                      child: const Image(
+                        image: AssetImage(Assets.registerTestImg),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Text(
-                  '"Estamos habitados por libros y por amigos". Daniel Pennac.',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline3!
-                      .copyWith(color: PColors.white),
-                  textAlign: TextAlign.right,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 5,
+                Expanded(
+                  child: Align(
+                    alignment: sizingInformation.deviceScreenType ==
+                            DeviceScreenType.desktop
+                        ? Alignment.topRight
+                        : Alignment.center,
+                    child: Text(
+                      '"Estamos habitados por libros y por amigos".\n '
+                      'Daniel Pennac.',
+                      style: sizingInformation.deviceScreenType ==
+                              DeviceScreenType.desktop
+                          ? Theme.of(context)
+                              .textTheme
+                              .headline3!
+                              .copyWith(color: PColors.white)
+                          : Theme.of(context)
+                              .textTheme
+                              .headline6!
+                              .copyWith(color: PColors.white),
+                      textAlign: TextAlign.right,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 5,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );

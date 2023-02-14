@@ -11,6 +11,7 @@ import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/selector_button.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class CollaboratorsPage extends StatefulWidget {
   const CollaboratorsPage({
@@ -59,12 +60,25 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 34),
-                    child: Text(
-                      l10n.collaboratorsPageTitle,
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline1!
-                          .copyWith(fontSize: 28),
+                    child: ResponsiveBuilder(
+                      builder: (
+                        BuildContext context,
+                        SizingInformation sizingInformation,
+                      ) {
+                        return Text(
+                          l10n.collaboratorsPageTitle,
+                          style: sizingInformation.deviceScreenType ==
+                                  DeviceScreenType.desktop
+                              ? Theme.of(context)
+                                  .textTheme
+                                  .headline1!
+                                  .copyWith(fontSize: 28)
+                              : Theme.of(context)
+                                  .textTheme
+                                  .headline1!
+                                  .copyWith(fontSize: 16),
+                        );
+                      },
                     ),
                   ),
                   SelectorButton(

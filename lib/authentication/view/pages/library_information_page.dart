@@ -1,3 +1,5 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
@@ -8,6 +10,7 @@ import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dropdown_button.dart'
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
 import 'package:mi_libro_vecino_api/utils/constants/enums/library_enums.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class LibraryInformationPage extends StatelessWidget {
   const LibraryInformationPage({Key? key}) : super(key: key);
@@ -76,10 +79,10 @@ class LibraryInformationPage extends StatelessWidget {
                                 .l10n.registerPageLibraryDescriptionErrorText,
                           },
                         ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: PTextField(
+                        ScreenTypeLayout(
+                          mobile: Column(
+                            children: [
+                              PTextField(
                                 label: context
                                     .l10n.registerPageLibraryOpeningTimeLabel,
                                 hintText: context
@@ -112,10 +115,7 @@ class LibraryInformationPage extends StatelessWidget {
                                       .registerPageLibraryTimeErrorTextRequired,
                                 },
                               ),
-                            ),
-                            const SizedBox(width: 30),
-                            Expanded(
-                              child: PTextField(
+                              PTextField(
                                 label: context
                                     .l10n.registerPageLibraryClosingTimeLabel,
                                 hintText: context
@@ -148,8 +148,83 @@ class LibraryInformationPage extends StatelessWidget {
                                       .registerPageLibraryTimeErrorTextRequired,
                                 },
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          desktop: Row(
+                            children: [
+                              Expanded(
+                                child: PTextField(
+                                  label: context
+                                      .l10n.registerPageLibraryOpeningTimeLabel,
+                                  hintText: context
+                                      .l10n.registerPageLibraryTimeHintText,
+                                  formControlName:
+                                      RegisterState.openTimeController,
+                                  keyboardType: TextInputType.number,
+                                  suffixIcon: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                        ),
+                                        child: Container(
+                                          height: 24,
+                                          width: 1,
+                                          color: PColors.gray2,
+                                        ),
+                                      ),
+                                      PDropdownButton(
+                                        valuesList: const ['AM', 'PM'],
+                                        controller: state.openingController,
+                                      ),
+                                    ],
+                                  ),
+                                  validationMessages: {
+                                    ValidationMessage.required: context.l10n
+                                        .registerPageLibraryTimeErrorTextRequired,
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 30),
+                              Expanded(
+                                child: PTextField(
+                                  label: context
+                                      .l10n.registerPageLibraryClosingTimeLabel,
+                                  hintText: context
+                                      .l10n.registerPageLibraryTimeHintText,
+                                  formControlName:
+                                      RegisterState.closeTimeController,
+                                  keyboardType: TextInputType.number,
+                                  suffixIcon: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                        ),
+                                        child: Container(
+                                          height: 24,
+                                          width: 1,
+                                          color: PColors.gray2,
+                                        ),
+                                      ),
+                                      PDropdownButton(
+                                        valuesList: const ['AM', 'PM'],
+                                        controller: state.closingController,
+                                      ),
+                                    ],
+                                  ),
+                                  validationMessages: {
+                                    ValidationMessage.required: context.l10n
+                                        .registerPageLibraryTimeErrorTextRequired,
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         Visibility(
                           visible: !(state.isScheduleValid ?? true),

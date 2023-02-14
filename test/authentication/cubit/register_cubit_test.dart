@@ -110,7 +110,7 @@ void main() {
       'The cubit should register a new library and account',
       build: () => RegisterCubit()..emit(testState),
       act: (cubit) {
-        cubit.onTapRegisterAndContinue();
+        cubit.onRegisterAndContinue();
       },
       // expect: () => [
       //   // testState.copyWith(status: RegisterStatus.success),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class SelectorButton extends StatelessWidget {
   const SelectorButton({
@@ -25,14 +26,24 @@ class SelectorButton extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.headline1!.copyWith(
-                        fontSize: 20,
-                        fontWeight:
-                            isSelected ? FontWeight.w600 : FontWeight.w500,
-                      ),
-                  textAlign: TextAlign.center,
+                child: ResponsiveBuilder(
+                  builder: (
+                    BuildContext context,
+                    SizingInformation sizingInformation,
+                  ) {
+                    return Text(
+                      title,
+                      style: Theme.of(context).textTheme.headline1!.copyWith(
+                            fontSize: sizingInformation.deviceScreenType ==
+                                    DeviceScreenType.desktop
+                                ? 20
+                                : 14,
+                            fontWeight:
+                                isSelected ? FontWeight.w600 : FontWeight.w500,
+                          ),
+                      textAlign: TextAlign.center,
+                    );
+                  },
                 ),
               ),
             ),

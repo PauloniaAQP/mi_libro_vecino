@@ -10,6 +10,7 @@ import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dialog.dart';
 import 'package:paulonia_cache_image/paulonia_cache_image.dart';
 import 'package:paulonia_utils/paulonia_utils.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class CollaboratorsAppBar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -70,33 +71,44 @@ class CollaboratorsAppBar extends StatelessWidget
             },
             child: BlocBuilder<AppUserBloc, AppUserState>(
               builder: (context, state) {
-                return Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    CircleAvatar(
-                      backgroundImage: PUtils.isOnTest()
-                          ? null
-                          : PCacheImage(
-                              state.currentUser?.gsUrl ?? '',
-                              enableInMemory: true,
-                            ),
-                      radius: 20,
-                    ),
-                    const SizedBox(width: 20),
-                    Text(
-                      state.currentUser?.name ?? '',
-                      style: Theme.of(context).textTheme.button!.copyWith(
-                            color: PColors.black,
-                            fontSize: 14,
+                return ResponsiveBuilder(
+                  builder: (
+                    BuildContext context,
+                    SizingInformation sizingInformation,
+                  ) {
+                    return Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: PUtils.isOnTest()
+                              ? null
+                              : PCacheImage(
+                                  state.currentUser?.gsUrl ?? '',
+                                  enableInMemory: true,
+                                ),
+                          radius: 20,
+                        ),
+                        const SizedBox(width: 20),
+                        if (sizingInformation.deviceScreenType ==
+                            DeviceScreenType.desktop)
+                          Text(
+                            state.currentUser?.name ?? '',
+                            style: Theme.of(context).textTheme.button!.copyWith(
+                                  color: PColors.black,
+                                  fontSize: 14,
+                                ),
+                            overflow: TextOverflow.ellipsis,
                           ),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(width: 20),
-                    const Icon(
-                      Icons.expand_more,
-                      color: PColors.black,
-                    ),
-                  ],
+                        if (sizingInformation.deviceScreenType ==
+                            DeviceScreenType.desktop)
+                          const SizedBox(width: 20),
+                        const Icon(
+                          Icons.expand_more,
+                          color: PColors.black,
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
             ),

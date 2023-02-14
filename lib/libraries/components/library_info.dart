@@ -78,13 +78,15 @@ class InfomationLibrary extends StatelessWidget {
                   children: [
                     const Icon(Icons.location_on),
                     const SizedBox(width: 14),
-                    Text(
-                      library!.address,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.caption!.copyWith(
-                            fontSize: 16,
-                            color: PColors.gray1,
-                          ),
+                    Flexible(
+                      child: Text(
+                        library!.address,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.caption!.copyWith(
+                              fontSize: 16,
+                              color: PColors.gray1,
+                            ),
+                      ),
                     ),
                   ],
                 ),
