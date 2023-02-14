@@ -32,6 +32,7 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
       emit(state.copyWith(currentUser: userModel));
     });
     on<AuthenticationStatusChanged>((event, emit) async {
+      emit(const AppUserLoading());
       try {
         if (event.status == AuthenticationStatus.unauthenticated) {
           emit(AppUserInitial());
