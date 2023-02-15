@@ -153,10 +153,8 @@ abstract class AppRouter {
               GoRoute(
                 path: Routes.adminNewRequests,
                 redirect: (_) {
-                  print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-                  print(!AuthService.isLoggedIn());
-                  //if (!AuthService.isLoggedIn()) return Routes.login;
-                  //return null;
+                  if (!AuthService.isLoggedIn()) return Routes.login;
+                  return null;
                 },
                 pageBuilder: (context, state) {
                   final libraryIdQuery = state.queryParams['id'];
