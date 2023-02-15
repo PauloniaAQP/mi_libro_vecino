@@ -33,7 +33,7 @@ class _CollaboratorsPageState extends State<CollaboratorsPage> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       if (context.read<AppUserBloc>().state.status ==
           AuthenticationStatus.authenticated) {
         if (context.read<AppUserBloc>().state.isAdmin) {
