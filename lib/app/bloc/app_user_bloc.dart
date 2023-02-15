@@ -68,6 +68,7 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
         }
       } catch (state, stacktrace) {
         PauloniaErrorService.sendError(state, stacktrace);
+        emit(AppUserInitial());
       }
     });
     on<LocationChanged>((event, emit) {

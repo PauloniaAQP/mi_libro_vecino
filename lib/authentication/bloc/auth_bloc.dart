@@ -75,5 +75,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if (event.state is AppUserLoading) {
       emit(const AuthLoading());
     }
+    if (event.state is AppUserInitial) {
+      emit(const AuthInitial());
+    }
   }
 }
