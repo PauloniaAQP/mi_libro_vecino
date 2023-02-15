@@ -22,7 +22,7 @@ abstract class AppRouter {
           return MaterialPage(
             child: Builder(
               builder: (context) {
-                SchedulerBinding.instance?.addPostFrameCallback((_) {
+                SchedulerBinding.instance.addPostFrameCallback((_) {
                   context.go(Routes.search);
                 });
                 return const SearchPage();
@@ -153,8 +153,10 @@ abstract class AppRouter {
               GoRoute(
                 path: Routes.adminNewRequests,
                 redirect: (_) {
-                  if (!AuthService.isLoggedIn()) return Routes.login;
-                  return null;
+                  print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                  print(!AuthService.isLoggedIn());
+                  //if (!AuthService.isLoggedIn()) return Routes.login;
+                  //return null;
                 },
                 pageBuilder: (context, state) {
                   final libraryIdQuery = state.queryParams['id'];
