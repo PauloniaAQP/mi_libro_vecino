@@ -48,7 +48,7 @@ class LoginViewState extends State<LoginView>
 
     /// If the user is already logged in, we redirect to
     /// the correct page, there are issues with the bloc listener
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
       if (context.read<AppUserBloc>().state.status ==
           AuthenticationStatus.authenticated) {
         if (context.read<AppUserBloc>().state.isAdmin) {

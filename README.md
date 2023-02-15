@@ -21,6 +21,10 @@ Before you start, you need to add Google API key in the `index.html` file. [Goog
 
 ## Getting Started 🚀
 
+Info
+
+- The last flutter version used to compile is `3.3.0`
+
 This project contains 3 flavors:
 
 - development
