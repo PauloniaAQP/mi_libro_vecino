@@ -26,9 +26,7 @@ Future<void> main() async {
   Bloc.observer = MyLibroVecinoBlocObserver();
   Catcher(
     runAppFunction: () {
-      unawaited(
-        bootstrap(() => const App()),
-      );
+      unawaited(bootstrap(() => const App()));
     },
     debugConfig: catcherConf['debug'],
     releaseConfig: catcherConf['release'],
