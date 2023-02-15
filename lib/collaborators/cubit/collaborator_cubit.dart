@@ -22,12 +22,23 @@ part 'collaborator_state.dart';
 class CollaboratorCubit extends Cubit<CollaboratorState> {
   CollaboratorCubit() : super(CollaboratorInitial());
 
+  bool get personalInfoWasTouched => _personalInfoWasTouched;
+  bool get libraryInfoWasTouched => _libraryInfoWasTouched;
+
   /// here the user and library should be loaded from the database
   /// If user is not logged in, the user should be redirected to the login page
   void initialCheck() {
     if (!AuthService.isLoggedIn()) {
       emit(CollaboratorError.fromState(state));
     }
+  }
+
+  void maskAsTouchedPersonalInfo() {
+    _personalInfoWasTouched = true;
+  }
+
+  void maskAsTouchedLibraryInfo() {
+    _libraryInfoWasTouched = true;
   }
 
   /// If [wasFilled] is true, don't check nothing
@@ -264,4 +275,6 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
   final LibraryRepository _libraryRepository = Get.find<LibraryRepository>();
   bool wasFilled = false;
   CollaboratorState initialState = CollaboratorInitial();
+  bool _personalInfoWasTouched = false;
+  bool _libraryInfoWasTouched = false;
 }

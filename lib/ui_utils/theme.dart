@@ -64,6 +64,16 @@ class PTheme {
             return PColors.blue;
           },
         ),
+        foregroundColor: MaterialStateProperty.resolveWith<Color>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.pressed)) {
+              return PColors.white;
+            } else if (states.contains(MaterialState.disabled)) {
+              return PColors.gray1;
+            }
+            return PColors.white;
+          },
+        ),
         shape: MaterialStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
