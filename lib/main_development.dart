@@ -23,17 +23,10 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   final catcherConf = PauloniaErrorService.getCatcherConfig();
-
+  Bloc.observer = MyLibroVecinoBlocObserver();
   Catcher(
     runAppFunction: () {
-      unawaited(
-        bootstrap(
-          () => BlocOverrides.runZoned(
-            () => const App(),
-            blocObserver: MyLibroVecinoBlocObserver(),
-          ),
-        ),
-      );
+      unawaited(bootstrap(() => const App()));
     },
     debugConfig: catcherConf['debug'],
     releaseConfig: catcherConf['release'],
