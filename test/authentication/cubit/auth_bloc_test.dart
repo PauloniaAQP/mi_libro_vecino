@@ -43,6 +43,7 @@ void main() {
       },
       expect: () => [
         const AuthLoading(),
+        const AuthInitial(),
       ],
     );
   });
