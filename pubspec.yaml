@@ -12,6 +12,7 @@ dependencies:
   dotted_border: ^2.0.0+2
   equatable: ^2.0.3
   firebase_core: 1.7.0
+  firebase_core_platform_interface: 4.2.4
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1

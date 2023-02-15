@@ -303,19 +303,19 @@ packages:
     source: hosted
     version: "1.7.0"
   firebase_core_platform_interface:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: firebase_core_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.5.3"
+    version: "4.2.4"
   firebase_core_web:
     dependency: transitive
     description:
       name: firebase_core_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.7.3"
+    version: "1.6.0"
   firebase_storage:
     dependency: transitive
     description:
