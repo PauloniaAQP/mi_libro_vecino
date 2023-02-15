@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
@@ -8,6 +10,16 @@ class QuotesPage extends StatelessWidget {
   const QuotesPage({
     Key? key,
   }) : super(key: key);
+
+  static const images = [
+    Assets.register1Img,
+    Assets.register2Img,
+    Assets.register3Img,
+    Assets.register4Img,
+    Assets.register5Img,
+    Assets.register6Img,
+    Assets.register7Img,
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -38,60 +50,64 @@ class QuotesPage extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 60),
-        child: ResponsiveBuilder(
-          builder: (BuildContext context, SizingInformation sizingInformation) {
-            return Flex(
-              direction:
-                  sizingInformation.deviceScreenType == DeviceScreenType.desktop
-                      ? Axis.vertical
-                      : Axis.horizontal,
-              children: [
-                Expanded(
-                  flex: sizingInformation.deviceScreenType ==
-                          DeviceScreenType.desktop
-                      ? 5
-                      : 1,
-                  child: Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.03,
-                        vertical: 8,
-                      ),
-                      child: const Image(
-                        image: AssetImage(Assets.registerTestImg),
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: sizingInformation.deviceScreenType ==
+        child: BlocBuilder<RegisterCubit, RegisterState>(
+            builder: (context, state) {
+          return ResponsiveBuilder(
+            builder:
+                (BuildContext context, SizingInformation sizingInformation) {
+              return Flex(
+                direction: sizingInformation.deviceScreenType ==
+                        DeviceScreenType.desktop
+                    ? Axis.vertical
+                    : Axis.horizontal,
+                children: [
+                  Expanded(
+                    flex: sizingInformation.deviceScreenType ==
                             DeviceScreenType.desktop
-                        ? Alignment.topRight
-                        : Alignment.center,
-                    child: Text(
-                      '"Estamos habitados por libros y por amigos".\n '
-                      'Daniel Pennac.',
-                      style: sizingInformation.deviceScreenType ==
-                              DeviceScreenType.desktop
-                          ? Theme.of(context)
-                              .textTheme
-                              .headline3!
-                              .copyWith(color: PColors.white)
-                          : Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(color: PColors.white),
-                      textAlign: TextAlign.right,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 5,
+                        ? 5
+                        : 1,
+                    child: Center(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.03,
+                          vertical: 8,
+                        ),
+                        child: Image(
+                          image: AssetImage(QuotesPage.images[state.index]),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            );
-          },
-        ),
+                  Expanded(
+                    child: Align(
+                      alignment: sizingInformation.deviceScreenType ==
+                              DeviceScreenType.desktop
+                          ? Alignment.topRight
+                          : Alignment.center,
+                      child: Text(
+                        '"Estamos habitados por libros y por amigos".\n '
+                        'Daniel Pennac.',
+                        style: sizingInformation.deviceScreenType ==
+                                DeviceScreenType.desktop
+                            ? Theme.of(context)
+                                .textTheme
+                                .headline3!
+                                .copyWith(color: PColors.white)
+                            : Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(color: PColors.white),
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 5,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        }),
       ),
     );
   }
