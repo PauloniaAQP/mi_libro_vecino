@@ -13,6 +13,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({required this.appUserBloc}) : super(const AuthInitial()) {
     on<AuthLoginRequested>(_loginRequestedToState);
     on<AuthLogoutRequested>(_logoutRequestedToState);
+    on<AuthAppUserChanged>(_appUserChangedToState);
+
+    /// We need to listen if AppUserBloc is loaded (fetching user data)
+    appUserSubscription = appUserBloc.stream.listen((state) {
+      add(AuthAppUserChanged(state));
+    });
   }
 
   final AppUserBloc appUserBloc;
@@ -34,12 +40,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         throw error;
       }
 
-      /// We need to listen if AppUserBloc is loaded (fetching user data)
-      appUserSubscription = appUserBloc.stream.listen((state) {
-        if (state is AppUserAuthenticated) {
-          emit(const AuthSuccess());
-        }
-      });
+      /// Here we need to wait until AppUserBloc is loaded
     } catch (error) {
       emit(AuthError(error: error as LoginState));
     }
@@ -62,5 +63,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> close() {
     appUserSubscription.cancel();
     return super.close();
+  }
+
+  FutureOr<void> _appUserChangedToState(
+    AuthAppUserChanged event,
+    Emitter<AuthState> emit,
+  ) {
+    if (event.state is AppUserAuthenticated) {
+      emit(const AuthSuccess());
+    }
+    if (event.state is AppUserLoading) {
+      emit(const AuthLoading());
+    }
   }
 }

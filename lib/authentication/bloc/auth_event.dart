@@ -28,3 +28,12 @@ class AuthLogoutRequested extends AuthEvent {
   @override
   List<Object> get props => [];
 }
+
+class AuthAppUserChanged extends AuthEvent {
+  const AuthAppUserChanged(this.state);
+
+  final AppUserState state;
+
+  @override
+  List<Object> get props => [state];
+}
