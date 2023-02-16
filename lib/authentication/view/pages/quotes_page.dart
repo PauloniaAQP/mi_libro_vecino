@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
@@ -9,17 +7,14 @@ import 'package:responsive_builder/responsive_builder.dart';
 class QuotesPage extends StatelessWidget {
   const QuotesPage({
     Key? key,
+    required this.imagesPath,
+    this.index = 0,
+    this.alignment = Alignment.center,
   }) : super(key: key);
 
-  static const images = [
-    Assets.register1Img,
-    Assets.register2Img,
-    Assets.register3Img,
-    Assets.register4Img,
-    Assets.register5Img,
-    Assets.register6Img,
-    Assets.register7Img,
-  ];
+  final List<String> imagesPath;
+  final int index;
+  final AlignmentGeometry alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -49,36 +44,39 @@ class QuotesPage extends StatelessWidget {
       ),
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 60),
-        child: BlocBuilder<RegisterCubit, RegisterState>(
-            builder: (context, state) {
-          return ResponsiveBuilder(
-            builder:
-                (BuildContext context, SizingInformation sizingInformation) {
-              return Flex(
-                direction: sizingInformation.deviceScreenType ==
-                        DeviceScreenType.desktop
-                    ? Axis.vertical
-                    : Axis.horizontal,
-                children: [
-                  Expanded(
-                    flex: sizingInformation.deviceScreenType ==
-                            DeviceScreenType.desktop
-                        ? 5
-                        : 1,
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.03,
-                          vertical: 8,
-                        ),
-                        child: Image(
-                          image: AssetImage(QuotesPage.images[state.index]),
-                        ),
+        padding: const EdgeInsets.symmetric(vertical: 50),
+        child: ResponsiveBuilder(
+          builder: (BuildContext context, SizingInformation sizingInformation) {
+            return Flex(
+              direction:
+                  sizingInformation.deviceScreenType == DeviceScreenType.desktop
+                      ? Axis.vertical
+                      : Axis.horizontal,
+              children: [
+                Expanded(
+                  flex: sizingInformation.deviceScreenType ==
+                          DeviceScreenType.desktop
+                      ? 5
+                      : 1,
+                  child: Align(
+                    alignment: alignment,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: (alignment == Alignment.center)
+                            ? MediaQuery.of(context).size.width * 0.03
+                            : 0.0,
+                        vertical: 20,
+                      ),
+                      child: Image(
+                        image: AssetImage(imagesPath[index]),
                       ),
                     ),
                   ),
-                  Expanded(
+                ),
+                const SizedBox(height: 40),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
+                  child: Expanded(
                     child: Align(
                       alignment: sizingInformation.deviceScreenType ==
                               DeviceScreenType.desktop
@@ -103,11 +101,11 @@ class QuotesPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                ],
-              );
-            },
-          );
-        }),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
