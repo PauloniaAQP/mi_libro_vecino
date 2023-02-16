@@ -15,7 +15,7 @@ import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/search.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
 
-abstract class AppRouter {
+class AppRouter {
   static GoRouter get router => GoRouter(
         initialLocation: Routes.search,
         errorPageBuilder: (_, state) {
@@ -119,7 +119,9 @@ abstract class AppRouter {
               GoRoute(
                 path: Routes.collaboratorsPersonal,
                 redirect: (_) {
-                  if (!AuthService.isLoggedIn()) return Routes.login;
+                  if (!AuthService.isLoggedIn()) {
+                    return Routes.login;
+                  }
                   return null;
                 },
                 pageBuilder: (context, state) => const MaterialPage(
@@ -152,6 +154,10 @@ abstract class AppRouter {
             routes: [
               GoRoute(
                 path: Routes.adminNewRequests,
+                redirect: (_) {
+                  if (!AuthService.isLoggedIn()) return Routes.login;
+                  return null;
+                },
                 pageBuilder: (context, state) {
                   final libraryIdQuery = state.queryParams['id'];
                   return MaterialPage(
@@ -161,6 +167,10 @@ abstract class AppRouter {
               ),
               GoRoute(
                 path: Routes.adminLibraries,
+                redirect: (_) {
+                  if (!AuthService.isLoggedIn()) return Routes.login;
+                  return null;
+                },
                 pageBuilder: (context, state) {
                   final libraryIdQuery = state.queryParams['id'];
                   return MaterialPage(
