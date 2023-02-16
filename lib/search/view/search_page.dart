@@ -98,6 +98,7 @@ class SearchPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
+                const SizedBox(height: 80),
                 SizedBox(
                   height: 180,
                   child: Stack(
@@ -175,15 +176,6 @@ class SearchPage extends StatelessWidget {
                       )
                     ],
                   ),
-                ),
-                const SizedBox(height: 40),
-                Text(
-                  context.l10n.searchPageAfterTitle,
-                  style: Theme.of(context).textTheme.subtitle1!.apply(
-                        color: PColors.white,
-                        fontWeightDelta: 1,
-                      ),
-                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 40),
                 SearchWidget()
