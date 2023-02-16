@@ -91,13 +91,17 @@ class CollaboratorsAppBar extends StatelessWidget
                         const SizedBox(width: 20),
                         if (sizingInformation.deviceScreenType ==
                             DeviceScreenType.desktop)
-                          Text(
-                            state.currentUser?.name ?? '',
-                            style: Theme.of(context).textTheme.button!.copyWith(
-                                  color: PColors.black,
-                                  fontSize: 14,
-                                ),
-                            overflow: TextOverflow.ellipsis,
+                          SizedBox(
+                            width: 100,
+                            child: Text(
+                              state.currentUser?.name ?? '',
+                              style:
+                                  Theme.of(context).textTheme.button!.copyWith(
+                                        color: PColors.black,
+                                        fontSize: 14,
+                                      ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         if (sizingInformation.deviceScreenType ==
                             DeviceScreenType.desktop)
