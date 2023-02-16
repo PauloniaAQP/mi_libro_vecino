@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/widgets/search_widget.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/globals.dart';
+import 'package:mi_libro_vecino_api/services/auth_service.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -28,7 +31,17 @@ class SearchPage extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => context.go(Routes.login),
+            onPressed: () {
+              if (context.read<AppUserBloc>().state is AppUserAuthenticated) {
+                if (!context.read<AppUserBloc>().state.isAdmin) {
+                  context.go(Routes.collaborators);
+                  return;
+                } else {
+                  AuthService.signOut();
+                }
+              }
+              context.go(Routes.login);
+            },
             child: Text(
               l10n.searchPageImLibraryButton,
               style: Theme.of(context).textTheme.subtitle1!.apply(
@@ -209,6 +222,15 @@ class SearchPage extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 20),
                 child: TextButton(
                   onPressed: () {
+                    if (context.read<AppUserBloc>().state
+                        is AppUserAuthenticated) {
+                      if (context.read<AppUserBloc>().state.isAdmin) {
+                        context.go(Routes.admin);
+                        return;
+                      } else {
+                        AuthService.signOut();
+                      }
+                    }
                     const queryAdmin = '?isAdmin=true';
                     GoRouter.of(context).go(Routes.login + queryAdmin);
                   },

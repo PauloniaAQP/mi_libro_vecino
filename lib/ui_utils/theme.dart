@@ -21,9 +21,7 @@ class PTheme {
   static ColorScheme get _colorScheme {
     return const ColorScheme(
       primary: PColors.blue,
-      primaryContainer: PColors.blue,
-      secondary: PColors.blue,
-      secondaryContainer: PColors.blueVariant,
+      secondary: PColors.blueVariant,
       surface: PColors.whiteBackground,
       background: PColors.whiteBackground,
       error: PColors.red,
@@ -155,6 +153,7 @@ class PTheme {
     return ScrollbarThemeData(
       thumbColor:
           MaterialStateProperty.all(const Color.fromARGB(141, 117, 117, 117)),
+      // isAlwaysShown: true,
       thumbVisibility: MaterialStateProperty.all(true),
     );
   }

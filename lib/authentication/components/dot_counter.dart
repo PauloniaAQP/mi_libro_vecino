@@ -25,7 +25,7 @@ class DotCounter extends StatelessWidget {
               height: 15,
               decoration: BoxDecoration(
                 color: (current == index)
-                    ? Theme.of(context).colorScheme.secondaryContainer
+                    ? Theme.of(context).colorScheme.secondary
                     : PColors.gray4,
                 borderRadius: BorderRadius.circular(20),
               ),
