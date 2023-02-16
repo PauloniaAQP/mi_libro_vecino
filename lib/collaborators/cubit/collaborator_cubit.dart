@@ -181,6 +181,7 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
             .toString(),
         // photo: state.personPhoto,
       );
+      _personalInfoWasTouched = false;
     } catch (error, stacktrace) {
       PauloniaErrorService.sendError(error, stacktrace);
     }
@@ -241,6 +242,7 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
       if (newLibraryModel == null) {
         return;
       } else {
+        _libraryInfoWasTouched = false;
         emit(state.copyWith(library: newLibraryModel));
         return;
       }

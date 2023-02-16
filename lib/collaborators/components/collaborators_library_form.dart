@@ -352,6 +352,9 @@ class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
                                     .read<CollaboratorCubit>()
                                     .onTapSaveLibrary(),
                                 context,
+                              ).then(
+                                (value) =>
+                                    setState(() => _isTouchedLib = false),
                               );
                             },
                       child: Text(

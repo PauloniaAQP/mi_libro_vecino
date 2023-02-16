@@ -134,8 +134,10 @@ class RegisterPageViewState extends State<RegisterPageView>
                                             width: 200,
                                             child: ElevatedButton(
                                               onPressed: () {
+                                                // ignore: lines_longer_than_80_chars
                                                 context.read<AppUserBloc>().add(
-                                                    const AppUserRegistering());
+                                                      const AppUserRegistering(),
+                                                    );
                                                 futureWithLoading(
                                                   context
                                                       .read<RegisterCubit>()

@@ -104,6 +104,8 @@ class _CollaboratorsPersonalFormState extends State<CollaboratorsPersonalForm> {
                                   .add(const UpdateUser()),
                             ),
                         context,
+                      ).then(
+                        (value) => setState(() => _isTouched = false),
                       );
                     },
               child: Text(
