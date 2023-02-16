@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
+import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -59,8 +60,8 @@ class _LoginFormState extends State<LoginForm> {
               padding: const EdgeInsets.all(8),
               child: InkWell(
                 child: _isObscureText
-                    ? Image.asset('icons/eye.png', width: 10)
-                    : Image.asset('icons/eyeSlash.png', width: 10),
+                    ? Image.asset(Assets.eye, width: 10)
+                    : Image.asset(Assets.eyeSlash, width: 10),
                 onTap: () {
                   setState(() => _isObscureText = !_isObscureText);
                 },

@@ -5,6 +5,7 @@ import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
+import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
@@ -91,8 +92,8 @@ class _EmailRegisterPageState extends State<EmailRegisterPage> {
                           padding: const EdgeInsets.all(8),
                           child: InkWell(
                             child: _isObscureText1
-                                ? Image.asset('icons/eye.png', width: 10)
-                                : Image.asset('icons/eyeSlash.png', width: 10),
+                                ? Image.asset(Assets.eye, width: 10)
+                                : Image.asset(Assets.eyeSlash, width: 10),
                             onTap: () {
                               setState(
                                 () => _isObscureText1 = !_isObscureText1,
@@ -120,9 +121,9 @@ class _EmailRegisterPageState extends State<EmailRegisterPage> {
                         suffixIcon: Padding(
                           padding: const EdgeInsets.all(8),
                           child: InkWell(
-                            child: _isObscureText2
-                                ? Image.asset('icons/eye.png', width: 10)
-                                : Image.asset('icons/eyeSlash.png', width: 10),
+                            child: _isObscureText1
+                                ? Image.asset(Assets.eye, width: 10)
+                                : Image.asset(Assets.eyeSlash, width: 10),
                             onTap: () {
                               setState(
                                 () => _isObscureText2 = !_isObscureText2,
