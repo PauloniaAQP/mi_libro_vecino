@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/admin/components/admin_appbar.dart';
@@ -7,11 +6,9 @@ import 'package:mi_libro_vecino/admin/components/admin_expand_menu.dart';
 import 'package:mi_libro_vecino/admin/components/libraries_card_list.dart';
 import 'package:mi_libro_vecino/admin/cubit/admin_cubit.dart';
 import 'package:mi_libro_vecino/admin/view/pages/admin_library_information_page.dart';
-import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/selector_button.dart';
-import 'package:mi_libro_vecino_api/services/auth_service.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class AdminPage extends StatefulWidget {
@@ -34,16 +31,6 @@ class _AdminPageState extends State<AdminPage> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance?.addPostFrameCallback((_) {
-      if (context.read<AppUserBloc>().state.status ==
-          AuthenticationStatus.authenticated) {
-        if (context.read<AppUserBloc>().state.isAdmin) {
-          GoRouter.of(context).go(Routes.admin);
-        } else {
-          GoRouter.of(context).go(Routes.collaborators);
-        }
-      }
-    });
   }
 
   @override
