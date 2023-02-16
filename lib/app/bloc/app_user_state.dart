@@ -71,3 +71,7 @@ class AppUserDisabled extends AppUserState {
   @override
   List<Object> get props => [wasRejected];
 }
+
+class AppUserLoading extends AppUserState {
+  const AppUserLoading() : super(status: AuthenticationStatus.authenticating);
+}
