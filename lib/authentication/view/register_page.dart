@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/authentication/components/dot_navigation.dart';
 import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/authentication/view/pages/email_register_page.dart';
@@ -62,9 +63,11 @@ class RegisterPageViewState extends State<RegisterPageView>
               child: BlocListener<RegisterCubit, RegisterState>(
                 listener: (context, state) {
                   if (state.status == RegisterStatus.error) {
+                    context.read<AppUserBloc>().add(const AppUserRegistered());
                     context.go(Routes.errorRegister);
                   }
                   if (state.status == RegisterStatus.success) {
+                    context.read<AppUserBloc>().add(const AppUserRegistered());
                     context.go(Routes.waiting);
                   }
                 },
@@ -131,6 +134,8 @@ class RegisterPageViewState extends State<RegisterPageView>
                                             width: 200,
                                             child: ElevatedButton(
                                               onPressed: () {
+                                                context.read<AppUserBloc>().add(
+                                                    const AppUserRegistering());
                                                 futureWithLoading(
                                                   context
                                                       .read<RegisterCubit>()
@@ -164,9 +169,11 @@ class RegisterPageViewState extends State<RegisterPageView>
         desktop: BlocConsumer<RegisterCubit, RegisterState>(
           listener: (context, state) {
             if (state.status == RegisterStatus.error) {
+              context.read<AppUserBloc>().add(const AppUserRegistered());
               context.go(Routes.errorRegister);
             }
             if (state.status == RegisterStatus.success) {
+              context.read<AppUserBloc>().add(const AppUserRegistered());
               context.go(Routes.waiting);
             }
           },
@@ -252,6 +259,9 @@ class RegisterPageViewState extends State<RegisterPageView>
                                           width: 200,
                                           child: ElevatedButton(
                                             onPressed: () {
+                                              context.read<AppUserBloc>().add(
+                                                    const AppUserRegistering(),
+                                                  );
                                               futureWithLoading(
                                                 context
                                                     .read<RegisterCubit>()
