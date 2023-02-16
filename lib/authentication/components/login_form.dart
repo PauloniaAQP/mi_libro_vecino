@@ -3,7 +3,7 @@ import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({
     Key? key,
     required this.loginForm,
@@ -16,10 +16,17 @@ class LoginForm extends StatelessWidget {
   final String passwordController;
 
   @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  bool _isObscureText = true;
+
+  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return ReactiveForm(
-      formGroup: loginForm,
+      formGroup: widget.loginForm,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +34,7 @@ class LoginForm extends StatelessWidget {
           PTextField(
             label: l10n.loginPageUserLabel,
             hintText: l10n.loginPageUserHintText,
-            formControlName: emailController,
+            formControlName: widget.emailController,
             keyboardType: TextInputType.emailAddress,
             validationMessages: {
               ValidationMessage.required:
@@ -38,7 +45,7 @@ class LoginForm extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           PTextField(
-            formControlName: passwordController,
+            formControlName: widget.passwordController,
             hintText: l10n.loginPagePasswordHintText,
             label: l10n.loginPagePasswordLabel,
             validationMessages: {
@@ -47,7 +54,18 @@ class LoginForm extends StatelessWidget {
               ValidationMessage.minLength:
                   l10n.registerPagePasswordErrorTextMinLength,
             },
-            obscureText: true,
+            obscureText: _isObscureText,
+            suffixIcon: Padding(
+              padding: const EdgeInsets.all(8),
+              child: InkWell(
+                child: _isObscureText
+                    ? Image.asset('icons/eye.png', width: 10)
+                    : Image.asset('icons/eyeSlash.png', width: 10),
+                onTap: () {
+                  setState(() => _isObscureText = !_isObscureText);
+                },
+              ),
+            ),
           ),
         ],
       ),
