@@ -5,14 +5,22 @@ import 'package:mi_libro_vecino/authentication/cubit/register_cubit.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
+import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class EmailRegisterPage extends StatelessWidget {
+class EmailRegisterPage extends StatefulWidget {
   const EmailRegisterPage({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<EmailRegisterPage> createState() => _EmailRegisterPageState();
+}
+
+class _EmailRegisterPageState extends State<EmailRegisterPage> {
+  bool _isObscureText1 = true;
+  bool _isObscureText2 = true;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -79,7 +87,20 @@ class EmailRegisterPage extends StatelessWidget {
                           ValidationMessage.mustMatch:
                               'Las contraseñas no coinciden',
                         },
-                        obscureText: true,
+                        obscureText: _isObscureText1,
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: InkWell(
+                            child: _isObscureText1
+                                ? Image.asset(Assets.eye, width: 10)
+                                : Image.asset(Assets.eyeSlash, width: 10),
+                            onTap: () {
+                              setState(
+                                () => _isObscureText1 = !_isObscureText1,
+                              );
+                            },
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 15),
                       PTextField(
@@ -96,7 +117,20 @@ class EmailRegisterPage extends StatelessWidget {
                           ValidationMessage.mustMatch:
                               'Las contraseñas no coinciden',
                         },
-                        obscureText: true,
+                        obscureText: _isObscureText2,
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: InkWell(
+                            child: _isObscureText1
+                                ? Image.asset(Assets.eye, width: 10)
+                                : Image.asset(Assets.eyeSlash, width: 10),
+                            onTap: () {
+                              setState(
+                                () => _isObscureText2 = !_isObscureText2,
+                              );
+                            },
+                          ),
+                        ),
                       ),
                     ],
                   ),
