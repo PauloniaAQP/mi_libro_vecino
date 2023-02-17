@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mi_libro_vecino/admin/cubit/admin_cubit.dart';
 import 'package:mi_libro_vecino/app/bloc/app_user_bloc.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
-import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
 import 'package:paulonia_cache_image/paulonia_cache_image.dart';
 import 'package:paulonia_utils/paulonia_utils.dart';
@@ -12,9 +9,11 @@ import 'package:paulonia_utils/paulonia_utils.dart';
 class AdminExpandMenu extends StatefulWidget {
   const AdminExpandMenu({
     Key? key,
+    required this.onLogout,
   }) : super(key: key);
 
   static const double maxHeight = 120;
+  final Function()? onLogout;
 
   @override
   State<AdminExpandMenu> createState() => _AdminExpandMenuState();
@@ -140,11 +139,7 @@ class _AdminExpandMenuState extends State<AdminExpandMenu>
                       borderRadius: BorderRadius.circular(10),
                     ),
                     elevation: 0,
-                    onPressed: () {
-                      context.read<AdminCubit>().signOut().then((_) {
-                        context.go(Routes.search);
-                      });
-                    },
+                    onPressed: widget.onLogout,
                     child: Text(
                       l10n.adminPageLogoutButton,
                       style: Theme.of(context).textTheme.subtitle1!.copyWith(
