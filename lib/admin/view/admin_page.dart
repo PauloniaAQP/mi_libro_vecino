@@ -117,9 +117,15 @@ class _AdminPageState extends State<AdminPage> {
             ],
           ),
         ),
-        const Align(
+        Align(
           alignment: Alignment.topRight,
-          child: AdminExpandMenu(),
+          child: AdminExpandMenu(
+            onLogout: () {
+              context.read<AdminCubit>().signOut().then((_) {
+                context.go(Routes.search);
+              });
+            },
+          ),
         )
       ],
     );
