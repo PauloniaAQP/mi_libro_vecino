@@ -8,6 +8,7 @@ import 'package:mi_libro_vecino/collaborators/view/pages/collaborator_personal_i
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/selector_button.dart';
+import 'package:mi_libro_vecino_api/services/auth_service.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class CollaboratorsPage extends StatefulWidget {
