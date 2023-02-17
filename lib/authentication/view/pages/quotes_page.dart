@@ -7,7 +7,14 @@ import 'package:responsive_builder/responsive_builder.dart';
 class QuotesPage extends StatelessWidget {
   const QuotesPage({
     Key? key,
+    required this.imagesPath,
+    this.index = 0,
+    this.alignment = Alignment.center,
   }) : super(key: key);
+
+  final List<String> imagesPath;
+  final int index;
+  final AlignmentGeometry alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +44,7 @@ class QuotesPage extends StatelessWidget {
       ),
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 60),
+        padding: const EdgeInsets.symmetric(vertical: 50),
         child: ResponsiveBuilder(
           builder: (BuildContext context, SizingInformation sizingInformation) {
             return Flex(
@@ -51,40 +58,47 @@ class QuotesPage extends StatelessWidget {
                           DeviceScreenType.desktop
                       ? 5
                       : 1,
-                  child: Center(
+                  child: Align(
+                    alignment: alignment,
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: MediaQuery.of(context).size.width * 0.03,
-                        vertical: 8,
+                        horizontal: (alignment == Alignment.center)
+                            ? MediaQuery.of(context).size.width * 0.03
+                            : 0.0,
+                        vertical: 20,
                       ),
-                      child: const Image(
-                        image: AssetImage(Assets.libro01),
+                      child: Image(
+                        image: AssetImage(imagesPath[index]),
                       ),
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Align(
-                    alignment: sizingInformation.deviceScreenType ==
-                            DeviceScreenType.desktop
-                        ? Alignment.topRight
-                        : Alignment.center,
-                    child: Text(
-                      '"Estamos habitados por libros y por amigos".\n '
-                      'Daniel Pennac.',
-                      style: sizingInformation.deviceScreenType ==
+                const SizedBox(height: 40),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
+                  child: Expanded(
+                    child: Align(
+                      alignment: sizingInformation.deviceScreenType ==
                               DeviceScreenType.desktop
-                          ? Theme.of(context)
-                              .textTheme
-                              .headline3!
-                              .copyWith(color: PColors.white)
-                          : Theme.of(context)
-                              .textTheme
-                              .headline6!
-                              .copyWith(color: PColors.white),
-                      textAlign: TextAlign.right,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 5,
+                          ? Alignment.topRight
+                          : Alignment.center,
+                      child: Text(
+                        '"Estamos habitados por libros y por amigos".\n '
+                        'Daniel Pennac.',
+                        style: sizingInformation.deviceScreenType ==
+                                DeviceScreenType.desktop
+                            ? Theme.of(context)
+                                .textTheme
+                                .headline3!
+                                .copyWith(color: PColors.white)
+                            : Theme.of(context)
+                                .textTheme
+                                .headline6!
+                                .copyWith(color: PColors.white),
+                        textAlign: TextAlign.right,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 5,
+                      ),
                     ),
                   ),
                 ),

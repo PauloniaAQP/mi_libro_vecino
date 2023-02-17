@@ -18,6 +18,17 @@ class Assets {
       'assets/images/register_error_book.png';
   static const String searchImg = 'assets/images/search_book.png';
   static const String searchIcon = 'assets/icons/search.png';
+  static const String eye = 'assets/icons/eye.png';
+  static const String eyeSlash = 'assets/icons/eyeSlash.png';
+
+  /// Images for register library
+  static const String register1Img = 'assets/images/register_1_image.png';
+  static const String register2Img = 'assets/images/register_2_image.png';
+  static const String register3Img = 'assets/images/register_3_image.png';
+  static const String register4Img = 'assets/images/register_4_image.png';
+  static const String register5Img = 'assets/images/register_5_image.png';
+  static const String register6Img = 'assets/images/register_6_image.png';
+  static const String register7Img = 'assets/images/register_7_image.png';
 
   static const String libro01 = 'assets/images/libro_01.png';
   // Image for tests
