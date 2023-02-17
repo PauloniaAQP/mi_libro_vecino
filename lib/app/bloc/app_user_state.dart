@@ -75,3 +75,7 @@ class AppUserDisabled extends AppUserState {
 class AppUserLoading extends AppUserState {
   const AppUserLoading() : super(status: AuthenticationStatus.authenticating);
 }
+
+class AppUserRegister extends AppUserState {
+  const AppUserRegister() : super(status: AuthenticationStatus.authenticating);
+}

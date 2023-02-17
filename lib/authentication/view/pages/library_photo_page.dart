@@ -39,7 +39,7 @@ class LibraryPhotoPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n.registerPageLibraryPhotoLabel,
+                      l10n.registerPageLibraryPhotoLabel + libraryRol,
                       style: Theme.of(context).textTheme.bodyText2!.copyWith(
                             fontWeight: FontWeight.w600,
                             fontSize: 13,

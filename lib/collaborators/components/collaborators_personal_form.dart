@@ -8,10 +8,24 @@ import 'package:mi_libro_vecino/ui_utils/general_widgets/future_with_loading.dar
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-class CollaboratorsPersonalForm extends StatelessWidget {
+class CollaboratorsPersonalForm extends StatefulWidget {
   const CollaboratorsPersonalForm({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<CollaboratorsPersonalForm> createState() =>
+      _CollaboratorsPersonalFormState();
+}
+
+class _CollaboratorsPersonalFormState extends State<CollaboratorsPersonalForm> {
+  late bool _isTouched;
+
+  @override
+  void initState() {
+    super.initState();
+    _isTouched = context.read<CollaboratorCubit>().personalInfoWasTouched;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +39,14 @@ class CollaboratorsPersonalForm extends StatelessWidget {
           child: SingleChildScrollView(
             child: BlocBuilder<CollaboratorCubit, CollaboratorState>(
               builder: (context, state) {
+                state.personalInfoForm.valueChanges.listen((event) {
+                  context.read<CollaboratorCubit>().maskAsTouchedPersonalInfo();
+                  setState(() {
+                    _isTouched = context
+                        .read<CollaboratorCubit>()
+                        .personalInfoWasTouched;
+                  });
+                });
                 return ReactiveForm(
                   formGroup: state.personalInfoForm,
                   child: Column(
@@ -72,25 +94,23 @@ class CollaboratorsPersonalForm extends StatelessWidget {
             height: 56,
             width: 400,
             child: ElevatedButton(
-              onPressed: () {
-                // TODO(oscarnar): Validate if some change was made, if not,
-                // inactivate the button
-                futureWithLoading(
-                  context.read<CollaboratorCubit>().onTapSaveUser().then(
-                        (value) =>
-                            context.read<AppUserBloc>().add(const UpdateUser()),
-                      ),
-                  context,
-                );
-              },
+              onPressed: (!_isTouched)
+                  ? null
+                  : () {
+                      futureWithLoading(
+                        context.read<CollaboratorCubit>().onTapSaveUser().then(
+                              (value) => context
+                                  .read<AppUserBloc>()
+                                  .add(const UpdateUser()),
+                            ),
+                        context,
+                      ).then(
+                        (value) => setState(() => _isTouched = false),
+                      );
+                    },
               child: Text(
                 l10n.collaboratorsPageSaveButton,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
               ),
             ),
           ),

@@ -22,6 +22,8 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
     _userRepository = Get.find<UserRepository>();
     _libraryRepository = Get.find<LibraryRepository>();
     on<AppUserEvent>((event, emit) {});
+    on<AppUserRegistering>((event, emit) => emit(const AppUserRegister()));
+    on<AppUserRegistered>((event, emit) => emit(AppUserInitial()));
     on<UpdateUser>((event, emit) async {
       final user = AuthService.currentUser;
       if (user == null) {
@@ -76,6 +78,7 @@ class AppUserBloc extends Bloc<AppUserEvent, AppUserState> {
     });
     _authenticationStatusSubscription = AuthService.status.listen(
       (status) {
+        if (state is AppUserRegister) return;
         add(AuthenticationStatusChanged(status));
       },
     );

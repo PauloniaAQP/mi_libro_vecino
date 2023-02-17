@@ -31,6 +31,13 @@ class CollaboratorsLibraryForm extends StatefulWidget {
 
 class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
   Timer? _debounce;
+  late bool _isTouchedLib;
+
+  @override
+  void initState() {
+    super.initState();
+    _isTouchedLib = context.read<CollaboratorCubit>().libraryInfoWasTouched;
+  }
 
   @override
   void dispose() {
@@ -44,6 +51,17 @@ class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
 
     return BlocBuilder<CollaboratorCubit, CollaboratorState>(
       builder: (context, state) {
+        state.libraryInfoForm.valueChanges.listen((event) {
+          context.read<CollaboratorCubit>().maskAsTouchedLibraryInfo();
+          if (_isTouchedLib) {
+            return;
+          } else {
+            setState(() {
+              _isTouchedLib =
+                  context.read<CollaboratorCubit>().libraryInfoWasTouched;
+            });
+          }
+        });
         return ReactiveForm(
           key: const Key('collaborators_library_form'),
           formGroup: state.libraryInfoForm,
@@ -250,40 +268,7 @@ class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
                       color: PColors.gray1,
                     ),
               ),
-              FutureBuilder<String?>(
-                future: GeoService.getAddress(state.location),
-                builder: (context, snapshot) {
-                  state.libraryInfoForm
-                          .control(CollaboratorState.addressController)
-                          .value =
-                      snapshot.connectionState == ConnectionState.done
-                          ? snapshot.data ?? ''
-                          : '';
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          snapshot.connectionState == ConnectionState.done
-                              ? snapshot.data ??
-                                  l10n.messageValidationToUnknownAddress
-                              : l10n.messageValidationToLoadingAddress,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                        height: 20,
-                        child:
-                            (snapshot.connectionState == ConnectionState.done)
-                                ? Icon(
-                                    Icons.check,
-                                    color: Theme.of(context).primaryColor,
-                                  )
-                                : const CupertinoActivityIndicator(),
-                      )
-                    ],
-                  );
-                },
-              ),
+              Map(l10n: l10n),
               const SizedBox(height: 8),
               Container(
                 height: MediaQuery.of(context).size.height * 0.38,
@@ -359,12 +344,19 @@ class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
                     height: 56,
                     width: 400,
                     child: ElevatedButton(
-                      onPressed: () {
-                        futureWithLoading(
-                          context.read<CollaboratorCubit>().onTapSaveLibrary(),
-                          context,
-                        );
-                      },
+                      onPressed: (!_isTouchedLib)
+                          ? null
+                          : () {
+                              futureWithLoading(
+                                context
+                                    .read<CollaboratorCubit>()
+                                    .onTapSaveLibrary(),
+                                context,
+                              ).then(
+                                (value) =>
+                                    setState(() => _isTouchedLib = false),
+                              );
+                            },
                       child: Text(
                         l10n.collaboratorsPageSaveButton,
                         textAlign: TextAlign.center,
@@ -375,6 +367,60 @@ class _CollaboratorsLibraryFormState extends State<CollaboratorsLibraryForm> {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+}
+
+class Map extends StatelessWidget {
+  const Map({
+    Key? key,
+    required this.l10n,
+  }) : super(key: key);
+
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<CollaboratorCubit, CollaboratorState>(
+      builder: (context, state) {
+        return FutureBuilder<String?>(
+          future: GeoService.getAddress(state.location),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (state.libraryInfoForm
+                      .value[CollaboratorState.addressController] !=
+                  snapshot.data) {
+                state.libraryInfoForm
+                    .control(CollaboratorState.addressController)
+                    .value = snapshot.data ?? '';
+              }
+            }
+
+            return Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    snapshot.connectionState == ConnectionState.done
+                        ? snapshot.data ??
+                            l10n.messageValidationToUnknownAddress
+                        : l10n.messageValidationToLoadingAddress,
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: (snapshot.connectionState == ConnectionState.done)
+                      ? Icon(
+                          Icons.check,
+                          color: Theme.of(context).primaryColor,
+                        )
+                      : const CupertinoActivityIndicator(),
+                )
+              ],
+            );
+          },
         );
       },
     );

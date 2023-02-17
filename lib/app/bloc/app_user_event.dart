@@ -31,3 +31,17 @@ class UpdateUser extends AppUserEvent {
   @override
   List<Object> get props => [];
 }
+
+class AppUserRegistering extends AppUserEvent {
+  const AppUserRegistering();
+
+  @override
+  List<Object> get props => [];
+}
+
+class AppUserRegistered extends AppUserEvent {
+  const AppUserRegistered();
+
+  @override
+  List<Object> get props => [];
+}
