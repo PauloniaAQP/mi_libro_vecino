@@ -19,6 +19,7 @@ class Assets {
   static const String searchImg = 'assets/images/search_book.png';
   static const String searchIcon = 'assets/icons/search.png';
 
+  static const String libro01 = 'assets/images/libro_01.png';
   // Image for tests
   static const testImg = 'assets/images/test_images/library.jpeg';
   static const registerTestImg = 'assets/images/test_images/register_image.png';

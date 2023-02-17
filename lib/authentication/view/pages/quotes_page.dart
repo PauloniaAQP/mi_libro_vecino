@@ -58,7 +58,7 @@ class QuotesPage extends StatelessWidget {
                         vertical: 8,
                       ),
                       child: const Image(
-                        image: AssetImage(Assets.registerTestImg),
+                        image: AssetImage(Assets.libro01),
                       ),
                     ),
                   ),
