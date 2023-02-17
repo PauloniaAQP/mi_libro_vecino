@@ -8,6 +8,7 @@ import 'package:mi_libro_vecino/authentication/view/pages/quotes_page.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/colors.dart';
+import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 import 'package:mi_libro_vecino/ui_utils/functions.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/custom_loading.dart';
 import 'package:mi_libro_vecino_api/services/auth_service.dart';
@@ -244,7 +245,9 @@ class LoginViewState extends State<LoginView>
                   desktop: Row(
                     children: [
                       const Expanded(
-                        child: QuotesPage(),
+                        child: QuotesPage(
+                          imagesPath: [Assets.registerTestImg],
+                        ),
                       ),
                       Expanded(
                         child: Padding(

@@ -53,11 +53,13 @@ class LibraryInformationPage extends StatelessWidget {
                         PTextField(
                           label: context.l10n.registerPageLibraryNameLabel,
                           hintText:
-                              context.l10n.registerPageLibraryNameHintText,
+                              context.l10n.registerPageLibraryNameHintText +
+                                  libraryRol,
                           formControlName: RegisterState.libraryNameController,
                           validationMessages: {
-                            ValidationMessage.required: context
-                                .l10n.registerPageLibraryNameErrorTextRequired,
+                            ValidationMessage.required: context.l10n
+                                    .registerPageLibraryNameErrorTextRequired +
+                                libraryRol,
                           },
                         ),
                         PTextField(
@@ -70,7 +72,8 @@ class LibraryInformationPage extends StatelessWidget {
                           label:
                               context.l10n.registerPageLibraryDescriptionLabel,
                           hintText: context
-                              .l10n.registerPageLibraryDescriptionHintText,
+                                  .l10n.registerPageLibraryDescriptionHintText +
+                              libraryRol,
                           formControlName: RegisterState.descriptionController,
                           keyboardType: TextInputType.number,
                           maxLines: 4,

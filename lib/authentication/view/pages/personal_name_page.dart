@@ -65,6 +65,7 @@ class PersonalNamePage extends StatelessWidget {
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly
                         ],
+                        maxLength: 9,
                       ),
                       const SizedBox(height: 20),
                       Padding(

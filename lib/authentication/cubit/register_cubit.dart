@@ -207,6 +207,9 @@ class RegisterCubit extends Cubit<RegisterState> {
         return;
       }
     } catch (error, stacktrace) {
+      await AuthService.removeUser(AuthService.currentUser!);
+      await _userRepository.removeUserById(AuthService.currentUser!.uid);
+
       PauloniaErrorService.sendError(error, stacktrace);
       final newState = RegisterInitial();
       emit(newState.copyWith(status: RegisterStatus.error));
