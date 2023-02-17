@@ -18,6 +18,8 @@ class Assets {
       'assets/images/register_error_book.png';
   static const String searchImg = 'assets/images/search_book.png';
   static const String searchIcon = 'assets/icons/search.png';
+  static const String eye = 'assets/icons/eye.png';
+  static const String eyeSlash = 'assets/icons/eyeSlash.png';
 
   /// Images for register library
   static const String register1Img = 'assets/images/register_1_image.png';

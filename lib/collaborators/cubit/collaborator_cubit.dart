@@ -252,6 +252,7 @@ class CollaboratorCubit extends Cubit<CollaboratorState> {
   }
 
   Future<void> signOut() async {
+    wasFilled = false;
     try {
       await AuthService.signOut();
       emit(CollaboratorInitial());
