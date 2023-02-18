@@ -30,7 +30,7 @@ class Assets {
   static const String register6Img = 'assets/images/register_6_image.png';
   static const String register7Img = 'assets/images/register_7_image.png';
 
-  static const String libro01 = 'assets/images/libro_01.png';
+  static const String loginImage = 'assets/images/login_image.png';
   // Image for tests
   static const testImg = 'assets/images/test_images/library.jpeg';
   static const registerTestImg = 'assets/images/test_images/register_image.png';

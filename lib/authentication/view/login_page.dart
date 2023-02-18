@@ -246,7 +246,7 @@ class LoginViewState extends State<LoginView>
                     children: [
                       const Expanded(
                         child: QuotesPage(
-                          imagesPath: [Assets.registerTestImg],
+                          imagesPath: [Assets.loginImage],
                         ),
                       ),
                       Expanded(
