@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/admin/view/admin_page.dart';
 import 'package:mi_libro_vecino/authentication/view/login_page.dart';
@@ -13,7 +14,6 @@ import 'package:mi_libro_vecino/collaborators/view/collaborators_page.dart';
 import 'package:mi_libro_vecino/libraries/view/libraries_page.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/search.dart';
-import 'package:mi_libro_vecino_api/services/auth_service.dart';
 
 class AppRouter {
   static GoRouter get router => GoRouter(
@@ -109,31 +109,17 @@ class AppRouter {
               child: CollaboratorsPage(),
             ),
             redirect: (_) {
-              if (AuthService.isLoggedIn()) {
-                return '${Routes.collaborators}/${Routes.collaboratorsPersonal}';
-              } else {
-                return Routes.login;
-              }
+              return '${Routes.collaborators}/${Routes.collaboratorsPersonal}';
             },
             routes: [
               GoRoute(
                 path: Routes.collaboratorsPersonal,
-                redirect: (_) {
-                  if (!AuthService.isLoggedIn()) {
-                    return Routes.login;
-                  }
-                  return null;
-                },
                 pageBuilder: (context, state) => const MaterialPage(
                   child: CollaboratorsPage(),
                 ),
               ),
               GoRoute(
                 path: Routes.collaboratorsLibrary,
-                redirect: (_) {
-                  if (!AuthService.isLoggedIn()) return Routes.login;
-                  return null;
-                },
                 pageBuilder: (context, state) => const MaterialPage(
                   child: CollaboratorsPage(index: 1),
                 ),
@@ -146,18 +132,11 @@ class AppRouter {
               child: AdminPage(),
             ),
             redirect: (_) {
-              if (AuthService.isLoggedIn()) {
-                return '${Routes.admin}/${Routes.adminNewRequests}';
-              }
-              return Routes.login;
+              return '${Routes.admin}/${Routes.adminNewRequests}';
             },
             routes: [
               GoRoute(
                 path: Routes.adminNewRequests,
-                redirect: (_) {
-                  if (!AuthService.isLoggedIn()) return Routes.login;
-                  return null;
-                },
                 pageBuilder: (context, state) {
                   final libraryIdQuery = state.queryParams['id'];
                   return MaterialPage(
@@ -167,10 +146,6 @@ class AppRouter {
               ),
               GoRoute(
                 path: Routes.adminLibraries,
-                redirect: (_) {
-                  if (!AuthService.isLoggedIn()) return Routes.login;
-                  return null;
-                },
                 pageBuilder: (context, state) {
                   final libraryIdQuery = state.queryParams['id'];
                   return MaterialPage(

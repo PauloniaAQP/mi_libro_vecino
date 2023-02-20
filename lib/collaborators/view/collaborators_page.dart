@@ -11,6 +11,7 @@ import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dialog.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/selector_button.dart';
 
+import 'package:mi_libro_vecino_api/services/auth_service.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class CollaboratorsPage extends StatefulWidget {
@@ -32,6 +33,11 @@ class CollaboratorsPage extends StatefulWidget {
 class _CollaboratorsPageState extends State<CollaboratorsPage> {
   @override
   void initState() {
+    Future.delayed(const Duration(seconds: 1), () {
+      if (!AuthService.isLoggedIn()) {
+        GoRouter.of(context).go(Routes.login);
+      }
+    });
     super.initState();
   }
 
