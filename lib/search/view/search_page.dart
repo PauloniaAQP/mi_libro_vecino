@@ -102,7 +102,7 @@ class SearchPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Center(
           child: Container(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 80),
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 80),
             width: 800,
             constraints: BoxConstraints(
               minWidth: MediaQuery.of(context).size.width * 0.5,
@@ -111,7 +111,6 @@ class SearchPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: 80),
                 SizedBox(
                   height: 180,
                   child: Stack(
@@ -189,6 +188,15 @@ class SearchPage extends StatelessWidget {
                       )
                     ],
                   ),
+                ),
+                const SizedBox(height: 40),
+                Text(
+                  context.l10n.searchPageAfterTitle,
+                  style: Theme.of(context).textTheme.subtitle1!.apply(
+                        color: PColors.white,
+                        fontWeightDelta: 1,
+                      ),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 40),
                 SearchWidget()
