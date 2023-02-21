@@ -5,9 +5,31 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import 'package:mi_libro_vecino/app/app.dart';
-import 'package:mi_libro_vecino/bootstrap.dart';
+import 'dart:async';
 
-void main() {
-  bootstrap(() => const App());
+import 'package:bloc/bloc.dart';
+import 'package:catcher/catcher.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:mi_libro_vecino/app/app.dart';
+import 'package:mi_libro_vecino/bloc_observer.dart';
+import 'package:mi_libro_vecino/bootstrap.dart';
+import 'package:paulonia_cache_image/paulonia_cache_image.dart';
+import 'package:paulonia_error_service/paulonia_error_service.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await PCacheImage.init();
+  await Firebase.initializeApp();
+
+  final catcherConf = PauloniaErrorService.getCatcherConfig();
+  Bloc.observer = MyLibroVecinoBlocObserver();
+  Catcher(
+    runAppFunction: () {
+      unawaited(bootstrap(() => const App()));
+    },
+    debugConfig: catcherConf['debug'],
+    releaseConfig: catcherConf['release'],
+    profileConfig: catcherConf['profile'],
+  );
 }

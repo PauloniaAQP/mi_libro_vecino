@@ -50,27 +50,31 @@ jobs:
   test_and_coverage:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive        
     - uses: actions/setup-java@v1
       with:
         java-version: '11.x'
     - uses: subosito/flutter-action@v1
       with:
-          flutter-version: '2.8.0'
+          flutter-version: '3.3.0'
     - name: Getting dependencies
       run: |
+        flutter pub get mi_libro_vecino_api/
         flutter pub get
     - name: Analyze
       run: flutter analyze lib    
     - name: Test
-      run: flutter test --coverage  
+      run: flutter test --coverage
     - name: Build
       run: flutter build web --target lib/main_development.dart
-    - uses: codecov/codecov-action@v2
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
-        files: ./coverage/lcov.info
-        fail_ci_if_error: true
+    # - uses: codecov/codecov-action@v2
+    #   with:
+    #     token: ${{ secrets.CODECOV_TOKEN }}
+    #     files: ./coverage/lcov.info
+    #     fail_ci_if_error: true
     - name: Send success notification to Telegram
       if: success()
       uses: appleboy/telegram-action@master
@@ -99,15 +103,19 @@ jobs:
     environment: 
       name: pr-dev
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
     - uses: actions/setup-java@v1
       with:
         java-version: '11.x'
     - uses: subosito/flutter-action@v1
       with:
-          flutter-version: '2.8.0'
+          flutter-version: '3.3.0'
     - name: Getting dependencies
       run: |
+        flutter pub get mi_libro_vecino_api/
         flutter pub get
     - name: Build
       run: flutter build web --target lib/main_development.dart
@@ -117,3 +125,4 @@ jobs:
         firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
         projectId: mi-libro-vecino-dev
         expires: 2d
+

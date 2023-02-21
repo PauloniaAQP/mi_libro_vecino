@@ -10,7 +10,20 @@ Mi libro vecino is a open source project.
 
 ## Use
 
+Before you start, you need to add Google API key in the `index.html` file. [Google API key](https://developers.google.com/maps/documentation/javascript/get-api-key?hl=es)
+
+```html
+<script src="https://maps.googleapis.com/maps/api/js?key=your_key"></script>
+```
+
+
+
+
 ## Getting Started 🚀
+
+Info
+
+- The last flutter version used to compile is `3.3.0`
 
 This project contains 3 flavors:
 
@@ -35,8 +48,6 @@ _\*Mi Libro Vecino works on Web._
 
 ---
 
-## Useful data
-
 ## Running Tests 🧪
 
 To run all unit and widget tests use the following command:
@@ -56,6 +67,12 @@ $ open coverage/index.html
 ```
 
 ---
+
+## Acounts for test
+In order to test admin functionality use the following account:
+
+user : admin@test.com  
+password: 123456789
 
 ## How to contribute
 

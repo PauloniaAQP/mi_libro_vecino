@@ -1,6 +1,10 @@
 {
+  "firestore": {
+    "rules": "./mi_libro_vecino_api/firebase_conf/firestore.rules",
+    "indexes": "./mi_libro_vecino_api/firebase_conf/firestore.indexes.json"
+  },
   "hosting": {
-    "public": "build/web",
+    "public": "./build/web",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -12,5 +16,8 @@
         "destination": "/index.html"
       }
     ]
+  },
+  "storage": {
+    "rules": "./mi_libro_vecino_api/firebase_conf/storage.rules"
   }
 }
