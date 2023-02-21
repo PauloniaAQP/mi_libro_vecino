@@ -32,6 +32,7 @@ void main() {
       when(() => adminCubit.fillData()).thenAnswer((_) async {
         return;
       });
+
       await tester.pumpApp(
         BlocProvider.value(
           value: appUserBloc,
@@ -41,6 +42,7 @@ void main() {
           ),
         ),
       );
+
       expect(
         find.text(
           'Colaboradores',

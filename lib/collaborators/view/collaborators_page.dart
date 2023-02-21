@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +12,8 @@ import 'package:mi_libro_vecino/l10n/l10n.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_dialog.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/selector_button.dart';
+
+import 'package:mi_libro_vecino_api/services/auth_service.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class CollaboratorsPage extends StatefulWidget {
@@ -29,9 +33,21 @@ class CollaboratorsPage extends StatefulWidget {
 }
 
 class _CollaboratorsPageState extends State<CollaboratorsPage> {
+  late Timer timer;
   @override
   void initState() {
+    timer = Timer(const Duration(seconds: 2), () {
+      if (!AuthService.isLoggedIn()) {
+        GoRouter.of(context).go(Routes.login);
+      }
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   @override
