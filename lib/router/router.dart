@@ -14,6 +14,7 @@ import 'package:mi_libro_vecino/collaborators/view/collaborators_page.dart';
 import 'package:mi_libro_vecino/libraries/view/libraries_page.dart';
 import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/search/search.dart';
+import 'package:mi_libro_vecino/terms/view/terms_page.dart';
 
 class AppRouter {
   static GoRouter get router => GoRouter(
@@ -154,6 +155,12 @@ class AppRouter {
                 },
               ),
             ],
+          ),
+          GoRoute(
+            path: Routes.termsAndPrivacy,
+            pageBuilder: (context, state) => const MaterialPage(
+                child: TermsAndPrivacyPage(),
+            ),
           ),
         ],
       );

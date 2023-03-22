@@ -1,5 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mi_libro_vecino/l10n/l10n.dart';
+import 'package:mi_libro_vecino/router/app_routes.dart';
 import 'package:mi_libro_vecino/ui_utils/constans/assets.dart';
 import 'package:mi_libro_vecino/ui_utils/general_widgets/p_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -66,6 +69,23 @@ class _LoginFormState extends State<LoginForm> {
                   setState(() => _isObscureText = !_isObscureText);
                 },
               ),
+            ),
+          ),
+          const SizedBox(height: 15),
+          RichText(
+            text: TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'Al iniciar sesión está aceptando nuestros ',
+                  style: TextStyle(color: Colors.black),
+                ),
+                TextSpan(
+                  text: 'Términos y condiciones de uso',
+                  style: const TextStyle(color: Colors.blue),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () { context.go(Routes.termsAndPrivacy); },
+                ),
+              ],
             ),
           ),
         ],
