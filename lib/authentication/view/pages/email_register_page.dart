@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -130,6 +131,25 @@ class _EmailRegisterPageState extends State<EmailRegisterPage> {
                               );
                             },
                           ),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            const TextSpan(
+                              text: 'Al registrarte está aceptando nuestros ',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            TextSpan(
+                              text: 'Términos y condiciones de uso',
+                              style: const TextStyle(color: Colors.blue),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  context.go(Routes.termsAndPrivacy);
+                                },
+                            ),
+                          ],
                         ),
                       ),
                     ],
